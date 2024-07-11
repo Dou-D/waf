@@ -19,9 +19,9 @@ editable={{
     type: 'multiple',
     /**
      * 
-     * @param rowKey 让每一行unique
-     * @param data 整行表单的值
-     * @param row 
+     * @param key 让每一行unique
+     * @param record 整行表单的值
+     * @param originRow 一般没啥用
      */
     onSave: async (key, record, originRow) => {
         console.log();

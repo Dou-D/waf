@@ -51,6 +51,7 @@ export default () => {
       dataIndex: 'srcIP',
       hideInSearch: true,
       copyable: true,
+      width: 200,
       render: (_, record) => {
         return (
           <>
@@ -65,6 +66,7 @@ export default () => {
       dataIndex: 'dstIP',
       hideInSearch: true,
       copyable: true,
+      width: 200,
       render: (_, record) => {
         return (
           <>
@@ -83,6 +85,7 @@ export default () => {
       title: '流量类型',
       dataIndex: 'label',
       valueType: 'select',
+      width: 150,
       valueEnum: {
         正常流量: { text: '正常流量', status: 'Success' },
         可疑流量: { text: '可疑流量', status: 'Warning' },
@@ -110,13 +113,6 @@ export default () => {
       ),
     },
     {
-      title: '创建时间',
-      key: 'timestamp',
-      dataIndex: 'timestamp',
-      valueType: 'dateTime',
-      hideInSearch: true,
-    },
-    {
       title: '日期范围',
       dataIndex: 'created_at',
       valueType: 'dateRange',
@@ -133,7 +129,14 @@ export default () => {
     {
       title: '协议',
       dataIndex: 'protocol',
-      hideInTable: true,
+      width: 160
+    },
+    {
+      title: '创建时间',
+      key: 'timestamp',
+      dataIndex: 'timestamp',
+      valueType: 'dateTime',
+      hideInSearch: true,
     },
     {
       title: '操作',
@@ -146,9 +149,8 @@ export default () => {
           key="edit"
           onClick={async () => {
             action?.startEditable?.(record.id);
-            APIChangeFlow({ flowID: record.id, status: activeKey });
-            await waitTime(2000);
           }}
+          
         >
           编辑
         </Button>,
@@ -196,6 +198,16 @@ export default () => {
         }}
         editable={{
           type: 'multiple',
+          /**
+           * 
+           * @param key 不是后端传过来的id 后端传过来的id在record.id中
+           * @param record 当前行的数据
+           */
+          onSave: async (key, record) => {
+            console.log(key);
+            APIChangeFlow({ flowID: record.id, status: record.label });
+            await waitTime(2000);
+        }
         }}
         columnsState={{
           persistenceKey: 'pro-table-singe-demos',
@@ -262,7 +274,7 @@ export default () => {
         title="详情"
         placement="right"
         onClose={() => setDrawerVisible(false)}
-        visible={drawerVisible}
+        open={drawerVisible}
       >
         {detailData && (
           <div>
@@ -270,9 +282,9 @@ export default () => {
             <p>目的IP: {detailData.dstIp}:{detailData.dstPort}</p>
             <p>流量类型: {detailData.label}</p>
             <p>时间: {detailData.timestamp}</p>
-            <p>攻击类型{detailData.attckType}</p>
-            <p>协议{detailData.protocol}</p>
-            <p>载荷{detailData.payload}</p>
+            <p>攻击类型: {detailData.attckType}</p>
+            <p>协议: {detailData.protocol}</p>
+            <p>载荷: {detailData.payload}</p>
           </div>
         )}
       </Drawer>

@@ -15,7 +15,7 @@ export function APIManualBan(ip: string) {
 }
 
 export function APIChangeFlow({flowID, status}) {
-  return request('/api/changeflow', {
+  return request('/api/changeFlow', {
     method: 'POST',
     ...config,
     data: {
