@@ -2,6 +2,7 @@ import { Card, Col, Row, Statistic } from 'antd';
 import { Component } from 'react';
 import * as Echarts from 'echarts';
 import chinaJson from '@/assets/china.json';
+import LiaoNing from '@/components/SimpleStatic/LiaoNing';
 
 export default class ConsoleHome extends Component {
   state = {
@@ -15,7 +16,7 @@ export default class ConsoleHome extends Component {
       { name: '重庆', value: 380 },
       { name: '河北省', value: 350 },
       { name: '山西省', value: 300 },
-      { name: '辽宁省', value: 320 },
+      { name: '辽宁省', value: 320 }, // 6
       { name: '吉林省', value: 280 },
       { name: '黑龙江省', value: 260 },
       { name: '江苏省', value: 480 },
@@ -64,6 +65,12 @@ export default class ConsoleHome extends Component {
 
   async getData() {
     this.drawMap();
+  }
+
+  computedLiaoNingTotal() {
+    const LiaoNingInstalce = new LiaoNing();
+    const LiaoNingTotal = LiaoNingInstalce.computedTotal()
+    this.state.province[6].value = LiaoNingTotal;
   }
 
   drawMap() {

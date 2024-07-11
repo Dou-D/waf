@@ -13,6 +13,17 @@ export default class Dashboard extends Component {
       { name: '沈阳', value: 500 },
       { name: '大连', value: 300 },
       { name: '鞍山', value: 100 },
+      { name: '抚顺', value: 50 },
+      { name: '本溪', value: 20 },
+      { name: '丹东', value: 10 },
+      { name: '锦州', value: 5 },
+      { name: '营口', value: 2 },
+      { name: '阜新', value: 1 },
+      { name: '辽阳', value: 1 },
+      { name: '盘锦', value: 1 },
+      { name: '铁岭', value: 1 },
+      { name: '朝阳', value: 1 },
+      { name: '葫芦岛', value: 1 },
     ],
     columns: [
       {
@@ -30,6 +41,11 @@ export default class Dashboard extends Component {
 
   componentDidMount() {
     this.getData();
+  }
+
+  computedTotal(): number {
+    const total = this.state.cities.reduce((total, city) => total + city.value, 0);
+    return total
   }
 
   formatDate = (date) => {
@@ -194,3 +210,5 @@ export default class Dashboard extends Component {
     );
   }
 }
+
+ 

@@ -21,7 +21,10 @@ async function submit({ account, password }) {
       message: res.message,
       placement: 'topRight'
     })
+    return;
   }
+  localStorage.setItem('token', res.data.token);
+  history.push('/');
 }
 
 function GoBack() {

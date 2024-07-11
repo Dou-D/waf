@@ -20,7 +20,7 @@ export const Locale: React.FC = () => {
       data:['销量']
     },
     xAxis: {
-      data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+      data: ['衬衫', '羊毛衫', '雪纺衫', '裤子',]
     },
     yAxis: {},
     series: [{
