@@ -5,6 +5,6 @@ export default function Auth() {
   if (isLogin) {
     return <Outlet />;
   } else {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
 }

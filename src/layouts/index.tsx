@@ -1,5 +1,6 @@
 import type { MenuProps } from 'antd';
 import { Avatar, Breadcrumb, Layout, Menu, theme } from 'antd';
+
 import 'antd/dist/reset.css';
 import React, { useState } from 'react';
 import { Link, Outlet } from 'umi';
@@ -54,20 +55,26 @@ const sliderItems: MenuProps['items'] = sliderItemsData.map((item) => {
 
   return {
     key: key,
-    label: item.label,
-    path: item.path,
+    label: <Link to={item.path}>{item.label}</Link>,
   };
 });
-interface IProps {
-  age?: number;
-}
-const layout: React.FC<IProps> = (props) => {
+
+const Layouts:React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   const [breadcrumbItems, setBreadcrumbItems] = useState<{ title: string }[]>([
     { title: 'Home' },
   ]);
+
+  function findMenuItemByKey(key: string, menuItems: MenuProps['items']): any {
+    if (!menuItems) return null;
+    for (const item of menuItems) {
+      if (item?.key === key) {
+        return item;
+      }
+    }
+  }
 
   const handleMenuClick = (e: any, menuItems: MenuProps['items']) => {
     const clickedItem = findMenuItemByKey(e.key, menuItems);
@@ -80,16 +87,6 @@ const layout: React.FC<IProps> = (props) => {
       ]);
     }
   };
-
-  function findMenuItemByKey(key: string, menuItems: MenuProps['items']) {
-    if (!menuItems) return null;
-    for (const item of menuItems) {
-      if (item?.key === key) {
-        return item;
-      }
-    }
-    return null;
-  }
 
   function itemRender(currentRoute, params, items, paths) {
     const isLast = currentRoute?.path === items[items.length - 1]?.path;
@@ -160,4 +157,4 @@ const layout: React.FC<IProps> = (props) => {
   );
 };
 
-export default layout;
+export default Layouts;

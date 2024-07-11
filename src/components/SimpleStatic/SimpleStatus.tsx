@@ -9,15 +9,16 @@ interface SimpleStatisticProps {
 const SimpleStatistic: React.FC<SimpleStatisticProps> = ({ data }) => {
   return (
     <StatisticCard.Group>
-      {data.map((item, index) => (
-          <StatisticCard
-            statistic={{
-              title: item.title,
-              tip: item.tip,
-              value: item.value,
-              status: item.status,
-            }}
-          />
+      {data.map((item) => (
+        <StatisticCard
+          key={item.title}
+          statistic={{
+            title: item.title,
+            tip: item.tip,
+            value: item.value,
+            status: item.status,
+          }}
+        />
       ))}
     </StatisticCard.Group>
   );

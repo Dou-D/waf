@@ -2,32 +2,43 @@
   "private": true,
   "author": "husongtao <15309487104@163.com>",
   "scripts": {
-    "dev": "umi dev",
     "build": "umi build",
+    "dev": "umi dev",
     "postinstall": "umi setup",
     "setup": "umi setup",
-    "start": "npm run dev"
+    "start": "umi dev",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,less}": [
+      "umi lint --fix"
+    ],
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "@ant-design/pro-components": "^2.7.10",
-    "@simplewebauthn/browser": "^10.0.0",
-    "@simplewebauthn/typescript-types": "^8.3.4",
     "@types/lodash.clonedeep": "^4.5.9",
     "echarts": "^5.5.1",
     "echarts-for-react": "^3.0.2",
-    "table-render": "^2.1.4",
-    "umi": "^4.3.1"
+    "table-render": "^2.1.4"
   },
   "devDependencies": {
+    "umi": "^4.3.1",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "@umijs/lint": "^4.3.1",
     "@umijs/plugins": "^4.3.1",
     "antd": "^5.19.1",
     "axios": "^1.7.2",
+    "dayjs": "^1.11.11",
+    "eslint": "^9.6.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
     "prettier": "^2.8.8",
     "prettier-plugin-organize-imports": "^3.2.2",
     "prettier-plugin-packagejson": "^2.4.3",
+    "stylelint": "^14",
     "tailwindcss": "^3",
     "typescript": "^5.0.3",
     "umi-request": "^1.4.0"
