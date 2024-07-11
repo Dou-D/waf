@@ -1,4 +1,5 @@
 const fabric = require('@umijs/fabric/dist');
+
 module.exports = {
-    ...fabric.stylelint,
+    ...fabric.prettier,
 };
