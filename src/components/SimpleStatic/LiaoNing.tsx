@@ -1,20 +1,19 @@
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { Card, Col, Row, Statistic, Tabs, TabsProps, Table } from 'antd';
-import request from 'umi-request';
-import { config } from '@/utils/request';
+import { Card, Col, Row, Statistic } from 'antd';
 import { Component } from 'react';
 import * as Echarts from 'echarts';
+import liaoningJson from '@/assets/liaoning.json';
+
 export default class Dashboard extends Component {
   state = {
     value: 95,
-    total: 0,
-    newvisit: 0,
-    pv: 0,
-    platforms: [],
-    devices: [],
-    cities: [],
-    gender: [],
-    ages: [],
+    total: 1000,
+    newvisit: 50,
+    pv: 200,
+    cities: [
+      { name: '沈阳', value: 500 },
+      { name: '大连', value: 300 },
+      { name: '鞍山', value: 100 },
+    ],
     columns: [
       {
         title: '名称',
@@ -33,48 +32,21 @@ export default class Dashboard extends Component {
     this.getData();
   }
 
-  formatDate = (date: Date) => {
+  formatDate = (date) => {
     let yyyy = String(date.getFullYear());
-    let mm = String(
-      date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + String(date.getMonth() + 1),
-    );
-    let dd = String(date.getDate() > 9 ? date.getDate() : '0' + String(date.getDate()));
+    let mm = String(date.getMonth() + 1).padStart(2, '0');
+    let dd = String(date.getDate()).padStart(2, '0');
     return yyyy + mm + dd;
   };
 
   async getData() {
-    const yesterday = new Date();
-    const lastmonth = new Date();
-    const now = new Date().getTime(); // 获取当前时间戳
-    yesterday.setTime(now - 1000 * 60 * 60 * 8 - 1000 * 60 * 60 * 24);
-    lastmonth.setTime(now - 1000 * 60 * 60 * 8 - 1000 * 60 * 60 * 24 * 30);
-    const format_yesterday = this.formatDate(yesterday);
-    const format_lastmonth = this.formatDate(lastmonth);
-    // 接口1
-    // request('/api/get_daily_summary', {
-    //   params: {
-    //     begin: format_lastmonth,
-    //     end: format_yesterday,
-    //   },
-    //   method: 'GET',
-    //   ...config,
-    // }).then((res) => {
-    //   this.setState({ total: res.data.data.visit_total });
-    //   this.setState({ newvisit: res.data.data.visit_uv_new });
-    //   this.setState({ pv: res.data.data.visit_uv });
-    //   this.setState({ platforms: res.data.data.visit_uv.platforms });
-    //   this.setState({ devices: res.data.data.visit_uv.devices });
-    //   this.setState({ cities: res.data.data.visit_uv.city });
-    //   this.state.cities = res.data.data.visit_uv.city;
-    //   this.setState({ gender: res.data.data.visit_uv.genders });
-    //   this.setState({ ages: res.data.data.visit_uv.ages });
-    // });
     this.drawMap();
   }
+
   drawMap() {
     const myChart = Echarts.init(document.getElementById('liaoning-map'));
     let name = 'Liaoning';
-    Echarts.registerMap(name, require('@/assets/liaoning.json'));
+    Echarts.registerMap(name, liaoningJson);
     let option = {
       backgroundColor: '#fff',
       title: {
@@ -89,8 +61,7 @@ export default class Dashboard extends Component {
       tooltip: {
         show: true,
         trigger: 'item',
-        //设置显示内容
-        formatter(params: { name: any; value: any }) {
+        formatter(params) {
           return `地区：${params.name}</br>数值：${params.value}`;
         },
       },
@@ -102,7 +73,7 @@ export default class Dashboard extends Component {
           min: 1,
           max: 2,
         },
-        zoom: 1.1, //地图的比例
+        zoom: 1.1,
         label: {
           normal: {
             show: false,
@@ -118,8 +89,6 @@ export default class Dashboard extends Component {
         },
         itemStyle: {
           normal: {
-            //shadowBlur: 50,
-            //shadowColor: 'rgba(0, 0, 0, 0.2)',
             borderColor: 'rgba(0, 0, 0, 0.2)',
             areaColor: '#aaaaaa',
           },
@@ -161,7 +130,6 @@ export default class Dashboard extends Component {
           },
         ],
       },
-
       series: [
         {
           name: '人数',
@@ -175,58 +143,6 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    const items: TabsProps['items'] = [
-      {
-        key: 'platforms',
-        label: '平台',
-        children: (
-          <Table
-            dataSource={this.state.platforms}
-            columns={this.state.columns}
-            pagination={{ pageSize: 10 }}
-            scroll={{ y: 180 }}
-          />
-        ),
-      },
-      {
-        key: 'devices',
-        label: '设备',
-        children: (
-          <Table
-            dataSource={this.state.devices}
-            columns={this.state.columns}
-            pagination={{ pageSize: 10 }}
-            scroll={{ y: 180 }}
-          />
-        ),
-      },
-    ];
-    const items2: TabsProps['items'] = [
-      {
-        key: 'gender',
-        label: '性别',
-        children: (
-          <Table
-            dataSource={this.state.gender}
-            columns={this.state.columns}
-            pagination={{ pageSize: 10 }}
-            scroll={{ y: 180 }}
-          />
-        ),
-      },
-      {
-        key: 'ages',
-        label: '年龄',
-        children: (
-          <Table
-            dataSource={this.state.ages}
-            columns={this.state.columns}
-            pagination={{ pageSize: 10 }}
-            scroll={{ y: 180 }}
-          />
-        ),
-      },
-    ];
     return (
       <>
         <Row gutter={[16, 24]}>
@@ -271,16 +187,6 @@ export default class Dashboard extends Component {
           <Col span={12}>
             <Card bordered={false}>
               <div id="liaoning-map" style={{ height: '350px', width: '100%' }}></div>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card bordered={false} style={{ height: '400px' }}>
-              <Tabs defaultActiveKey="platforms" items={items} />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card bordered={false} style={{ height: '400px' }}>
-              <Tabs defaultActiveKey="gender" items={items2} />
             </Card>
           </Col>
         </Row>

@@ -1,51 +1,57 @@
-import Graph from '@/components/SimpleStatic/Graph';
+// import Graph from '@/components/SimpleStatic/Graph';
 import SimpleStatistic from '@/components/SimpleStatic/SimpleStatus';
 import { Statistic } from '@/components/SimpleStatic/typings';
-import { Card, Col, Row } from 'antd';
+import { Card, Col, Row, Radio } from 'antd';
 import Event from '@/components/SimpleStatic/Event';
-import React from 'react';
+import React, { useState } from 'react';
+import FlowObserve from '@/components/SimpleStatic/FlowObserve';
+import { Locale } from '@/components/SimpleStatic';
+import type { RadioChangeEvent } from 'antd';
+import China from '@/components/SimpleStatic/China';
+import LiaoNing from '@/components/SimpleStatic/LiaoNing';
 
 const data1: Statistic[] = [
   {
-    title: '未发布',
+    title: '访问次数',
     value: 5,
     status: 'default',
   },
   {
-    title: '发布中',
+    title: '访客',
     value: 3,
     status: 'processing',
   },
   {
-    title: '发布异常',
+    title: '独立IP',
     value: 2,
     status: 'error',
   },
   {
-    title: '发布成功',
-    value: '-',
+    title: '攻击次数',
+    value: 23,
     status: 'success',
   },
 ];
 const data2: Statistic[] = [
   {
-    title: '未发布',
+    title: '4xx错误率',
     value: 5,
     status: 'default',
   },
   {
-    title: '发布中',
+    title: '5xx错误率',
     value: 3,
     status: 'processing',
-  },
-  {
-    title: '发布异常',
-    value: 2,
-    status: 'error',
   },
 ];
 
 const Dashboard: React.FC = () => {
+  const graphOption = ['中国', '辽宁'];
+  const [graph, setGraph] = useState('中国');
+  const onGraphChange = ({ target: { value } }: RadioChangeEvent) => {
+    setGraph(value);
+  };
+
   return (
     <>
       <Row gutter={16}>
@@ -65,10 +71,10 @@ const Dashboard: React.FC = () => {
         {/* 中间大图 */}
         <Col span={16}>
           <Card>
-            <Graph />
+            <Radio.Group options={graphOption} onChange={onGraphChange} value={graph} />
+            {graph === '中国' ? <China /> : <LiaoNing />}
           </Card>
         </Col>
-        {/* 大图右侧折线图 */}
         <Col span={8}>
           <Card>
             <SimpleStatistic data={data2} />
@@ -77,15 +83,14 @@ const Dashboard: React.FC = () => {
       </Row>
 
       <Row gutter={16}>
+        <Col span={16}>
+          <FlowObserve />
+        </Col>
+        <Col span={8}>
+          <Locale />
+        </Col>
         <Col span={8}>
           <Event />
-        </Col>
-        <Col span={8}>
-        <Event />
-        </Col>
-        <Col span={8}>
-          {/* <Dynamic /> */}
-          3
         </Col>
       </Row>
     </>

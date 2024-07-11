@@ -1,7 +1,7 @@
 import type { MenuProps } from 'antd';
 import { Avatar, Breadcrumb, Layout, Menu, theme } from 'antd';
-
 import 'antd/dist/reset.css';
+import 'ant-design-pro/dist/ant-design-pro.css';
 import React, { useState } from 'react';
 import { Link, Outlet } from 'umi';
 

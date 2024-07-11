@@ -97,11 +97,14 @@ export default () => {
           return defaultRender(_);
         }
         return (
-          <Select {...rest} defaultValue={form.getFieldValue('labels')}>
-            <Select.Option value="正常流量">正常流量</Select.Option>
-            <Select.Option value="可疑流量">可疑流量</Select.Option>
-            <Select.Option value="攻击流量">攻击流量</Select.Option>
-          </Select>
+          <Select
+            options={[
+              { label: '正常流量', value: '正常流量' },
+              { label: '可疑流量', value: '可疑流量' },
+              { label: '攻击流量', value: '攻击流量' },
+            ]}
+            defaultValue={form.getFieldValue('labels')}
+          ></Select>
         );
       },
       render: (_, record) => (
@@ -129,7 +132,7 @@ export default () => {
     {
       title: '协议',
       dataIndex: 'protocol',
-      width: 160
+      width: 160,
     },
     {
       title: '创建时间',
@@ -150,7 +153,6 @@ export default () => {
           onClick={async () => {
             action?.startEditable?.(record.id);
           }}
-          
         >
           编辑
         </Button>,
@@ -159,16 +161,11 @@ export default () => {
           danger
           size="small"
           key="delete"
-          onClick={async () => APIManualBan(record.srcIp)}
+          onClick={async () => await APIManualBan(record.srcIp)}
         >
           禁用
         </Button>,
-        <Button
-          type="default"
-          size="small"
-          key="detail"
-          onClick={() => showDrawer(record)}
-        >
+        <Button type="default" size="small" key="detail" onClick={() => showDrawer(record)}>
           详情
         </Button>,
       ],
@@ -178,6 +175,7 @@ export default () => {
   useEffect(() => {
     actionRef.current?.reload();
   }, [activeKey]);
+
 
   return (
     <>
@@ -199,15 +197,14 @@ export default () => {
         editable={{
           type: 'multiple',
           /**
-           * 
+           *
            * @param key 不是后端传过来的id 后端传过来的id在record.id中
            * @param record 当前行的数据
            */
           onSave: async (key, record) => {
-            console.log(key);
-            APIChangeFlow({ flowID: record.id, status: record.label });
+            await APIChangeFlow({ flowID: record.id, status: record.label });
             await waitTime(2000);
-        }
+          },
         }}
         columnsState={{
           persistenceKey: 'pro-table-singe-demos',
@@ -278,8 +275,12 @@ export default () => {
       >
         {detailData && (
           <div>
-            <p>来源IP: {detailData.srcIp}:{detailData.srcPort}</p>
-            <p>目的IP: {detailData.dstIp}:{detailData.dstPort}</p>
+            <p>
+              来源IP: {detailData.srcIp}:{detailData.srcPort}
+            </p>
+            <p>
+              目的IP: {detailData.dstIp}:{detailData.dstPort}
+            </p>
             <p>流量类型: {detailData.label}</p>
             <p>时间: {detailData.timestamp}</p>
             <p>攻击类型: {detailData.attckType}</p>

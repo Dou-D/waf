@@ -22,6 +22,7 @@ export default defineConfig({
       component: 'login',
       layout: false,
     },
+    { path: '/*', component: '@/pages/404', layout: false },
   ],
   mfsu: true,
   npmClient: 'pnpm',
@@ -30,4 +31,11 @@ export default defineConfig({
   codeSplitting: {
     jsStrategy: 'granularChunks',
   },
+  proxy: {
+    '/api': {
+      'target': '10.4.0.77:8081',
+      'changeOrigin': true,
+      'pathRewrite': { '^/api': '' },
+    },
+  }
 });
