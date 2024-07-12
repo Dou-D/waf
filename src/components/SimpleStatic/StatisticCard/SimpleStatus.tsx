@@ -1,6 +1,6 @@
 import { StatisticCard } from '@ant-design/pro-components';
 import React from 'react';
-import { Statistic } from '../typings';
+import { Statistic } from './typings';
 
 interface SimpleStatisticProps {
   data: Statistic[];

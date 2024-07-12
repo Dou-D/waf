@@ -1,15 +1,26 @@
 import { Line } from '@ant-design/plots';
+import { Response, FlowLineType } from './typing';
+import { useState } from 'react';
+import request from 'umi-request';
+import { config } from '@/utils';
 
-const FlowFline = () => {
-  const data = [
-    { year: '1991', value: 3 },
-    { year: '1992', value: 4 },
-    { year: '1993', value: 3.5 },
-    { year: '1994', value: 5 },
-  ];
-  const config = {
-    data,
-    xField: 'year',
+const testData = [
+  { month: '4月', value: 23 },
+  { month: '5月', value: 4 },
+  { month: '6月', value: 3.5 },
+  { month: '7月', value: 5 },
+];
+const FlowLine: React.FC = () => {
+  const [flowData, setFlowData] = useState<FlowLineType[]>(testData);
+  // request('/api/flowLine', {
+  //   method: 'GET',
+  //   ...config,
+  // }).then((res: Response) => {
+  //   setFlowData(res.data.flowLine);
+  // });
+  const configCharts = {
+    data: flowData || testData,
+    xField: 'month',
     yField: 'value',
     point: {
       shapeField: 'square',
@@ -24,7 +35,8 @@ const FlowFline = () => {
       lineWidth: 2,
     },
   };
-  return <Line {...config} />;
+
+  return <Line {...configCharts} />;
 };
 
-export default FlowFline;
+export default FlowLine;

@@ -7,60 +7,60 @@ const data = {
     {
       id: '1',
       name: 'www.bilibi.com',
-      process: 30
+      process: 30,
     },
     {
       id: '2',
       name: '47.104.112.110:7888',
-      process: 10
+      process: 10,
     },
     {
       id: '3',
       name: 'www.zhihu.com',
-      process: 20
+      process: 20,
     },
     {
       id: '4',
       name: 'www.baidu.com',
-      process: 50
+      process: 50,
     },
     {
       id: '5',
       name: 'www.taobao.com',
-      process: 40
+      process: 40,
     },
     {
       id: '6',
       name: 'www.tmall.com',
-      process: 60
+      process: 60,
     },
     {
       id: '7',
       name: 'www.jd.com',
-      process: 70
+      process: 70,
     },
     {
       id: '8',
       name: 'www.douyin.com',
-      process: 80
+      process: 80,
     },
     {
       id: '9',
       name: 'www.weibo.com',
-      process: 90
+      process: 90,
     },
     {
       id: '10',
       name: 'www.toutiao.com',
-      process: 100
-    }
+      process: 100,
+    },
   ],
-  total: 234
-}
+  total: 234,
+};
 const defaultData = data.defaultData.slice(0, 5);
 type DataItem = (typeof defaultData)[number];
 
-export default () => {
+export const ListInfo: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataItem[]>(defaultData);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -94,22 +94,21 @@ export default () => {
           dataIndex: 'name',
         },
         content: {
-          render: (_, record) => <Progress percent={record.process} />
+          render: (_, record) => (
+            <Progress percent={Math.floor((record.process / data.total) * 100)} />
+          ),
         },
         subTitle: {
           render: () => {
             return (
               <>
-                <Modal
-                  title="受访域名"
-                  open={isModalOpen}
-                  onOk={handleOk}
-                  onCancel={handleCancel}
-                >
-                  {data.defaultData.map((item) => <>
-                    
-                    {item.name}<Progress key={item.id} percent={item.process}  />
-                  </>)}
+                <Modal title="受访域名" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                  {data.defaultData.map((item) => (
+                    <div key={item.id}>
+                      {item.name}
+                      <Progress percent={item.process} />
+                    </div>
+                  ))}
                 </Modal>
               </>
             );

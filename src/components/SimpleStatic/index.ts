@@ -1,1 +1,1 @@
-export * from './LineChart/Locale';
+export * from './Locale/Locale';

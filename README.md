@@ -57,4 +57,10 @@ useEffect(async () => {
       method: 'GET',
     })
   }, [])
-```
+```  
+
+## StatisticCard  
+从antd-pro导入StatisticCard后，使用`description`中的`Statistic`API别忘了拿到
+```ts
+const { Statistic } = StatisticCard;
+```  

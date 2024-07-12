@@ -1,13 +1,14 @@
 import { ProCard, StatisticCard } from '@ant-design/pro-components';
 import RcResizeObserver from 'rc-resize-observer';
-import { useState } from 'react';
-import { TrendType } from './typings';
+import { useState, useEffect } from 'react';
+import type { TrendType, FlowCardData, FlowCardResponse } from './typings';
 import FlowLine from '../LineChart/FlowLine';
-import { Locale } from '../LineChart/Locale';
+import request from 'umi-request';
+import { config } from '@/utils';
 
 const { Statistic } = StatisticCard;
 
-const items1 = [
+const testData: FlowCardData[] = [
   {
     id: 1,
     title: '昨日全部流量',
@@ -30,31 +31,17 @@ const items1 = [
   },
 ];
 
-const item2 = [
-  {
-    id: 1,
-    title: '拦截数',
-    value: '12/56',
-    suffix: '个',
-  },
-  {
-    id: 2,
-    title: '历史拦截总数',
-    value: '134',
-    suffix: '个',
-  },
-];
-
-const flowObserveItems = [
-  { year: '1991', value: 3 },
-  { year: '1992', value: 4 },
-  { year: '1993', value: 3.5 },
-  { year: '1994', value: 5 },
-];
-
-export default () => {
+export const FlowObserve: React.FC = () => {
   const [responsive, setResponsive] = useState(false);
-
+  const [flowCardData, setFlowCardData] = useState<FlowCardData[]>(testData);
+  // useEffect(() => {
+  //   request('/api/flowCard', {
+  //     ...config,
+  //     method: 'GET',
+  //   }).then((res:FlowCardResponse)  => {
+  //     setFlowCardData(res.data.flowCardData)
+  //   })
+  // });
   return (
     <RcResizeObserver
       key="resize-observer"
@@ -72,7 +59,7 @@ export default () => {
         <ProCard split="horizontal">
           <ProCard split="horizontal">
             <ProCard split="vertical">
-              {items1.map((item) => {
+              {flowCardData.map((item) => {
                 return (
                   <StatisticCard
                     key={item.id}
@@ -91,7 +78,6 @@ export default () => {
                 );
               })}
             </ProCard>
-
           </ProCard>
           <StatisticCard title="流量走势">
             <FlowLine />
@@ -101,3 +87,4 @@ export default () => {
     </RcResizeObserver>
   );
 };
+

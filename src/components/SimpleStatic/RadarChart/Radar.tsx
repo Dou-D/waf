@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 
-const Page: React.FC = () => {
+export const Radar: React.FC = () => {
   const option = {
     title: [
       {
@@ -25,23 +25,23 @@ const Page: React.FC = () => {
     radar: [
       {
         indicator: [
-          { name: 'Windows', max: 2000 },
-          { name: 'macOS', max: 2000 },
-          { name: 'Linux', max: 2000 },
-          { name: 'Android', max: 2000 },
-          { name: 'iOS', max: 2000 },
+          { name: "Windows", max: 2000 },
+          { name: "macOS", max: 2000 },
+          { name: "Linux", max: 2000 },
+          { name: "Android", max: 2000 },
+          { name: "iOS", max: 2000 },
         ],
         center: ['25%', '60%'],
         radius: 80
       },
       {
         indicator: [
-          { name: 'Chrome', max: 2000 },
-          { name: 'Firefox', max: 2000 },
-          { name: 'Safari', max: 2000 },
-          { name: 'Edge', max: 2000 },
-          { name: 'Opera', max: 2000 },
-          { name: 'Internet Explorer', max: 2000 },
+          { name: "Chrome", max: 2000 },
+          { name: "Firefox", max: 2000 },
+          { name: "Safari", max: 2000 },
+          { name: "Edge", max: 2000 },
+          { name: "Opera", max: 2000 },
+          { name: "Internet Explorer", max: 2000 },
         ],
         center: ['75%', '60%'],
         radius: 80
@@ -103,5 +103,3 @@ const Page: React.FC = () => {
     />
   );
 };
-
-export default Page;

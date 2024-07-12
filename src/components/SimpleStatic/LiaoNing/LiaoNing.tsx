@@ -1,68 +1,38 @@
 import { Card, Col, Row, Statistic } from 'antd';
-import { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Echarts from 'echarts';
 import liaoningJson from '@/assets/liaoning.json';
 
-export default class Dashboard extends Component {
-  state = {
-    value: 95,
-    total: 1000,
-    newvisit: 50,
-    pv: 200,
-    cities: [
-      { name: '沈阳', value: 500 },
-      { name: '大连', value: 300 },
-      { name: '鞍山', value: 100 },
-      { name: '抚顺', value: 50 },
-      { name: '本溪', value: 20 },
-      { name: '丹东', value: 10 },
-      { name: '锦州', value: 5 },
-      { name: '营口', value: 2 },
-      { name: '阜新', value: 1 },
-      { name: '辽阳', value: 1 },
-      { name: '盘锦', value: 1 },
-      { name: '铁岭', value: 1 },
-      { name: '朝阳', value: 1 },
-      { name: '葫芦岛', value: 1 },
-    ],
-    columns: [
-      {
-        title: '名称',
-        dataIndex: 'name',
-        key: 'name',
-      },
-      {
-        title: '数量',
-        dataIndex: 'value',
-        key: 'value',
-      },
-    ],
-  };
+export const LiaoNing: React.FC = () => {
+  const [value, setValue] = useState(95);
+  const [total, setTotal] = useState(1000);
+  const [newVisit, setNewVisit] = useState(50);
+  const [pv, setPv] = useState(200);
+  const [cities, setCities] = useState([
+    { name: '沈阳', value: 500 },
+    { name: '大连', value: 300 },
+    { name: '鞍山', value: 100 },
+    { name: '抚顺', value: 50 },
+    { name: '本溪', value: 20 },
+    { name: '丹东', value: 10 },
+    { name: '锦州', value: 5 },
+    { name: '营口', value: 2 },
+    { name: '阜新', value: 1 },
+    { name: '辽阳', value: 1 },
+    { name: '盘锦', value: 1 },
+    { name: '铁岭', value: 1 },
+    { name: '朝阳', value: 1 },
+    { name: '葫芦岛', value: 1 },
+  ]);
 
-  componentDidMount() {
-    this.getData();
-  }
+  useEffect(() => {
+    drawMap();
+  }, [cities]);
 
-  computedTotal(): number {
-    const total = this.state.cities.reduce((total, city) => total + city.value, 0);
-    return total
-  }
-
-  formatDate = (date) => {
-    let yyyy = String(date.getFullYear());
-    let mm = String(date.getMonth() + 1).padStart(2, '0');
-    let dd = String(date.getDate()).padStart(2, '0');
-    return yyyy + mm + dd;
-  };
-
-  async getData() {
-    this.drawMap();
-  }
-
-  drawMap() {
-    const myChart = Echarts.init(document.getElementById('liaoning-map'));
+  const drawMap = () => {
+    const myChart = Echarts.init(document.getElementById('liaoning-map') as HTMLElement);
     let name = 'Liaoning';
-    Echarts.registerMap(name, liaoningJson);
+    Echarts.registerMap(name, liaoningJson as any);
     let option = {
       backgroundColor: '#fff',
       title: {
@@ -151,64 +121,49 @@ export default class Dashboard extends Component {
           name: '人数',
           type: 'map',
           geoIndex: 0,
-          data: this.state.cities,
+          data: cities,
         },
       ],
     };
     myChart.setOption(option, true);
-  }
+  };
 
-  render() {
-    return (
-      <>
-        <Row gutter={[16, 24]}>
-          <Col span={6}>
-            <Card bordered={false}>
-              <Statistic
-                title="匹配率"
-                value={this.state.value}
-                precision={2}
-                valueStyle={this.state.value > 70 ? { color: '#3f8600' } : { color: '#cf1322' }}
-                suffix="%"
-              />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card bordered={false}>
-              <Statistic
-                title="累计用户数"
-                value={this.state.total}
-                valueStyle={{ color: '#3f8600' }}
-              />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card bordered={false}>
-              <Statistic
-                title="新用户数"
-                value={this.state.newvisit}
-                valueStyle={{ color: '#3f8600' }}
-              />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card bordered={false}>
-              <Statistic
-                title="昨日浏览量"
-                value={this.state.pv}
-                valueStyle={{ color: '#3f8600' }}
-              />
-            </Card>
-          </Col>
-          <Col span={12}>
-            <Card bordered={false}>
-              <div id="liaoning-map" style={{ height: '350px', width: '100%' }}></div>
-            </Card>
-          </Col>
-        </Row>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Row gutter={[16, 24]}>
+        <Col span={6}>
+          <Card bordered={false}>
+            <Statistic
+              title="匹配率"
+              value={value}
+              precision={2}
+              valueStyle={value > 70 ? { color: '#3f8600' } : { color: '#cf1322' }}
+              suffix="%"
+            />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card bordered={false}>
+            <Statistic title="累计用户数" value={total} valueStyle={{ color: '#3f8600' }} />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card bordered={false}>
+            <Statistic title="新用户数" value={newVisit} valueStyle={{ color: '#3f8600' }} />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card bordered={false}>
+            <Statistic title="昨日浏览量" value={pv} valueStyle={{ color: '#3f8600' }} />
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card bordered={false}>
+            <div id="liaoning-map" style={{ height: '350px', width: '100%' }}></div>
+          </Card>
+        </Col>
+      </Row>
+    </>
+  );
+};
 
- 

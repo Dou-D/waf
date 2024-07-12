@@ -1,13 +1,16 @@
-import { Statistic } from '@/components/SimpleStatic/typings';
-
-export interface ResponseType {
-  data: ResponseData;
+import type { Statistic } from '@/components/SimpleStatic/StatisticCard/typings';
+export interface SiteResponse {
+  data: Data;
   message: string;
   status: number;
 }
 
-export interface ResponseData {
-    accessData?: Statistic[]
-    successRate?: Statistic[]
-    errorRate?: Statistic[]
+export interface Data {
+  res: Res[]
+}
+
+export interface Res {
+  status: "success" | "processing" | "error" | "warning" | "default";
+  title: string;
+  value: number | '-';
 }

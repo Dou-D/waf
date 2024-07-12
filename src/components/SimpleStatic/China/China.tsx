@@ -2,9 +2,9 @@ import { Card, Col, Row, Statistic } from 'antd';
 import { Component } from 'react';
 import * as Echarts from 'echarts';
 import chinaJson from '@/assets/china.json';
-import LiaoNing from '@/components/SimpleStatic/LiaoNing/LiaoNing';
+import { LiaoNing } from '@/components/SimpleStatic/LiaoNing';
 
-export default class ConsoleHome extends Component {
+export class China extends Component {
   state = {
     total: 1000,
     match: 500,
@@ -76,7 +76,7 @@ export default class ConsoleHome extends Component {
   drawMap() {
     const myChart = Echarts.init(document.getElementById('china-map'));
     let name = 'China';
-    Echarts.registerMap(name, chinaJson);
+    Echarts.registerMap(name, chinaJson as any);
     let option = {
       backgroundColor: '#fff',
       title: {

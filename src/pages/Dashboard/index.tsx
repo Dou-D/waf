@@ -1,18 +1,19 @@
 import SimpleStatistic from '@/components/SimpleStatic/StatisticCard/SimpleStatus';
-import { Statistic } from '@/components/SimpleStatic/typings';
+import { Statistic } from '@/components/SimpleStatic/StatisticCard/typings';
 import { Card, Col, Row, Radio } from 'antd';
-import Event from '@/components/SimpleStatic/PieChart/Event';
-import React, { useState } from 'react';
-import FlowObserve from '@/components/SimpleStatic/FlowObserve/FlowObserve';
-import { Locale } from '@/components/SimpleStatic';
 import type { RadioChangeEvent } from 'antd';
-import China from '@/components/SimpleStatic/China/China';
-import LiaoNing from '@/components/SimpleStatic/LiaoNing/LiaoNing';
+import React, { useEffect, useState } from 'react';
+import { FlowObserve } from '@/components/SimpleStatic/FlowObserve';
+import { ListInfo } from '@/components/SimpleStatic/ListInfo';
+import { Radar } from '@/components/SimpleStatic/RadarChart';
+import { China } from '@/components/SimpleStatic/China';
+import { LiaoNing } from '@/components/SimpleStatic/LiaoNing';
+import { Locale } from '@/components/SimpleStatic/Locale';
 import request from 'umi-request';
 import { config } from '@/utils';
-import ListInfo from '@/components/SimpleStatic/StatisticCard/ListInfo';
+import type { Res, SiteResponse } from './typings';
 
-const data1: Statistic[] = [
+const data1: Res[] = [
   {
     title: '访问次数',
     value: 5,
@@ -34,7 +35,8 @@ const data1: Statistic[] = [
     status: 'success',
   },
 ];
-const successRate: Statistic[] = [
+
+const testData1: Res[] = [
   {
     title: '200',
     value: 5,
@@ -46,7 +48,7 @@ const successRate: Statistic[] = [
     status: 'warning',
   },
 ];
-const errorRate: Statistic[] = [
+const testData2: Res[] = [
   {
     title: '403',
     value: 5,
@@ -58,13 +60,48 @@ const errorRate: Statistic[] = [
     status: 'error',
   },
 ];
+/* const res1: Statistic[] = [
+   {
+     title: '200',
+     value: 5,
+     status: 'success',
+   },
+   {
+     title: '404',
+     value: 3,
+     status: 'warning',
+   },
+ ];
+ const res2: Statistic[] = [
+//   {
+//     title: '403',
+//     value: 5,
+//     status: 'processing',
+//   },
+//   {
+//     title: '501',
+//     value: 3,
+//     status: 'error',
+//   },
+ ]; 
+ */
 const Dashboard: React.FC = () => {
   const graphOption = ['中国', '辽宁'];
   const [graph, setGraph] = useState('中国');
+  const [site, setSite] = useState<Res[]>(testData1); // 请求200 404 403 501的数据
+  const [res1, setRes1] = useState<Res[]>(testData1);
   const onGraphChange = ({ target: { value } }: RadioChangeEvent) => {
     setGraph(value);
   };
-  // request()
+  useEffect(() => {
+    request('/api/status_200_404', {
+      ...config,
+      method: 'GET',
+    }).then((res: SiteResponse) => {
+      res.data.res.forEach((item: Res) => {
+      });
+    });
+  }, []);
 
   return (
     <>
@@ -76,7 +113,7 @@ const Dashboard: React.FC = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <SimpleStatistic data={errorRate} />
+            <SimpleStatistic data={testData2} />
           </Card>
         </Col>
       </Row>
@@ -91,10 +128,10 @@ const Dashboard: React.FC = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <SimpleStatistic data={successRate} />
+            <SimpleStatistic data={testData1} />
           </Card>
           <Card>
-            <Event />
+            <Radar />
           </Card>
         </Col>
       </Row>
