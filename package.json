@@ -32,11 +32,11 @@
     "@ant-design/icons": "^5.3.7",
     "@ant-design/pro-components": "^2.7.10",
     "@types/lodash.clonedeep": "^4.5.9",
-    "echarts": "^5.5.1",
     "echarts-for-react": "^3.0.2",
     "table-render": "^2.1.4"
   },
   "devDependencies": {
+    "@ant-design/plots": "^2.2.5",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@types/react": "^18.0.33",
@@ -47,6 +47,7 @@
     "antd": "^5.19.1",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
+    "echarts": "^5.5.1",
     "lint-staged": "^15.2.7",
     "rc-resize-observer": "^1.4.0",
     "tailwindcss": "^3",

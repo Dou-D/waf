@@ -1,14 +1,16 @@
-// import Graph from '@/components/SimpleStatic/Graph';
-import SimpleStatistic from '@/components/SimpleStatic/SimpleStatus';
+import SimpleStatistic from '@/components/SimpleStatic/StatisticCard/SimpleStatus';
 import { Statistic } from '@/components/SimpleStatic/typings';
 import { Card, Col, Row, Radio } from 'antd';
-import Event from '@/components/SimpleStatic/Event';
+import Event from '@/components/SimpleStatic/PieChart/Event';
 import React, { useState } from 'react';
-import FlowObserve from '@/components/SimpleStatic/FlowObserve';
+import FlowObserve from '@/components/SimpleStatic/FlowObserve/FlowObserve';
 import { Locale } from '@/components/SimpleStatic';
 import type { RadioChangeEvent } from 'antd';
-import China from '@/components/SimpleStatic/China';
-import LiaoNing from '@/components/SimpleStatic/LiaoNing';
+import China from '@/components/SimpleStatic/China/China';
+import LiaoNing from '@/components/SimpleStatic/LiaoNing/LiaoNing';
+import request from 'umi-request';
+import { config } from '@/utils';
+import ListInfo from '@/components/SimpleStatic/StatisticCard/ListInfo';
 
 const data1: Statistic[] = [
   {
@@ -32,25 +34,37 @@ const data1: Statistic[] = [
     status: 'success',
   },
 ];
-const data2: Statistic[] = [
+const successRate: Statistic[] = [
   {
-    title: '4xx错误率',
+    title: '200',
     value: 5,
-    status: 'default',
+    status: 'success',
   },
   {
-    title: '5xx错误率',
+    title: '404',
     value: 3,
-    status: 'processing',
+    status: 'warning',
   },
 ];
-
+const errorRate: Statistic[] = [
+  {
+    title: '403',
+    value: 5,
+    status: 'processing',
+  },
+  {
+    title: '501',
+    value: 3,
+    status: 'error',
+  },
+];
 const Dashboard: React.FC = () => {
   const graphOption = ['中国', '辽宁'];
   const [graph, setGraph] = useState('中国');
   const onGraphChange = ({ target: { value } }: RadioChangeEvent) => {
     setGraph(value);
   };
+  // request()
 
   return (
     <>
@@ -62,7 +76,7 @@ const Dashboard: React.FC = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <SimpleStatistic data={data2} />
+            <SimpleStatistic data={errorRate} />
           </Card>
         </Col>
       </Row>
@@ -77,7 +91,10 @@ const Dashboard: React.FC = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <SimpleStatistic data={data2} />
+            <SimpleStatistic data={successRate} />
+          </Card>
+          <Card>
+            <Event />
           </Card>
         </Col>
       </Row>
@@ -88,9 +105,7 @@ const Dashboard: React.FC = () => {
         </Col>
         <Col span={8}>
           <Locale />
-        </Col>
-        <Col span={8}>
-          <Event />
+          <ListInfo />
         </Col>
       </Row>
     </>

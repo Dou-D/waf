@@ -35,3 +35,26 @@ editable={{
 action?.startEditable?.(record.id); 
 ```
 
+## useEffect不要写async
+要么就再声明一个async函数，在useEffect中调用 而不是由useEffect直接调用async函数
+正确写法
+```ts
+useEffect(() => {
+    request('/api/homeInfo', {
+      ...config,
+      method: 'GET',
+    })
+    .then(res => {
+      
+    })
+  }, [])
+```  
+错误写法
+```ts
+useEffect(async () => {
+    const res = await request('/api/homeInfo', {
+      ...config,
+      method: 'GET',
+    })
+  }, [])
+```

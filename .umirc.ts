@@ -24,18 +24,22 @@ export default defineConfig({
     },
     { path: '/*', component: '@/pages/404', layout: false },
   ],
-  mfsu: true,
+  mfsu: {
+    strategy: 'eager',
+    esbuild: true,
+  },
   npmClient: 'pnpm',
   tailwindcss: {},
   plugins: ['@umijs/plugins/dist/tailwindcss'],
   codeSplitting: {
     jsStrategy: 'granularChunks',
   },
+
   proxy: {
     '/api': {
-      'target': '10.4.0.77:8081',
-      'changeOrigin': true,
-      'pathRewrite': { '^/api': '' },
+      target: '10.4.0.77:8081',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
     },
-  }
+  },
 });

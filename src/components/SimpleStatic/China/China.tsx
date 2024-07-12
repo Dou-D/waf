@@ -2,7 +2,7 @@ import { Card, Col, Row, Statistic } from 'antd';
 import { Component } from 'react';
 import * as Echarts from 'echarts';
 import chinaJson from '@/assets/china.json';
-import LiaoNing from '@/components/SimpleStatic/LiaoNing';
+import LiaoNing from '@/components/SimpleStatic/LiaoNing/LiaoNing';
 
 export default class ConsoleHome extends Component {
   state = {
@@ -10,7 +10,7 @@ export default class ConsoleHome extends Component {
     match: 500,
     unmatch: 200,
     province: [
-      { name: '北京', value: 450 },
+      { name: '北京', value: 550 },
       { name: '天津', value: 420 },
       { name: '上海', value: 500 },
       { name: '重庆', value: 380 },
@@ -34,14 +34,14 @@ export default class ConsoleHome extends Component {
       { name: '贵州省', value: 340 },
       { name: '云南省', value: 330 },
       { name: '陕西省', value: 310 },
-      { name: '甘肃省', value: 250 },
-      { name: '青海省', value: 230 },
-      { name: '台湾', value: 500 },
-      { name: '内蒙古', value: 220 },
-      { name: '广西', value: 380 },
-      { name: '西藏', value: 200 },
+      { name: '甘肃省', value: 20 },
+      { name: '青海省', value: 15 },
+      { name: '台湾', value: 300 },
+      { name: '内蒙古', value: 20 },
+      { name: '广西', value: 30 },
+      { name: '西藏', value: 5 },
       { name: '宁夏', value: 210 },
-      { name: '新疆', value: 200 },
+      { name: '新疆', value: 0 },
       { name: '香港', value: 480 },
       { name: '澳门', value: 470 },
     ],
