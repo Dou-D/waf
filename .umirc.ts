@@ -37,9 +37,8 @@ export default defineConfig({
 
   proxy: {
     '/api': {
-      target: '10.4.0.77:8081',
+      target: '192.168.78.23:8081',
       changeOrigin: true,
-      pathRewrite: { '^/api': '' },
     },
   },
 });

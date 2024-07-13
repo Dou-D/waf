@@ -1,4 +1,4 @@
-export type ToolBarType = "正常流量" | "可疑流量" | "攻击流量"
+export type ToolBarType = "正常" | "可疑" | "攻击"
 
 type GithubIssueItem = {
     id: string;

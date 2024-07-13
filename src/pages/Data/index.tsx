@@ -5,6 +5,7 @@ import { Button, Drawer, Select, Space, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import request from 'umi-request';
 import { GithubIssueItem, LabelColor, ToolBarType } from './typings';
+import dayjs from 'dayjs';
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -26,7 +27,7 @@ const selectLabelColor = (label: string): LabelColor => {
 
 export default () => {
   const actionRef = useRef<ActionType>();
-  const [activeKey, setActiveKey] = useState<ToolBarType>('正常流量');
+  const [activeKey, setActiveKey] = useState<ToolBarType>('正常');
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [detailData, setDetailData] = useState<GithubIssueItem | null>(null);
 
@@ -37,7 +38,7 @@ export default () => {
 
   const columns: ProColumns<GithubIssueItem>[] = [
     {
-      dataIndex: 'index',
+      dataIndex: 'id',
       valueType: 'indexBorder',
       width: 48,
     },
@@ -52,6 +53,7 @@ export default () => {
       hideInSearch: true,
       copyable: true,
       width: 200,
+      editable: false,
       render: (_, record) => {
         return (
           <>
@@ -67,6 +69,7 @@ export default () => {
       hideInSearch: true,
       copyable: true,
       width: 200,
+      editable: false,
       render: (_, record) => {
         return (
           <>
@@ -99,9 +102,9 @@ export default () => {
         return (
           <Select
             options={[
-              { label: '正常流量', value: '正常流量' },
-              { label: '可疑流量', value: '可疑流量' },
-              { label: '攻击流量', value: '攻击流量' },
+              { label: '正常流量', value: '正常' },
+              { label: '可疑流量', value: '可疑' },
+              { label: '攻击流量', value: '攻击' },
             ]}
             defaultValue={form.getFieldValue('labels')}
           ></Select>
@@ -133,6 +136,7 @@ export default () => {
       title: '协议',
       dataIndex: 'protocol',
       width: 160,
+      editable: false,
     },
     {
       title: '创建时间',
@@ -140,6 +144,7 @@ export default () => {
       dataIndex: 'timestamp',
       valueType: 'dateTime',
       hideInSearch: true,
+      editable: false,
     },
     {
       title: '操作',
@@ -173,9 +178,10 @@ export default () => {
   ];
 
   useEffect(() => {
-    actionRef.current?.reload();
+    if (actionRef.current) {
+      actionRef.current.reload();
+    }
   }, [activeKey]);
-
 
   return (
     <>
@@ -248,21 +254,21 @@ export default () => {
             activeKey: activeKey,
             items: [
               {
-                key: '正常流量',
+                key: '正常',
                 label: <span>正常流量</span>,
               },
               {
-                key: '攻击流量',
+                key: '攻击',
                 label: <span>攻击流量</span>,
               },
               {
-                key: '可疑流量',
+                key: '可疑',
                 label: <span>可疑流量</span>,
               },
             ],
             onChange: (key) => {
               setActiveKey(key as ToolBarType);
-              console.log(key)
+              console.log(key);
             },
           },
         }}
@@ -283,7 +289,7 @@ export default () => {
               目的IP: {detailData.dstIp}:{detailData.dstPort}
             </p>
             <p>流量类型: {detailData.label}</p>
-            <p>时间: {detailData.timestamp}</p>
+            <p>时间: {dayjs.unix(Number(detailData.timestamp)).format('YYYY-MM-DD HH:mm:ss')}</p>
             <p>攻击类型: {detailData.attckType}</p>
             <p>协议: {detailData.protocol}</p>
             <p>载荷: {detailData.payload}</p>

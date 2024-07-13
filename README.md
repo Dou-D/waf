@@ -31,8 +31,23 @@ editable={{
 ```  
 点击表格后的按钮需要调用:
 ```ts
-// 触发 ProTable 切换到编辑模式
-action?.startEditable?.(record.id); 
+// 刷新
+ref.current.reload();
+
+// 刷新并清空,页码也会重置，不包括表单
+ref.current.reloadAndRest();
+
+// 重置到默认值，包括表单
+ref.current.reset();
+
+// 清空选中项
+ref.current.clearSelected();
+
+// 开始编辑
+ref.current.startEditable(rowKey);
+
+// 结束编辑
+ref.current.cancelEditable(rowKey);
 ```
 
 ## useEffect不要写async
