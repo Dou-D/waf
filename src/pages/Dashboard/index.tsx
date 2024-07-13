@@ -90,15 +90,25 @@ const Dashboard: React.FC = () => {
   const [graph, setGraph] = useState('中国');
   const [site, setSite] = useState<Res[]>(testData1); // 请求200 404 403 501的数据
   const [res1, setRes1] = useState<Res[]>(testData1);
+  const [res2, setRes2] = useState<Res[]>(testData2);
   const onGraphChange = ({ target: { value } }: RadioChangeEvent) => {
     setGraph(value);
   };
   useEffect(() => {
-    request('/api/status_200_404', {
+    request('/api/siteResponse', {
       ...config,
       method: 'GET',
     }).then((res: SiteResponse) => {
       res.data.res.forEach((item: Res) => {
+        if (item.title === '200') {
+          setRes1((preData) => [...preData, item]);
+        } else if (item.title === '404') {
+          setRes1((preData) => [...preData, item]);
+        } else if (item.title === '403') {
+          setRes2((preData) => [...preData, item]);
+        } else if (item.title === '501') {
+          setRes2((preData) => [...preData, item]);
+        }
       });
     });
   }, []);

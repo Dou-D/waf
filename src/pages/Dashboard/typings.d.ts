@@ -1,9 +1,10 @@
 import type { Statistic } from '@/components/SimpleStatic/StatisticCard/typings';
 export interface SiteResponse {
-  data: Data;
+  data: SiteData;
   message: string;
   status: number;
 }
+
 
 export interface Data {
   res: Res[]

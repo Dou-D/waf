@@ -187,7 +187,7 @@ export default () => {
           await waitTime(2000);
           return request<{
             data: GithubIssueItem[];
-          }>('https://proapi.azurewebsites.net/github/issues', {
+          }>('/api/flowList', {
             params: {
               ...params,
               flowType: activeKey,
@@ -262,6 +262,7 @@ export default () => {
             ],
             onChange: (key) => {
               setActiveKey(key as ToolBarType);
+              console.log(key)
             },
           },
         }}

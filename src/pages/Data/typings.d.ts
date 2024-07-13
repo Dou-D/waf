@@ -16,3 +16,9 @@ type GithubIssueItem = {
 }
 
 type LabelColor = "error" | "success" | "warning"
+
+export interface Data {
+    success: boolean;
+    data: GithubIssueItem[]
+    total: number;
+}

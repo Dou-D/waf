@@ -34,12 +34,14 @@ const testData = {
 };
 export const Locale: React.FC = () => {
   const [option, setOption] = useState<LocaleType>(testData);
-  // useEffect(() => {
-  //   request('/api/intercept', {
-  //     ...config,
-  //     method: 'GET',
-  //   })
-  // })
+  useEffect(() => {
+    request('/api/intercept', {
+      ...config,
+      method: 'GET',
+    }).then((res: LocaleResponse) => {
+      setOption(res.data.locale)
+    })
+  }, [])
 
-  return <ReactECharts option={testData} style={{ height: 400 }} opts={{ locale: 'FR' }} />;
+  return <ReactECharts option={option} style={{ height: 400 }} opts={{ locale: 'FR' }} />;
 };

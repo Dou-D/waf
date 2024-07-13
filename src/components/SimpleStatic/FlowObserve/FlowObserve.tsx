@@ -34,14 +34,14 @@ const testData: FlowCardData[] = [
 export const FlowObserve: React.FC = () => {
   const [responsive, setResponsive] = useState(false);
   const [flowCardData, setFlowCardData] = useState<FlowCardData[]>(testData);
-  // useEffect(() => {
-  //   request('/api/flowCard', {
-  //     ...config,
-  //     method: 'GET',
-  //   }).then((res:FlowCardResponse)  => {
-  //     setFlowCardData(res.data.flowCardData)
-  //   })
-  // });
+  useEffect(() => {
+    request('/api/flowCard', {
+      ...config,
+      method: 'GET',
+    }).then((res:FlowCardResponse)  => {
+      setFlowCardData(res.data.flowCardData)
+    })
+  });
   return (
     <RcResizeObserver
       key="resize-observer"

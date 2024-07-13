@@ -1,6 +1,9 @@
 import { ProList } from '@ant-design/pro-components';
 import { Button, Modal, Progress } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import request from 'umi-request';
+import { config } from '@/utils';
+import { ListResponse } from './typings';
 
 const data = {
   defaultData: [
@@ -61,9 +64,18 @@ const defaultData = data.defaultData.slice(0, 5);
 type DataItem = (typeof defaultData)[number];
 
 export const ListInfo: React.FC = () => {
-  const [dataSource, setDataSource] = useState<DataItem[]>(defaultData);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [pageList, setPageList] = useState<DataItem[]>(data.defaultData);
+  const [total, setTotal] = useState<number>(data.total);
+  useEffect(() => {
+    request('/api/siteList', {
+      method: 'GET',
+      ...config,
+    }).then((res: ListResponse) => {
+      setPageList(res.data.pageList.defaultData)
+      setTotal(res.data.pageList.total);
+    });
+  });
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -78,8 +90,8 @@ export const ListInfo: React.FC = () => {
   return (
     <ProList<DataItem>
       rowKey="id"
-      headerTitle="基础列表"
-      dataSource={dataSource}
+      headerTitle="外部来源页面"
+      dataSource={pageList.slice(0,5)}
       showActions="hover"
       toolBarRender={() => {
         return [
@@ -88,14 +100,14 @@ export const ListInfo: React.FC = () => {
           </Button>,
         ];
       }}
-      onDataSourceChange={setDataSource}
+      onDataSourceChange={setPageList}
       metas={{
         title: {
           dataIndex: 'name',
         },
         content: {
           render: (_, record) => (
-            <Progress percent={Math.floor((record.process / data.total) * 100)} />
+            <Progress percent={Math.floor((record.process / total) * 100)} />
           ),
         },
         subTitle: {
