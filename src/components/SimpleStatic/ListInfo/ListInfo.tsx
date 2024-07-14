@@ -3,79 +3,24 @@ import { Button, Modal, Progress } from 'antd';
 import { useEffect, useState } from 'react';
 import request from 'umi-request';
 import { config } from '@/utils';
-import { ListResponse } from './typings';
-
-const data = {
-  defaultData: [
-    {
-      id: '1',
-      name: 'www.bilibi.com',
-      process: 30,
-    },
-    {
-      id: '2',
-      name: '47.104.112.110:7888',
-      process: 10,
-    },
-    {
-      id: '3',
-      name: 'www.zhihu.com',
-      process: 20,
-    },
-    {
-      id: '4',
-      name: 'www.baidu.com',
-      process: 50,
-    },
-    {
-      id: '5',
-      name: 'www.taobao.com',
-      process: 40,
-    },
-    {
-      id: '6',
-      name: 'www.tmall.com',
-      process: 60,
-    },
-    {
-      id: '7',
-      name: 'www.jd.com',
-      process: 70,
-    },
-    {
-      id: '8',
-      name: 'www.douyin.com',
-      process: 80,
-    },
-    {
-      id: '9',
-      name: 'www.weibo.com',
-      process: 90,
-    },
-    {
-      id: '10',
-      name: 'www.toutiao.com',
-      process: 100,
-    },
-  ],
-  total: 234,
-};
-const defaultData = data.defaultData.slice(0, 5);
-type DataItem = (typeof defaultData)[number];
+import { ListResponse, Items } from './typings';
 
 export const ListInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [pageList, setPageList] = useState<DataItem[]>(data.defaultData);
-  const [total, setTotal] = useState<number>(data.total);
+  const [pageList, setPageList] = useState<Items[]>();
+  const [total, setTotal] = useState<number>(100);
   useEffect(() => {
     request('/api/siteList', {
       method: 'GET',
       ...config,
     }).then((res: ListResponse) => {
-      setPageList(res.data.pageList.defaultData)
-      setTotal(res.data.pageList.total);
+      setPageList(res.data)
+      const computed = res.data.reduce((pre, cur) => {
+        return pre + cur.process;
+      }, 0)
+      setTotal(computed)
     });
-  });
+  }, []);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -88,10 +33,10 @@ export const ListInfo: React.FC = () => {
     setIsModalOpen(false);
   };
   return (
-    <ProList<DataItem>
+    <ProList<Items>
       rowKey="id"
       headerTitle="外部来源页面"
-      dataSource={pageList.slice(0,5)}
+      dataSource={pageList?.slice(0, 5)}
       showActions="hover"
       toolBarRender={() => {
         return [
@@ -115,12 +60,16 @@ export const ListInfo: React.FC = () => {
             return (
               <>
                 <Modal title="受访域名" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                  {data.defaultData.map((item) => (
-                    <div key={item.id}>
-                      {item.name}
-                      <Progress percent={item.process} />
-                    </div>
-                  ))}
+                  {
+                    pageList?.map(item => {
+                      return (
+                        <div key={item.id}>
+                          {item.name}
+                          <Progress percent={item.process} />
+                        </div>
+                      )
+                    })
+                  }
                 </Modal>
               </>
             );

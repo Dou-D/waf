@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
-import { LocaleResponse } from './typing';
 import request from 'umi-request';
 import { config } from '@/utils';
-
+import { LocaleResponse } from './typing';
 
 export const Locale: React.FC = () => {
-  const [resData, setResData] = useState([3000, 202, 36, 20])
-  const option = {
+  const [result, setResult] = useState<number[]>();
+  useEffect(() => {
+    request('/api/intercept', {
+      ...config,
+      method: 'GET',
+    }).then((res: LocaleResponse) => {
+      setResult(res.data)
+    });
+  }, []);
+  const defaultOption = {
     title: {
       text: '拦截数据',
     },
@@ -30,19 +37,10 @@ export const Locale: React.FC = () => {
       {
         name: '销量',
         type: 'line',
-        data: resData,
+        data: result, 
         label: {},
       },
     ],
   };
-  useEffect(() => {
-    request('/api/intercept', {
-      ...config,
-      method: 'GET',
-    }).then((res: LocaleResponse) => {
-      setResData(res.data.sort((a, b) => b - a))
-    })
-  }, [])
-
-  return <ReactECharts option={option} style={{ height: 400 }} opts={{ locale: 'FR' }} />;
+  return <ReactECharts option={defaultOption} style={{ height: 400 }} opts={{ locale: 'FR' }} />
 };

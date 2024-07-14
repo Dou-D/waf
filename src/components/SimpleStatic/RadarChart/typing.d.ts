@@ -5,10 +5,10 @@ export interface RadarResponse {
 }
 
 export interface RadarData {
-    series: Series[];
+    series: Items[];
 }
 
-export interface Series {
+export interface Items {
     name: string;
     value: number[];
 }

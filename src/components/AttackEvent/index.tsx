@@ -157,7 +157,6 @@ export default () => {
       actionRef={actionRef}
       cardBordered
       request={async (params, sort, filter) => {
-        console.log(sort, filter);
         await waitTime(2000);
         return request<{
           data: GithubIssueItem[];

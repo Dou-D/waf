@@ -20,7 +20,7 @@ const FlowLine: React.FC = () => {
     }).then((res: Response) => {
       setFlowData(res.data.flowLine);
     });
-  });
+  }, []);
   const configCharts = {
     data: flowData,
     xField: 'month',

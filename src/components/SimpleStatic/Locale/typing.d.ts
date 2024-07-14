@@ -1,5 +1,5 @@
 export interface LocaleResponse {
-  data: number[];
+  data:    number[];
   message: string;
-  status: number;
+  status:  number;
 }

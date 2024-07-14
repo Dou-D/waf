@@ -11,7 +11,7 @@ import { LiaoNing } from '@/components/SimpleStatic/LiaoNing';
 import { Locale } from '@/components/SimpleStatic/Locale';
 import request from 'umi-request';
 import { config } from '@/utils';
-import type { Res, SiteResponse } from './typings';
+import type { Res, SiteInfoItem, SiteInfoResponse, SiteResponse } from './typings';
 
 const data1: Res[] = [
   {
@@ -60,57 +60,29 @@ const testData2: Res[] = [
     status: 'error',
   },
 ];
-/* const res1: Statistic[] = [
-   {
-     title: '200',
-     value: 5,
-     status: 'success',
-   },
-   {
-     title: '404',
-     value: 3,
-     status: 'warning',
-   },
- ];
- const res2: Statistic[] = [
-//   {
-//     title: '403',
-//     value: 5,
-//     status: 'processing',
-//   },
-//   {
-//     title: '501',
-//     value: 3,
-//     status: 'error',
-//   },
- ]; 
- */
 const Dashboard: React.FC = () => {
   const graphOption = ['中国', '辽宁'];
   const [graph, setGraph] = useState('中国');
-  const [site, setSite] = useState<Res[]>(testData1); // 请求200 404 403 501的数据
-  const [res1, setRes1] = useState<Res[]>(testData1);
-  const [res2, setRes2] = useState<Res[]>(testData2);
+  const [result, setResult] = useState<Res[]>();
+  const [siteInfo, setSiteInfo] = useState<SiteInfoItem[]>()
   const onGraphChange = ({ target: { value } }: RadioChangeEvent) => {
     setGraph(value);
   };
   useEffect(() => {
-    request('/api/siteResponse', {
+    Promise.all([request('/api/siteResponse', {
       ...config,
       method: 'GET',
     }).then((res: SiteResponse) => {
-      res.data.res.forEach((item: Res) => {
-        if (item.title === '200') {
-          setRes1((preData) => [...preData, item]);
-        } else if (item.title === '404') {
-          setRes1((preData) => [...preData, item]);
-        } else if (item.title === '403') {
-          setRes2((preData) => [...preData, item]);
-        } else if (item.title === '501') {
-          setRes2((preData) => [...preData, item]);
-        }
-      });
-    });
+      setResult(res.data.res)
+    }),
+    request('/api/siteInfo', {
+      ...config,
+      method: 'GET',
+    }).then((res: SiteInfoResponse) => {
+      setSiteInfo(res.data.accessData)
+    })
+    ])
+
   }, []);
 
   return (
@@ -118,12 +90,12 @@ const Dashboard: React.FC = () => {
       <Row gutter={16}>
         <Col span={16}>
           <Card>
-            <SimpleStatistic data={data1} />
+            <SimpleStatistic data={siteInfo ? siteInfo : []} />
           </Card>
         </Col>
         <Col span={8}>
           <Card>
-            <SimpleStatistic data={testData2} />
+            <SimpleStatistic data={result ? [result[0], result[1]] : []} />
           </Card>
         </Col>
       </Row>
@@ -138,7 +110,7 @@ const Dashboard: React.FC = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <SimpleStatistic data={testData1} />
+            <SimpleStatistic data={result ? [result[2], result[3]] : []} />
           </Card>
           <Card>
             <Radar />

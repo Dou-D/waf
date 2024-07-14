@@ -5,13 +5,28 @@ export interface SiteResponse {
   status: number;
 }
 
-
-export interface Data {
-  res: Res[]
+export interface SiteData {
+  res: Res[];
 }
 
 export interface Res {
-  status: "success" | "processing" | "error" | "warning" | "default";
+  status: 'success' | 'processing' | 'error' | 'warning' | 'default';
   title: string;
   value: number | '-';
+}
+
+export interface SiteInfoResponse {
+  data: SiteInfoData;
+  message: string;
+  status: number;
+}
+
+export interface SiteInfoData {
+  accessData: SiteInfoItem[];
+}
+
+export interface SiteInfoItem {
+  status: string;
+  title: string;
+  value: number;
 }

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import request from 'umi-request';
 import { GithubIssueItem, LabelColor, ToolBarType } from './typings';
 import dayjs from 'dayjs';
+import { config } from '@/utils';
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -16,7 +17,7 @@ export const waitTimePromise = async (time: number = 100) => {
 };
 
 export const waitTime = async (time: number = 100) => {
-  await waitTimePromise(time);
+  await waitTimePromise(time);  
 };
 
 const selectLabelColor = (label: string): LabelColor => {
@@ -166,7 +167,15 @@ export default () => {
           danger
           size="small"
           key="delete"
-          onClick={async () => await APIManualBan(record.srcIp)}
+          onClick={async () => request('/api/manualBan', {
+            ...config,
+            method: 'POST',
+            data: {
+              ip: record.srcIp
+            }
+          }).then(() => {
+            actionRef.current?.reload();
+          })}
         >
           禁用
         </Button>,
@@ -178,9 +187,7 @@ export default () => {
   ];
 
   useEffect(() => {
-    if (actionRef.current) {
-      actionRef.current.reload();
-    }
+    actionRef.current?.reload();
   }, [activeKey]);
 
   return (
@@ -189,13 +196,13 @@ export default () => {
         columns={columns}
         actionRef={actionRef}
         cardBordered
-        request={async (params) => {
+        request={async (param,) => {
           await waitTime(2000);
           return request<{
             data: GithubIssueItem[];
           }>('/api/flowList', {
             params: {
-              ...params,
+              ...param,
               flowType: activeKey,
             },
           });
@@ -209,6 +216,7 @@ export default () => {
            */
           onSave: async (key, record) => {
             await APIChangeFlow({ flowID: record.id, status: record.label });
+            actionRef.current?.reload();
             await waitTime(2000);
           },
         }}

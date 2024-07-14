@@ -6,7 +6,8 @@ interface SimpleStatisticProps {
   data: Statistic[];
 }
 
-const SimpleStatistic: React.FC<SimpleStatisticProps> = ({data}) => {
+const SimpleStatistic: React.FC<SimpleStatisticProps> = (prop) => {
+  const { data } = prop
   return (
     <StatisticCard.Group>
       {data.map((item) => (

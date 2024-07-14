@@ -1,20 +1,13 @@
 export interface ListResponse {
-  data: Data;
+  data: Items[];
   message: string;
   status: number;
+  [property: string]: any;
 }
 
-export interface Data {
-  pageList: PageList;
-}
-
-export interface PageList {
-  defaultData: DefaultDatum[];
-  total: number;
-}
-
-export interface DefaultDatum {
+export interface Items {
   id: string;
   name: string;
   process: number;
+  [property: string]: any;
 }

@@ -37,7 +37,7 @@ export default defineConfig({
 
   proxy: {
     '/api': {
-      target: '192.168.78.23:8081',
+      target: 'http://10.4.5.17:8081',
       changeOrigin: true,
     },
   },
