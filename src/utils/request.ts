@@ -32,9 +32,10 @@ export const config = {
       const { data, message } = response;
       if (data.status !== 200) {
         message.error(message);
+      } else if (data.status === 200) {
+        message.success(message);
       }
       return data;
     },
   ],
 };
-

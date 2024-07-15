@@ -157,7 +157,7 @@ export default () => {
       actionRef={actionRef}
       cardBordered
       request={async (params, sort, filter) => {
-        await waitTime(2000);
+        // await waitTime(2000);
         return request<{
           data: GithubIssueItem[];
         }>('https://proapi.azurewebsites.net/github/issues', {

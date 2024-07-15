@@ -24,8 +24,7 @@ editable={{
      * @param originRow 一般没啥用
      */
     onSave: async (key, record, originRow) => {
-        console.log();
-        await waitTime(2000);
+        // await waitTime(2000);
     }
 }}
 ```  
@@ -79,3 +78,6 @@ useEffect(async () => {
 ```ts
 const { Statistic } = StatisticCard;
 ```  
+
+## umi pages
+umi pages下的页面导出得用`export default`  

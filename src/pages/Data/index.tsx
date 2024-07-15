@@ -197,7 +197,7 @@ export default () => {
         actionRef={actionRef}
         cardBordered
         request={async (param,) => {
-          await waitTime(2000);
+          // await waitTime(2000);
           return request<{
             data: GithubIssueItem[];
           }>('/api/flowList', {
@@ -217,7 +217,7 @@ export default () => {
           onSave: async (key, record) => {
             await APIChangeFlow({ flowID: record.id, status: record.label });
             actionRef.current?.reload();
-            await waitTime(2000);
+            // await waitTime(2000);
           },
         }}
         columnsState={{

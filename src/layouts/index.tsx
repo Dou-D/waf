@@ -46,7 +46,7 @@ const sliderItemsData = [
   {
     key: '7',
     label: '设置',
-    path: '/settings',
+    path: '/setting',
   },
 ];
 

@@ -18,9 +18,19 @@ export default defineConfig({
       // wrappers: ['@/wrappers/auth'],
     },
     {
+      path: '/setting',
+      component: '@/pages/Setting',
+      // wrappers: ['@/wrappers/auth'],
+    },
+    {
       path: '/login',
       component: 'login',
       layout: false,
+    },
+    {
+      path: '/disposal',
+      component: '@/pages/Disposal',
+      // wrappers: ['@/wrappers/auth'],
     },
     { path: '/*', component: '@/pages/404', layout: false },
   ],
@@ -28,6 +38,7 @@ export default defineConfig({
     strategy: 'eager',
     esbuild: true,
   },
+
   npmClient: 'pnpm',
   tailwindcss: {},
   plugins: ['@umijs/plugins/dist/tailwindcss'],
