@@ -81,3 +81,25 @@ const { Statistic } = StatisticCard;
 
 ## umi pages
 umi pages下的页面导出得用`export default`  
+
+## antd form默认值 initialValues  
+initialValues是对象，在里面通过每个Item设置的name来给初始值
+```ts
+<Form
+    name="basic"
+    labelCol={{ span: 3 }}
+    wrapperCol={{ span: 16 }}
+    style={{ minWidth: 1000 }}
+    initialValues={{ remember: true, radio: "钉钉" }}
+    onFinish={onFinish}
+    autoComplete="off"
+>
+    <Form.Item<FormType> name="radio">
+        <Radio.Group onChange={onChange} value={value} >
+            <Radio value="钉钉">钉钉</Radio>
+            <Radio value="飞书">飞书</Radio>
+            <Radio value="企业微信">企业微信</Radio>
+        </Radio.Group>
+    </Form.Item>
+</Form>
+```  

@@ -25,26 +25,21 @@ const sliderItemsData = [
   },
   {
     key: '3',
-    label: '研判',
-    path: '/analysis',
-  },
-  {
-    key: '4',
     label: '处置',
     path: '/disposal',
   },
   {
-    key: '5',
+    key: '4',
     label: '联动',
     path: '/linkage',
   },
   {
-    key: '6',
+    key: '5',
     label: '日志',
     path: '/logs',
   },
   {
-    key: '7',
+    key: '6',
     label: '设置',
     path: '/setting',
   },
