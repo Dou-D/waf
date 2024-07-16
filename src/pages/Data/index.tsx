@@ -89,6 +89,7 @@ export default () => {
     {
       title: '响应时间',
       dataIndex: 'responseTime',
+      hideInSearch: true,
       render: (_, record) => {
         return (
           <>
@@ -139,9 +140,11 @@ export default () => {
       hideInTable: true,
       search: {
         transform: (value) => {
+          const startTime = new Date(`${value[0]}`).getTime()
+          const endTime = new Date(`${value[1]}`).getTime()
           return {
-            startTime: value[0],
-            endTime: value[1],
+            startTime,
+            endTime
           };
         },
       },

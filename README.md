@@ -103,3 +103,12 @@ initialValues是对象，在里面通过每个Item设置的name来给初始值
     </Form.Item>
 </Form>
 ```  
+`new Date`必须接受一个string|number|Date参数，传变量没有用，得用模板字符串包起来
+```ts
+search: {
+  transform: (value) => {
+    const startTime = new Date(`${value[0]}`).getTime()
+    const endTime = new Date(`${value[1]}`).getTime()
+  }
+}
+```  
