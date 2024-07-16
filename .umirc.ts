@@ -5,26 +5,27 @@ export default defineConfig({
     {
       path: '/',
       redirect: '/dashboard',
-      // wrappers: ['@/wrappers/auth'],
+      wrappers: ['@/wrappers/auth'],
     },
     {
       path: '/dashboard',
       component: '@/pages/Dashboard',
-      // wrappers: ['@/wrappers/auth'],
+      wrappers: ['@/wrappers/auth'],
     },
     {
       path: '/attack',
       component: '@/pages/Data',
-      // wrappers: ['@/wrappers/auth'],
+      wrappers: ['@/wrappers/auth'],
     },
     {
       path: '/setting',
       component: '@/pages/Setting',
-      // wrappers: ['@/wrappers/auth'],
+      wrappers: ['@/wrappers/auth'],
     },
     {
       path: "/logs",
       component: '@/pages/Log',
+      wrappers: ['@/wrappers/auth'],
     },
     {
       path: '/login',
@@ -34,7 +35,7 @@ export default defineConfig({
     {
       path: '/disposal',
       component: '@/pages/Disposal',
-      // wrappers: ['@/wrappers/auth'],
+      wrappers: ['@/wrappers/auth'],
     },
     { path: '/*', component: '@/pages/404', layout: false },
   ],

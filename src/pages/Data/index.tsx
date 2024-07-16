@@ -4,7 +4,7 @@ import { ProTable } from '@ant-design/pro-components';
 import { Button, Drawer, Select, Space, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import request from 'umi-request';
-import { GithubIssueItem, LabelColor, ToolBarType } from './typings';
+import { FlowListResponse, Data, FlowListItems, LabelColor, ToolBarType } from './typings';
 import dayjs from 'dayjs';
 import { config } from '@/utils';
 
@@ -30,16 +30,16 @@ export default () => {
   const actionRef = useRef<ActionType>();
   const [activeKey, setActiveKey] = useState<ToolBarType>('正常');
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [detailData, setDetailData] = useState<GithubIssueItem | null>(null);
+  const [detailData, setDetailData] = useState<FlowListItems | null>(null);
 
-  const showDrawer = (record: GithubIssueItem) => {
+  const showDrawer = (record: FlowListItems) => {
     setDetailData(record);
     setDrawerVisible(true);
   };
   const responsiveTime = () => {
     return Math.floor(Math.random() * 500)
   }
-  const columns: ProColumns<GithubIssueItem>[] = [
+  const columns: ProColumns<FlowListItems>[] = [
     {
       dataIndex: 'id',
       valueType: 'indexBorder',
@@ -52,7 +52,7 @@ export default () => {
     },
     {
       title: '来源IP',
-      dataIndex: 'srcIP',
+      dataIndex: "srcIP",
       hideInSearch: true,
       copyable: true,
       width: 200,
@@ -208,20 +208,22 @@ export default () => {
 
   return (
     <>
-      <ProTable<GithubIssueItem>
+      <ProTable<FlowListItems>
         columns={columns}
         actionRef={actionRef}
         cardBordered
         request={async (param,) => {
-          // await waitTime(2000);
-          return request<{
-            data: GithubIssueItem[];
-          }>('/api/flowList', {
+          const response = await request<FlowListResponse>('/api/flowList', {
             params: {
               ...param,
               flowType: activeKey,
             },
           });
+          return {
+            data: response.data.flows,
+            success: true,
+            total: response.data.total,
+          }
         }}
         editable={{
           type: 'multiple',
@@ -268,6 +270,7 @@ export default () => {
         }}
         pagination={{
           pageSize: 5,
+          showSizeChanger: true,
           onChange: (page) => console.log(page),
         }}
         dateFormatter="string"
@@ -314,7 +317,7 @@ export default () => {
             </p>
             <p>流量类型: {detailData.label}</p>
             <p>时间: {dayjs.unix(Number(detailData.timestamp)).format('YYYY-MM-DD HH:mm:ss')}</p>
-            <p>攻击类型: {detailData.attckType}</p>
+            <p>攻击类型: {detailData.attackType}</p>
             <p>协议: {detailData.protocol}</p>
             <p>载荷: {detailData.payload}</p>
           </div>

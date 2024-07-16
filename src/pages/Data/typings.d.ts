@@ -1,24 +1,29 @@
 export type ToolBarType = "正常" | "可疑" | "攻击"
-
-type GithubIssueItem = {
-    id: string;
-    srcMac: string;
-    dstMac: string;
-    srcIp: string;
-    dstIp: string;
-    srcPort: string;
-    dstPort: string;
-    protocol: string;
-    payload: string;
-    timestamp: string;
-    label: string;
-    attckType: string;
-}
-
 type LabelColor = "error" | "success" | "warning"
 
+export interface FlowListResponse {
+    data: Data;
+    message: string;
+    status: number;
+}
+
 export interface Data {
-    success: boolean;
-    data: GithubIssueItem[]
+    flows: FlowListItems[];
     total: number;
+}
+
+export interface FlowListItems {
+    attackType: string;
+    dstIp: string;
+    dstMac: string;
+    dstPort: string;
+    id: string;
+    label: string;
+    payload: string;
+    protocol: string;
+    responseTime: string;
+    srcIp: string;
+    srcMac: string;
+    srcPort: string;
+    timestamp: string;
 }

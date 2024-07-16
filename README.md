@@ -112,3 +112,31 @@ search: {
   }
 }
 ```  
+
+## antd ProTable request
+```ts
+interface response {
+  status: number;
+  data: Data;
+  message: string
+}
+request={async (param,) => {
+  const response = await request<response>('/api/flowList', {
+    params: {
+      ...param,
+      flowType: activeKey,
+    },
+  });
+  return {
+    data: response.data.flows,
+    success: true,
+    total: response.data.total,
+  }
+}}  
+```
+
+## ProTable 泛型
+表格每行的类型
+```ts
+<ProTable<FlowListItems> />
+```
