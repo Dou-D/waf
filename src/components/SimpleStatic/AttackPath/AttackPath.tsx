@@ -250,7 +250,7 @@ export const AttackPath: React.FC = () => {
   return (
     <ReactECharts
       option={option}
-      style={{ height: '700px', width: '100%' }}
+      style={{ height: '400px', width: '100%' }}
       // onEvents={{}}
       onEvents={onEvents}
     />

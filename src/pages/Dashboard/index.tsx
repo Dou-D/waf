@@ -106,7 +106,7 @@ const Dashboard: React.FC = () => {
         <Col span={16}>
           <Card>
             <Radio.Group options={graphOption} onChange={onGraphChange} value={graph} />
-            {graph === '中国' ? <China /> : graph === '攻击路径' ? <AttackPath /> : <LiaoNing />}
+            {graph === '中国' ? <China /> : graph === '攻击路径' ? <> <SimpleStatistic data={[{ title: "准确率", value: "95%", status: 'success' }]} /><AttackPath /></> : <LiaoNing />}
           </Card>
         </Col>
         <Col span={8}>
@@ -117,7 +117,7 @@ const Dashboard: React.FC = () => {
             <Radar />
           </Card>
         </Col>
-      </Row>
+      </Row >
 
       <Row gutter={16}>
         <Col span={16}>
