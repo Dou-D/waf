@@ -2,13 +2,14 @@ import SimpleStatistic from '@/components/SimpleStatic/StatisticCard/SimpleStatu
 import { Statistic } from '@/components/SimpleStatic/StatisticCard/typings';
 import { Card, Col, Row, Radio } from 'antd';
 import type { RadioChangeEvent } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { FlowObserve } from '@/components/SimpleStatic/FlowObserve';
 import { ListInfo } from '@/components/SimpleStatic/ListInfo';
 import { Radar } from '@/components/SimpleStatic/RadarChart';
 import { China } from '@/components/SimpleStatic/China';
 import { LiaoNing } from '@/components/SimpleStatic/LiaoNing';
 import { Locale } from '@/components/SimpleStatic/Locale';
+import { AttackPath } from '@/components/SimpleStatic/AttackPath'
 import request from 'umi-request';
 import { config } from '@/utils';
 import type { Res, SiteInfoItem, SiteInfoResponse, SiteResponse } from './typings';
@@ -61,7 +62,7 @@ const testData2: Res[] = [
   },
 ];
 const Dashboard: React.FC = () => {
-  const graphOption = ['中国', '辽宁'];
+  const graphOption = ['中国', '辽宁', '攻击路径'];
   const [graph, setGraph] = useState('中国');
   const [result, setResult] = useState<Res[]>();
   const [siteInfo, setSiteInfo] = useState<SiteInfoItem[]>()
@@ -105,7 +106,7 @@ const Dashboard: React.FC = () => {
         <Col span={16}>
           <Card>
             <Radio.Group options={graphOption} onChange={onGraphChange} value={graph} />
-            {graph === '中国' ? <China /> : <LiaoNing />}
+            {graph === '中国' ? <China /> : graph === '攻击路径' ? <AttackPath /> : <LiaoNing />}
           </Card>
         </Col>
         <Col span={8}>
@@ -131,4 +132,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default memo(Dashboard);

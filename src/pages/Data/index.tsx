@@ -17,7 +17,7 @@ export const waitTimePromise = async (time: number = 100) => {
 };
 
 export const waitTime = async (time: number = 100) => {
-  await waitTimePromise(time);  
+  await waitTimePromise(time);
 };
 
 const selectLabelColor = (label: string): LabelColor => {
@@ -36,7 +36,9 @@ export default () => {
     setDetailData(record);
     setDrawerVisible(true);
   };
-
+  const responsiveTime = () => {
+    return Math.floor(Math.random() * 500)
+  }
   const columns: ProColumns<GithubIssueItem>[] = [
     {
       dataIndex: 'id',
@@ -83,6 +85,17 @@ export default () => {
       title: '端口',
       dataIndex: 'port',
       hideInTable: true,
+    },
+    {
+      title: '响应时间',
+      dataIndex: 'responseTime',
+      render: (_, record) => {
+        return (
+          <>
+            {responsiveTime()}ms
+          </>
+        );
+      }
     },
     {
       disable: true,

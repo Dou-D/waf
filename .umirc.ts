@@ -23,7 +23,7 @@ export default defineConfig({
       // wrappers: ['@/wrappers/auth'],
     },
     {
-      path: "/log",
+      path: "/logs",
       component: '@/pages/Log',
     },
     {
