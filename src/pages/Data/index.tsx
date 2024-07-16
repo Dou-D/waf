@@ -7,6 +7,7 @@ import request from 'umi-request';
 import { FlowListResponse, Data, FlowListItems, LabelColor, ToolBarType } from './typings';
 import dayjs from 'dayjs';
 import { config } from '@/utils';
+import { pagination } from '@/common';
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -31,7 +32,6 @@ export default () => {
   const [activeKey, setActiveKey] = useState<ToolBarType>('正常');
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [detailData, setDetailData] = useState<FlowListItems | null>(null);
-
   const showDrawer = (record: FlowListItems) => {
     setDetailData(record);
     setDrawerVisible(true);
@@ -268,11 +268,7 @@ export default () => {
             return values;
           },
         }}
-        pagination={{
-          pageSize: 5,
-          showSizeChanger: true,
-          onChange: (page) => console.log(page),
-        }}
+        pagination={pagination}
         dateFormatter="string"
         headerTitle="高级表格"
         toolbar={{

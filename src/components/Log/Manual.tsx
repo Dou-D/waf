@@ -2,6 +2,7 @@ import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
 import { ManualItems, ManualResponse } from './typing';
 import request from 'umi-request';
+import { pagination } from '@/common';
 
 const manualColumns: ProColumns<ManualItems>[] = [
     {
@@ -44,10 +45,7 @@ export const ManualLogTable = () => {
       }}
       columns={manualColumns}
       rowKey="key"
-      pagination={{
-        pageSize: 5,
-        showSizeChanger: true,
-      }}
+      pagination={pagination}
       search={false}
       dateFormatter="string"
     />

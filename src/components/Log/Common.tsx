@@ -2,6 +2,7 @@ import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
 import { FlowItems, CommonResponse } from './typing';
 import request from 'umi-request';
+import { pagination } from '@/common';
 
 const commonColumns: ProColumns<FlowItems>[] = [
     {
@@ -47,10 +48,7 @@ export const CommonLogTable:React.FC = () => {
             }}
             columns={commonColumns}
             rowKey="key"
-            pagination={{
-                pageSize: 5,
-                showSizeChanger: true,
-            }}
+            pagination={pagination}
             search={false}
             dateFormatter="string"
         />

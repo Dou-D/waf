@@ -43,7 +43,6 @@ export default defineConfig({
     strategy: 'eager',
     esbuild: true,
   },
-
   npmClient: 'pnpm',
   tailwindcss: {},
   plugins: ['@umijs/plugins/dist/tailwindcss'],

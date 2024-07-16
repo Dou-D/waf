@@ -1,9 +1,11 @@
 import type { MenuProps } from 'antd';
-import { Avatar, Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Avatar, Breadcrumb, Button, Dropdown, Layout, Menu, Space, theme } from 'antd';
 import 'antd/dist/reset.css';
 import 'ant-design-pro/dist/ant-design-pro.css';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { Link, Outlet } from 'umi';
+import { DownOutlined } from '@ant-design/icons';
+import { history } from 'umi';
 
 const { Header, Content, Sider } = Layout;
 
@@ -54,7 +56,7 @@ const sliderItems: MenuProps['items'] = sliderItemsData.map((item) => {
   };
 });
 
-const Layouts:React.FC = () => {
+const Layouts: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -92,7 +94,21 @@ const Layouts:React.FC = () => {
       <Link to={`/${paths.join('/')}`}>{currentRoute.title}</Link>
     );
   }
-
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <Button type="link" onClick={() => history.push("/login")}>登录</Button>
+      ),
+      key: '0',
+    },
+    {
+      label: (
+        <Button onClick={() => localStorage.removeItem('token')}>退出</Button>
+      ),
+      key: '1',
+      disabled: localStorage.getItem('token') ? false : true,
+    },
+  ];
   return (
     <Layout>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
@@ -105,18 +121,14 @@ const Layouts:React.FC = () => {
           style={{ flex: 1, minWidth: 0 }}
           onClick={(e) => handleMenuClick(e, BreadcrumbItems)}
         />
-        <Link to="/login">
-          <Avatar
-            src={
-              <img
-                src={
-                  'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'
-                }
-                alt="avatar"
-              />
-            }
-          />
-        </Link>
+        <Dropdown menu={{ items }}>
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              <span className='text-purple-50'>我的</span>
+              <DownOutlined />
+            </Space>
+          </a>
+        </Dropdown>
       </Header>
       <Layout>
         <Sider width={200} style={{ background: colorBgContainer }}>
@@ -152,4 +164,4 @@ const Layouts:React.FC = () => {
   );
 };
 
-export default Layouts;
+export default memo(Layouts);

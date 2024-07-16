@@ -1,7 +1,6 @@
-import TextInput from '@/components/TextInput';
-import { useState } from 'react';
 // @ts-ignore
 import { Col, Row, notification, Button, Input } from 'antd';
+import { useEffect } from 'react';
 import { history } from 'umi';
 import request from 'umi-request';
 
@@ -38,16 +37,16 @@ const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
   password = e.target.value
 }
 export default function () {
-  if (localStorage.getItem('token')) {
-    notification.info({
-      message: '您已经登录了',
-      placement: 'topRight'
-    })
-    console.log(1);
-
-    GoBack()
-    return;
-  }
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      notification.info({
+        message: '您已经登录了',
+        placement: 'topRight'
+      });
+      GoBack()
+      return;
+    }
+  }, []);
   return (
     <div className="w-full flex justify-center">
       <div className="container lg:px-64 px-8 pt-16">
