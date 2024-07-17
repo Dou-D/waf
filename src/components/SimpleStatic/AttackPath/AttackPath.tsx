@@ -162,7 +162,7 @@ export const AttackPath: React.FC = () => {
   useEffect(() => {
     request('/api/flowList', {
       ...config,
-      method: 'get',
+      method: 'GET',
       params: {
         pageSize: 1000,
         current: 1,
@@ -175,7 +175,7 @@ export const AttackPath: React.FC = () => {
   const links = [];
 
   // 生成节点和链接
-  trafficData?.forEach((item) => {
+  trafficData.forEach((item) => {
     const srcNode = { name: item.srcIp, category: 'Source' };
     const dstNode = { name: item.dstIp, category: 'Destination' };
 
