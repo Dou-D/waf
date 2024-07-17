@@ -1,2 +1,3 @@
-export type MenuType = 'common' | 'manual' | 'ban';
-
+declare namespace PageLog {
+    export type MenuType = 'common' | 'manual' | 'ban';
+}

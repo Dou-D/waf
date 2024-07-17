@@ -103,7 +103,10 @@ const Layouts: React.FC = () => {
     },
     {
       label: (
-        <Button onClick={() => localStorage.removeItem('token')}>退出</Button>
+        <Button onClick={() => {
+          localStorage.removeItem('token')
+          window.location.reload()
+        }}>退出</Button>
       ),
       key: '1',
       disabled: localStorage.getItem('token') ? false : true,

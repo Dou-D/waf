@@ -1,4 +1,5 @@
-/**
+declare namespace Log {
+    /**
  * 普通日志
  */
 export interface CommonResponse {
@@ -55,4 +56,6 @@ export interface BanIpItems {
     operationID?: string;
     targetIP?: string;
     time?: string;
+}
+
 }

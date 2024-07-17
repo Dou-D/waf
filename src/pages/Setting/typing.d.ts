@@ -1,8 +1,10 @@
-export interface FormType {
-  path?: string;
-  secretKey?: string;
-  checkArray?: string[];
-  radio?: string;
+declare namespace PageSetting {
+  export interface FormType {
+    path?: string;
+    secretKey?: string;
+    checkArray?: string[];
+    radio?: string;
+  }
+  
+  export type RadioKey = 'dingding' | "feishu" | "weixin"
 }
-
-export type RadioKey = 'dingding' | "feishu" | "weixin"

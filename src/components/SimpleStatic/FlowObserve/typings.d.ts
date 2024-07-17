@@ -1,24 +1,26 @@
-export type TrendType = 'up' | 'down' | undefined;
+declare namespace FlowObserve {
+  export type TrendType = 'up' | 'down' | undefined;
 
-export interface FlowCardResponse {
-  status: number;
-  message: string;
-  data: Data
-}
+  export interface FlowCardResponse {
+    status: number;
+    message: string;
+    data: Data;
+  }
 
-export interface Data {
-  flowCardData: FlowCardData[];
-}
+  export interface Data {
+    flowCardData: FlowCardData[];
+  }
 
-export interface FlowCardData {
-  description: Description;
-  id: number;
-  title: string;
-  value: number;
-}
+  export interface FlowCardData {
+    description: Description;
+    id: number;
+    title: string;
+    value: number;
+  }
 
-export interface Description {
-  title: string;
-  trend: TrendType;
-  value: string;
+  export interface Description {
+    title: string;
+    trend: TrendType;
+    value: string;
+  }
 }

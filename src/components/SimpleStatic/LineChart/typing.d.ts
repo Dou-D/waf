@@ -1,14 +1,16 @@
-export interface Response {
-  data: Data;
-  message: string;
-  status: number;
-}
+declare namespace LineChart {
+  export interface Response {
+    data: Data;
+    message: string;
+    status: number;
+  }
 
-export interface Data {
-  flowLine: FlowLine[];
-}
+  export interface Data {
+    flowLine: FlowLine[];
+  }
 
-export interface FlowLineType {
-  month: string;
-  value: number | number;
+  export interface FlowLineType {
+    month: string;
+    value: number | number;
+  }
 }

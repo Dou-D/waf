@@ -16,7 +16,6 @@ import {
     message,
 } from 'antd';
 import { useState } from 'react';
-import { FormType, RadioKey } from './typing';
 import CryptoJS from 'crypto-js';
 const onCertificateChange = (value: string) => {
     // message.success("设置成功");
@@ -30,7 +29,7 @@ const handleChangeCertificate = () => {
 const handleChangeEngine = () => {
     message.success("设置成功");
 }
-const onFinish: FormProps<FormType>['onFinish'] = (values) => {
+const onFinish: FormProps<PageSetting.FormType>['onFinish'] = (values) => {
     console.log('Success:', values);
     message.success("设置成功");
 };
@@ -52,7 +51,7 @@ function hashBrowserVersion(): string {
     return hash.toString(CryptoJS.enc.Hex);
 }
 export default () => {
-    const [checkValue, setCheckValue] = useState<RadioKey>("dingding");
+    const [checkValue, setCheckValue] = useState<PageSetting.RadioKey>("dingding");
     const onChange = (e: RadioChangeEvent) => {
         console.log('radio checked', e.target.value);
         setCheckValue(e.target.value);
@@ -114,7 +113,7 @@ export default () => {
                                     onFinish={onFinish}
                                     autoComplete="off"
                                 >
-                                    <Form.Item<FormType> name="radio">
+                                    <Form.Item<PageSetting.FormType> name="radio">
                                         <Radio.Group onChange={onChange} value={checkValue} >
                                             {radioOptions.map((item) => {
                                                 return <Radio key={item.value} value={item.value}>{item.label}</Radio>
@@ -122,23 +121,23 @@ export default () => {
                                         </Radio.Group>
                                     </Form.Item>
                                     {checkValue === "dingding" && <>
-                                        <Form.Item<FormType> label="Webhook地址：" name="path" rules={[
+                                        <Form.Item<PageSetting.FormType> label="Webhook地址：" name="path" rules={[
                                             { required: true, message: '请输入Webhook地址' },
                                         ]}>
                                             <Input placeholder="https://oapi.xxx.com/robot/send?access_token=xxxxxxx" />
                                         </Form.Item>
-                                        <Form.Item<FormType> label="加密密钥：" name="secretKey">
+                                        <Form.Item<PageSetting.FormType> label="加密密钥：" name="secretKey">
                                             <Input placeholder="留空表示不加签" />
                                         </Form.Item>
                                     </>}
                                     {(checkValue === "feishu" || checkValue === "weixin") && <>
-                                        <Form.Item<FormType> label="Webhook地址：" name="path" rules={[
+                                        <Form.Item<PageSetting.FormType> label="Webhook地址：" name="path" rules={[
                                             { required: true, message: '请输入Webhook地址' },
                                         ]} >
                                             <Input placeholder="https://oapi.xxx.com/robot/send?access_token=xxxxxxx" />
                                         </Form.Item>
                                     </>}
-                                    <Form.Item<FormType> wrapperCol={{ span: 16 }} name={"checkArray"}>
+                                    <Form.Item<PageSetting.FormType> wrapperCol={{ span: 16 }} name={"checkArray"}>
                                         <Checkbox.Group options={options} onChange={handleCheck} />
                                     </Form.Item>
                                     <Form.Item wrapperCol={{ span: 16 }}>

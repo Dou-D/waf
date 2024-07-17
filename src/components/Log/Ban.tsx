@@ -1,10 +1,9 @@
 import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
-import { BanIpItems, BanIpResponse } from './typing';
 import request from 'umi-request';
 import { pagination } from '@/common';
 
-const banColumns: ProColumns<BanIpItems>[] = [
+const banColumns: ProColumns<Log.BanIpItems>[] = [
   {
     dataIndex: "id",
     valueType: "indexBorder"
@@ -26,9 +25,12 @@ const banColumns: ProColumns<BanIpItems>[] = [
 
 export const BanLogTable = () => {
   return (
-    <ProTable<BanIpItems>
+    <ProTable<Log.BanIpItems>
       request={async (param) => {
-        const response = await request<BanIpResponse>('/api/log/ban_ip_log', {
+        const response = await request<Log.BanIpResponse>('/api/log/ban_ip_log', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
           params: {
             ...param,
           },

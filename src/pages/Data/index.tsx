@@ -1,12 +1,9 @@
-import { APIChangeFlow, APIManualBan } from '@/services';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Drawer, Select, Space, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import request from 'umi-request';
-import { FlowListResponse, Data, FlowListItems, LabelColor, ToolBarType } from './typings';
 import dayjs from 'dayjs';
-import { config } from '@/utils';
 import { pagination } from '@/common';
 
 export const waitTimePromise = async (time: number = 100) => {
@@ -21,7 +18,7 @@ export const waitTime = async (time: number = 100) => {
   await waitTimePromise(time);
 };
 
-const selectLabelColor = (label: string): LabelColor => {
+const selectLabelColor = (label: string): PageData.LabelColor => {
   if (label === '正常流量') return 'success';
   else if (label === '可疑流量') return 'warning';
   return 'error';
@@ -29,17 +26,17 @@ const selectLabelColor = (label: string): LabelColor => {
 
 export default () => {
   const actionRef = useRef<ActionType>();
-  const [activeKey, setActiveKey] = useState<ToolBarType>('正常');
+  const [activeKey, setActiveKey] = useState<PageData.ToolBarType>('正常');
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [detailData, setDetailData] = useState<FlowListItems | null>(null);
-  const showDrawer = (record: FlowListItems) => {
+  const [detailData, setDetailData] = useState<PageData.FlowListItems | null>(null);
+  const showDrawer = (record: PageData.FlowListItems) => {
     setDetailData(record);
     setDrawerVisible(true);
   };
   const responsiveTime = () => {
     return Math.floor(Math.random() * 500)
   }
-  const columns: ProColumns<FlowListItems>[] = [
+  const columns: ProColumns<PageData.FlowListItems>[] = [
     {
       dataIndex: 'id',
       valueType: 'indexBorder',
@@ -143,8 +140,8 @@ export default () => {
           const startTime = new Date(`${value[0]}`).getTime()
           const endTime = new Date(`${value[1]}`).getTime()
           return {
-            startTime,
-            endTime
+            startTime: startTime ? startTime : void 0,
+            endTime: endTime ? endTime : void 0,
           };
         },
       },
@@ -184,12 +181,14 @@ export default () => {
           size="small"
           key="delete"
           onClick={async () => request('/api/manualBan', {
-            ...config,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
             method: 'POST',
             data: {
               ip: record.srcIp
             }
-          }).then(() => {
+          },).then(() => {
             actionRef.current?.reload();
           })}
         >
@@ -208,12 +207,15 @@ export default () => {
 
   return (
     <>
-      <ProTable<FlowListItems>
+      <ProTable<PageData.FlowListItems>
         columns={columns}
         actionRef={actionRef}
         cardBordered
         request={async (param,) => {
-          const response = await request<FlowListResponse>('/api/flowList', {
+          const response = await request<PageData.FlowListResponse>('/api/flowList', {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
             params: {
               ...param,
               flowType: activeKey,
@@ -233,7 +235,17 @@ export default () => {
            * @param record 当前行的数据
            */
           onSave: async (key, record) => {
-            await APIChangeFlow({ flowID: record.id, status: record.label });
+            // await APIChangeFlow({ flowID: record.id, status: record.label });
+            await request('/api/changeFlow', {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+              method: 'POST',
+              data: {
+                flowID: record.id,
+                status: record.label,
+              }
+            })
             actionRef.current?.reload();
             // await waitTime(2000);
           },
@@ -290,7 +302,7 @@ export default () => {
               },
             ],
             onChange: (key) => {
-              setActiveKey(key as ToolBarType);
+              setActiveKey(key as PageData.ToolBarType);
               console.log(key);
             },
           },

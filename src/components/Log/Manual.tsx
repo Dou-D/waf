@@ -1,10 +1,9 @@
 import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
-import { ManualItems, ManualResponse } from './typing';
 import request from 'umi-request';
 import { pagination } from '@/common';
 
-const manualColumns: ProColumns<ManualItems>[] = [
+const manualColumns: ProColumns<Log.ManualItems>[] = [
     {
         dataIndex: "id",
         valueType: "indexBorder"
@@ -30,9 +29,12 @@ const manualColumns: ProColumns<ManualItems>[] = [
 
 export const ManualLogTable = () => {
   return (
-    <ProTable<ManualItems>
+    <ProTable<Log.ManualItems>
       request={async (param) => {
-        const response = await request<ManualResponse>('/api/log/manual_log', {
+        const response = await request<Log.ManualResponse>('/api/log/manual_log', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
           params: {
             ...param,
           },

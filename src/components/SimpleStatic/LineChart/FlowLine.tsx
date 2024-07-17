@@ -1,8 +1,6 @@
 import { Line } from '@ant-design/plots';
-import { Response, FlowLineType } from './typing';
 import { useState, useEffect } from 'react';
 import request from 'umi-request';
-import { config } from '@/utils';
 
 const testData = [
   { month: '4月', value: 23 },
@@ -12,12 +10,14 @@ const testData = [
 ];
 
 const FlowLine: React.FC = () => {
-  const [flowData, setFlowData] = useState<FlowLineType[]>(testData);
+  const [flowData, setFlowData] = useState<LineChart.FlowLineType[]>(testData);
   useEffect(() => {
     request('/api/flowLine', {
       method: 'GET',
-      ...config,
-    }).then((res: Response) => {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then((res: LineChart.Response) => {
       setFlowData(res.data.flowLine);
     });
   }, []);

@@ -139,4 +139,21 @@ request={async (param,) => {
 表格每行的类型
 ```ts
 <ProTable<FlowListItems> />
+```  
+## declare namespace  
+通过`.d.ts`结尾的文件，声明一个命名空间
+```ts
+declare namespace API {
+  interface FlowListItems {
+    id: number;
+    name: string;
+    flowType: string;
+    status: string;
+    startTime: string;
+    endTime: string;
+    creator: string;
+    description: string;
+  }
+}
 ```
+就可以在全局目录使用该类型`API.FlowListItems`  

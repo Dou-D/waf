@@ -1,10 +1,10 @@
 import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
-import { FlowItems, CommonResponse } from './typing';
 import request from 'umi-request';
 import { pagination } from '@/common';
 
-const commonColumns: ProColumns<FlowItems>[] = [
+
+const commonColumns: ProColumns<Log.FlowItems>[] = [
     {
         dataIndex: "id",
         valueType: "indexBorder"
@@ -31,11 +31,14 @@ const commonColumns: ProColumns<FlowItems>[] = [
         dataIndex: 'time',
     }
 ];
-export const CommonLogTable:React.FC = () => {
+export const CommonLogTable: React.FC = () => {
     return (
-        <ProTable<FlowItems>
+        <ProTable<Log.FlowItems>
             request={async (param) => {
-                const response = await request<CommonResponse>('/api/log/common', {
+                const response = await request<Log.CommonResponse>('/api/log/common', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
                     params: {
                         ...param,
                     },

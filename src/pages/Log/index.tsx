@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { BanLogTable, CommonLogTable, ManualLogTable } from '@/components/Log';
-import { MenuType } from './typing';
 import { Button } from 'antd';
 
 const toolbarMenu = [
@@ -9,7 +8,7 @@ const toolbarMenu = [
   { key: 'ban', label: <span>禁用日志</span> },
 ]
 export default () => {
-  const [activeKey, setActiveKey] = useState<MenuType>('common');
+  const [activeKey, setActiveKey] = useState<PageLog.MenuType>('common');
   const renderTable = () => {
     switch (activeKey) {
       case 'manual':

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import request from 'umi-request'
-import { config } from '@/utils'
-import { RadarResponse } from './typing';
+
 export const Radar: React.FC = () => {
   const option = {
     title: [
@@ -79,9 +78,11 @@ export const Radar: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   useEffect(() => {
     request('/api/radar', {
-      ...config,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
       method: 'GET'
-    }).then((res: RadarResponse) => {
+    }).then((res: RadarChart.RadarResponse) => {
       option.series[0].data[0].value = res.data.series[0].value
       option.series[1].data[0].value = res.data.series[1].value
       setResult(option)

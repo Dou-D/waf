@@ -2,18 +2,19 @@ import { ProList } from '@ant-design/pro-components';
 import { Button, Modal, Progress } from 'antd';
 import { useEffect, useState } from 'react';
 import request from 'umi-request';
-import { config } from '@/utils';
-import { ListResponse, Items } from './typings';
+// import { ListResponse, Items } from './typings';
 
 export const ListInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [pageList, setPageList] = useState<Items[]>();
+  const [pageList, setPageList] = useState<ListInfo.Items[]>();
   const [total, setTotal] = useState<number>(100);
   useEffect(() => {
     request('/api/siteList', {
       method: 'GET',
-      ...config,
-    }).then((res: ListResponse) => {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then((res: ListInfo.ListResponse) => {
       setPageList(res.data)
       const computed = res.data.reduce((pre, cur) => {
         return pre + cur.process;
@@ -33,7 +34,7 @@ export const ListInfo: React.FC = () => {
     setIsModalOpen(false);
   };
   return (
-    <ProList<Items>
+    <ProList<ListInfo.Items>
       rowKey="id"
       headerTitle="外部来源页面"
       dataSource={pageList?.slice(0, 5)}

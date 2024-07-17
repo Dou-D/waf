@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import request from 'umi-request';
-import { config } from '@/utils';
-import { LocaleResponse } from './typing';
 
 export const Locale: React.FC = () => {
   const [result, setResult] = useState<number[]>();
   useEffect(() => {
     request('/api/intercept', {
-      ...config,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
       method: 'GET',
-    }).then((res: LocaleResponse) => {
+    }).then((res: Locale.LocaleResponse) => {
       setResult(res.data)
     });
   }, []);

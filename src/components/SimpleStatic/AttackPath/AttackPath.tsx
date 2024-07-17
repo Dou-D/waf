@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import request from 'umi-request';
-import { config } from '@/utils';
-import { FlowListItems, FlowListResponse } from '@/pages/Data/typings';
 
 export const AttackPath: React.FC = () => {
-  const [trafficData, setTrafficData] = useState<FlowListItems[]>([]);
+  const [trafficData, setTrafficData] = useState<PageData.FlowListItems[]>([]);
   useEffect(() => {
     request('/api/flowList', {
-      ...config,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
       method: 'GET',
       params: {
         pageSize: 10,
         current: 1,
       }
-    }).then((res: FlowListResponse) => {
+    }).then((res: PageData.FlowListResponse) => {
       setTrafficData(res.data.flows)
     })
   }, [])
@@ -23,8 +23,8 @@ export const AttackPath: React.FC = () => {
 
   // 生成节点和链接
   trafficData.forEach((item) => {
-    const srcNode = { name: item.srcIp, category: 'Source' };
-    const dstNode = { name: item.dstIp, category: 'Destination' };
+    const srcNode = { name: item.srcIp, category: 'Source', from: "http://www.baidu.com" };
+    const dstNode = { name: item.dstIp, category: 'Destination', from: "http://www.google.com" };
 
     // 如果源节点不存在则添加
     if (!nodes.find(node => node.name === srcNode.name)) {
@@ -53,17 +53,8 @@ export const AttackPath: React.FC = () => {
   const onEvents = {
     click: (params) => {
       const node = params.data;
-      if (node.category === 0) { // HTMLElement
-        window.location.href = 'https://baidu.com';
-      } else if (node.category === 1) { // WebGL
-        window.location.href = 'https://baidu.com';
-      } else if (node.category === 2) { // SVG
-        window.location.href = 'https://baidu.com';
-      } else if (node.category === 3) { // CSS
-        window.location.href = 'https://baidu.com';
-      } else if (node.category === 4) { // Other
-        window.location.href = 'https://baidu.com';
-      }
+      console.log(params, "params");
+      window.location.href = node.from
     }
   };
   const option = {

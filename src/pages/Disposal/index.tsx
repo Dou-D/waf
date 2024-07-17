@@ -2,12 +2,12 @@ import React, { memo } from 'react';
 import { Button, Form, Input } from 'antd';
 import type { FormProps } from 'antd';
 import request from 'umi-request';
-import { config } from '@/utils';
-import { DisposalRequest } from './tying';
 
-const onFinish: FormProps<DisposalRequest>['onFinish'] = (values) => {
+const onFinish: FormProps<DISPOSAL.DisposalRequest>['onFinish'] = (values) => {
     request('/api/manualBan', {
-        ...config,
+        headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
         method: 'POST',
         data: {
             ip: values.ip

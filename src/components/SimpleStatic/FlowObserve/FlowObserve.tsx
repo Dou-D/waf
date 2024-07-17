@@ -1,10 +1,8 @@
 import { ProCard, StatisticCard } from '@ant-design/pro-components';
 import RcResizeObserver from 'rc-resize-observer';
 import { useState, useEffect } from 'react';
-import type { TrendType, FlowCardData, FlowCardResponse } from './typings';
 import FlowLine from '../LineChart/FlowLine';
 import request from 'umi-request';
-import { config } from '@/utils';
 
 const { Statistic } = StatisticCard;
 
@@ -12,14 +10,16 @@ const { Statistic } = StatisticCard;
 
 export const FlowObserve: React.FC = () => {
   const [responsive, setResponsive] = useState(false);
-  const [flowCardData, setFlowCardData] = useState<FlowCardData[]>();
+  const [flowCardData, setFlowCardData] = useState<FlowObserve.FlowCardData[]>();
   useEffect(() => {
     request('/api/flowCard', {
-      ...config,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
       method: 'GET',
-    }).then((res:FlowCardResponse)  => {
+    }).then((res: FlowObserve.FlowCardResponse) => {
       setFlowCardData(res.data.flowCardData)
-      
+
     })
   }, []);
   return (
@@ -50,7 +50,7 @@ export const FlowObserve: React.FC = () => {
                         <Statistic
                           title={item.description.title}
                           value={item.description.value}
-                          trend={item.description.trend as TrendType}
+                          trend={item.description.trend as FlowObserve.TrendType}
                         />
                       ),
                     }}
