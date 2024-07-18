@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
+import { Drawer } from 'antd'
 import request from 'umi-request';
 
 export const AttackPath: React.FC = () => {
-  const [trafficData, setTrafficData] = useState<PageData.FlowListItems[]>([]);
+  const [trafficData, setTrafficData] = useState<PageData.FlowListItems[]>();
+  const [path, setPath] = useState<AttackPath.AttackPathItems[]>();
   useEffect(() => {
-    request('/api/flowList', {
+    request('/api/getpocList', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       method: 'GET',
-      params: {
-        pageSize: 10,
-        current: 1,
-      }
-    }).then((res: PageData.FlowListResponse) => {
-      setTrafficData(res.data.flows)
+    }).then((res: AttackPath.AttackPathResponse) => {
+      setPath(res.data)
     })
   }, [])
   const nodes = [];
   const links = [];
 
   // 生成节点和链接
-  trafficData.forEach((item) => {
-    const srcNode = { name: item.srcIp, category: 'Source', from: "http://www.baidu.com" };
-    const dstNode = { name: item.dstIp, category: 'Destination', from: "http://www.google.com" };
+  path?.forEach((item: AttackPath.AttackPathItems) => {
+    const srcNode = { name: item.srcIp, from: item.from, content: item.content };
+    const dstNode = { name: item.dstIp, from: item.from, content: item.content };
 
     // 如果源节点不存在则添加
     if (!nodes.find(node => node.name === srcNode.name)) {
@@ -54,7 +52,7 @@ export const AttackPath: React.FC = () => {
     click: (params) => {
       const node = params.data;
       console.log(params, "params");
-      window.location.href = node.from
+      setOpen(true);
     }
   };
   const option = {
@@ -84,14 +82,29 @@ export const AttackPath: React.FC = () => {
       edges: links
     }]
   };
-
+  const [open, setOpen] = useState(false);
+  const onClose = () => {
+    setOpen(false);
+  };
   return (
-    <ReactECharts
-      option={option}
-      style={{ height: '400px', width: '100%' }}
-      // onEvents={{}}
-      onEvents={onEvents}
-    />
+    <>
+      <ReactECharts
+        option={option}
+        style={{ height: '400px', width: '100%' }}
+        onEvents={onEvents}
+      />
+      <Drawer title="详情" onClose={onClose} open={open}>
+        {path?.map((item: AttackPath.AttackPathItems) => {
+          return (
+            <div key={item.id}>
+              <p>来源IP: {item.srcIp}</p>
+              <p>目的IP: {item.dstIp}</p>
+              <a href={item.from}>详情: {item.content}</a>
+            </div>
+          )
+        })}
+      </Drawer>
+    </>
   );
 };
 
