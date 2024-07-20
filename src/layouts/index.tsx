@@ -12,7 +12,7 @@ const { Header, Content, Sider } = Layout;
 const MenuItems = [
   { key: '1', label: '首页', path: '/dashboard' },
   { key: '2', label: '攻击', path: '/attack' },
-  { key: '3', label: '知识库', path: '/knowledge' },
+  { key: '3', label: '知识库', path: '/know' },
 ]
 const BreadcrumbItems: MenuProps['items'] = MenuItems.map((item) => {
   return {

@@ -46,6 +46,16 @@ export default defineConfig({
       path: '/linkage',
       component: '@/pages/Linkage',
     },
+    {
+      path: "/attack/description",
+      component: '@/pages/Attack/description',
+      wrappers: ['@/wrappers/auth'],
+    },
+    {
+      path: "/know",
+      component: '@/pages/Know',
+      wrappers: ['@/wrappers/auth'],
+    },
     { path: '/*', component: '@/pages/404', layout: false },
   ],
   mfsu: {

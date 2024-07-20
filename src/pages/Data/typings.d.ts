@@ -22,7 +22,7 @@ declare namespace PageData {
     label: string;
     payload: string;
     protocol: string;
-    responseTime: string;
+    time: string;
     srcIp: string;
     srcMac: string;
     srcPort: string;

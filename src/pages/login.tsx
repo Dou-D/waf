@@ -47,11 +47,12 @@ export default function () {
       GoBack()
       return;
     }
+    notification.info({
+      message: '请先登录',
+      placement: 'topRight'
+    });
   }, []);
-  notification.info({
-    message: '请先登录',
-    placement: 'topRight'
-  });
+
   return (
     <div className="w-full flex justify-center">
       <div className="container lg:px-64 px-8 pt-16">

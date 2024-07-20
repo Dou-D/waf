@@ -33,9 +33,6 @@ export default () => {
     setDetailData(record);
     setDrawerVisible(true);
   };
-  const responsiveTime = () => {
-    return Math.floor(Math.random() * 500)
-  }
   const columns: ProColumns<PageData.FlowListItems>[] = [
     {
       dataIndex: 'id',
@@ -85,15 +82,8 @@ export default () => {
     },
     {
       title: '响应时间',
-      dataIndex: 'responseTime',
+      dataIndex: 'time',
       hideInSearch: true,
-      render: (_, record) => {
-        return (
-          <>
-            {responsiveTime()}ms
-          </>
-        );
-      }
     },
     {
       disable: true,
@@ -329,6 +319,7 @@ export default () => {
             <p>攻击类型: {detailData.attackType}</p>
             <p>协议: {detailData.protocol}</p>
             <p>载荷: {detailData.payload}</p>
+            <p>响应时间：{detailData.time}</p>
           </div>
         )}
       </Drawer>

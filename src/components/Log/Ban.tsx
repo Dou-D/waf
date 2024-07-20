@@ -19,7 +19,7 @@ const banColumns: ProColumns<Log.BanIpItems>[] = [
   {
     title: "请求时间",
     dataIndex: 'time',
-    valueType: "date"
+    valueType: "dateTime"
   }
 ];
 
