@@ -9,10 +9,17 @@ import { history } from 'umi';
 
 const { Header, Content, Sider } = Layout;
 
-const BreadcrumbItems: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
+const MenuItems = [
+  { key: '1', label: '首页', path: '/dashboard' },
+  { key: '2', label: '攻击', path: '/attack' },
+  { key: '3', label: '知识库', path: '/knowledge' },
+]
+const BreadcrumbItems: MenuProps['items'] = MenuItems.map((item) => {
+  return {
+    key: item.key,
+    label: <Link to={item.path}>{item.label}</Link>,
+  }
+});
 
 const sliderItemsData = [
   {
@@ -23,7 +30,7 @@ const sliderItemsData = [
   {
     key: '2',
     label: '数据',
-    path: '/attack',
+    path: '/data',
   },
   {
     key: '3',
@@ -119,7 +126,7 @@ const Layouts: React.FC = () => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['2']}
+          defaultSelectedKeys={['1']}
           items={BreadcrumbItems}
           style={{ flex: 1, minWidth: 0 }}
           onClick={(e) => handleMenuClick(e, BreadcrumbItems)}

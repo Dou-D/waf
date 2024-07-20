@@ -157,3 +157,9 @@ declare namespace API {
 }
 ```
 就可以在全局目录使用该类型`API.FlowListItems`  
+
+## actionRef
+触发reload,reset等操作  
+```ts
+actionRef.current?.reset?.();
+```  

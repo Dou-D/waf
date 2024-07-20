@@ -8,11 +8,10 @@ import { Radar } from '@/components/SimpleStatic/RadarChart';
 import { China } from '@/components/SimpleStatic/China';
 import { LiaoNing } from '@/components/SimpleStatic/LiaoNing';
 import { Locale } from '@/components/SimpleStatic/Locale';
-import { AttackPath } from '@/components/SimpleStatic/AttackPath'
 import request from 'umi-request';
 
 const Dashboard: React.FC = () => {
-  const graphOption = ['中国', '辽宁', '攻击路径'];
+  const graphOption = ['中国', '辽宁'];
   const [graph, setGraph] = useState('中国');
   const [result, setResult] = useState<Dashboard.Res[]>();
   const [siteInfo, setSiteInfo] = useState<Dashboard.SiteInfoItem[]>()
@@ -60,7 +59,7 @@ const Dashboard: React.FC = () => {
         <Col span={16}>
           <Card>
             <Radio.Group options={graphOption} onChange={onGraphChange} value={graph} />
-            {graph === '中国' ? <China /> : graph === '攻击路径' ? <> <SimpleStatistic data={[{ title: "准确率", value: "95%", status: 'success' }]} /><AttackPath /></> : <LiaoNing />}
+            { graph === '中国' ? <China /> : <LiaoNing />}
           </Card>
         </Col>
         <Col span={8}>

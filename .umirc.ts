@@ -13,7 +13,7 @@ export default defineConfig({
       wrappers: ['@/wrappers/auth'],
     },
     {
-      path: '/attack',
+      path: '/data',
       component: '@/pages/Data',
       wrappers: ['@/wrappers/auth'],
     },
@@ -35,6 +35,11 @@ export default defineConfig({
     {
       path: '/disposal',
       component: '@/pages/Disposal',
+      wrappers: ['@/wrappers/auth'],
+    },
+    {
+      path: '/attack',
+      component: '@/pages/Attack',
       wrappers: ['@/wrappers/auth'],
     },
     {

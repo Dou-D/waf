@@ -304,6 +304,7 @@ export default () => {
             onChange: (key) => {
               setActiveKey(key as PageData.ToolBarType);
               console.log(key);
+              actionRef.current?.reset?.();
             },
           },
         }}
