@@ -156,9 +156,9 @@ export default () => {
       title: '创建时间',
       key: 'timestamp',
       dataIndex: 'timestamp',
-      valueType: 'dateTime',
       hideInSearch: true,
       editable: false,
+      renderText: (text) => dayjs(text * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '操作',

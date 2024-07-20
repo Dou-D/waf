@@ -37,6 +37,10 @@ export default defineConfig({
       component: '@/pages/Disposal',
       wrappers: ['@/wrappers/auth'],
     },
+    {
+      path: '/linkage',
+      component: '@/pages/Linkage',
+    },
     { path: '/*', component: '@/pages/404', layout: false },
   ],
   mfsu: {
