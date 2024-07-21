@@ -1,81 +1,154 @@
-// @ts-ignore
-import { Col, Row, notification, Button, Input } from 'antd';
-import { useEffect } from 'react';
-import { history } from 'umi';
+import {
+  LockOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import {
+  LoginFormPage,
+  ProConfigProvider,
+  ProFormText,
+} from '@ant-design/pro-components';
+import { Button, notification, theme } from 'antd';
 import request from 'umi-request';
-
-async function submit({ account, password }) {
-  const res = await request('/api/login', {
-    method: 'POST',
-    data: {
-      account,
-      password,
-    },
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
-  if (res.status !== 200) {
-    notification.info({
-      message: res.message,
-      placement: 'topRight'
-    })
-    return;
+import { history } from 'umi'
+interface LoginParams {
+  username: string
+  password: string
+}
+interface LoginResponse {
+  data: any
+  message: string
+  status: number
+}
+const Page = () => {
+  const { token } = theme.useToken();
+  if (localStorage.getItem('token')) {
+    notification.info({ message: '您已经登录' })
+    history.replace('/')
+    return
   }
-  localStorage.setItem('token', res.data);
-  history.push('/');
-}
-
-function GoBack() {
-  history.replace('/');
-}
-let account, password;
-const handleChangeAccount = (e: React.ChangeEvent<HTMLInputElement>) => {
-  account = e.target.value
-}
-const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-  password = e.target.value
-}
-export default function () {
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      notification.info({
-        message: '您已经登录了',
-        placement: 'topRight'
-      });
-      GoBack()
-      return;
-    }
-    notification.info({
-      message: '请先登录',
-      placement: 'topRight'
-    });
-  }, []);
-
   return (
-    <div className="w-full flex justify-center">
-      <div className="container lg:px-64 px-8 pt-16">
-        <p className="text-3xl font-extrabold">用户登入</p>
-        <div className="mt-8">
-          <p>邮箱</p>
-          <Input className="w-8/12 p-2 border-2 border-gray-100
-     hover:border-gray-300 focus:border-gray-500 rounded-lg my-2 outline-none
-     transition-all" value={account} onChange={handleChangeAccount} />
-          <p className="mt-4">密码</p>
-          <Input.Password className="w-8/12 p-2 border-2 border-gray-100
-     hover:border-gray-300 focus:border-gray-500 rounded-lg my-2 outline-none
-     transition-all" value={password} onChange={handleChangePassword} />
-          <Row gutter={[16, 16]}>
-            <Col span={4}>
-              <Button type="primary" size='large' onClick={() => submit({ account, password })}>登入</Button>
-            </Col>
-            <Col span={4}>
-              <Button type="primary" size='large' onClick={GoBack}>返回</Button>
-            </Col>
-          </Row>
-        </div>
-      </div>
+    <div
+      style={{
+        backgroundColor: 'white',
+        height: '100vh',
+      }}
+    >
+      <LoginFormPage
+        backgroundImageUrl="https://mdn.alipayobjects.com/huamei_gcee1x/afts/img/A*y0ZTS6WLwvgAAAAAAAAAAAAADml6AQ/fmt.webp"
+        logo="https://github.githubassets.com/favicons/favicon.png"
+        backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
+        title="Github"
+        containerStyle={{
+          backgroundColor: 'rgba(0, 0, 0,0.65)',
+          backdropFilter: 'blur(4px)',
+        }}
+        subTitle="全球最大的代码托管平台"
+        activityConfig={{
+          style: {
+            boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.2)',
+            color: token.colorTextHeading,
+            borderRadius: 8,
+            backgroundColor: 'rgba(255,255,255,0.25)',
+            backdropFilter: 'blur(4px)',
+          },
+          title: '活动标题，可配置图片',
+          subTitle: '活动介绍说明文字',
+          action: (
+            <Button
+              size="large"
+              style={{
+                borderRadius: 20,
+                background: token.colorBgElevated,
+                color: token.colorPrimary,
+                width: 120,
+              }}
+            >
+              去看看
+            </Button>
+          ),
+        }}
+        actions={
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+          </div>
+        }
+
+        onFinish={async (values: LoginParams) => {
+          const res: LoginResponse = await request('/api/login', {
+            method: 'post',
+            data: {
+              account: values.username,
+              password: values.password
+            }
+          })
+          if (res.status !== 200) {
+            notification.error({ message: res.message })
+            return
+          }
+          localStorage.setItem('token', res.data)
+          history.replace('/')
+          notification.info({ message: '登录成功' })
+        }}
+      >
+        <>
+          <ProFormText
+            name="username"
+            fieldProps={{
+              size: 'large',
+              prefix: (
+                <UserOutlined
+                  style={{
+                    color: token.colorText,
+                  }}
+                  className={'prefixIcon'}
+                />
+              ),
+            }}
+            placeholder={'用户名: admin or user'}
+            rules={[
+              {
+                required: true,
+                message: '请输入用户名!',
+              },
+            ]}
+          />
+          <ProFormText.Password
+            name="password"
+            fieldProps={{
+              size: 'large',
+              prefix: (
+                <LockOutlined
+                  style={{
+                    color: token.colorText,
+                  }}
+                  className={'prefixIcon'}
+                />
+              ),
+            }}
+            placeholder={'密码: ant.design'}
+            rules={[
+              {
+                required: true,
+                message: '请输入密码！',
+              },
+            ]}
+          />
+        </>
+      </LoginFormPage>
     </div>
   );
-}
+};
+
+export default () => {
+  return (
+    <ProConfigProvider dark>
+      <Page />
+    </ProConfigProvider>
+  );
+};
