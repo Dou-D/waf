@@ -4,12 +4,18 @@ declare namespace Know {
     current: number;
   }
   export interface KnowResponse {
-    data: KnowItems[];
+    data: KnowData;
     message: string;
     status: number;
-  }
+}
 
-  export interface KnowItems {
+export interface KnowData {
+    list: ListItems[];
+    total: number;
+    [property: string]: any;
+}
+
+export interface ListItems {
     CreatedAt: string;
     cve_id: string;
     DeletedAt: null;
@@ -27,5 +33,6 @@ declare namespace Know {
     responseStatus: string;
     type: string;
     UpdatedAt: string;
-  }
+    [property: string]: any;
+}
 }

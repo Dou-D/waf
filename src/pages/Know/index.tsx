@@ -4,7 +4,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { memo } from 'react';
 import request from 'umi-request';
 
-const columns: ProColumns<Know.KnowItems>[] = [
+const columns: ProColumns<Know.ListItems>[] = [
   {
     dataIndex: "ID",
     valueType: "indexBorder",
@@ -18,6 +18,7 @@ const columns: ProColumns<Know.KnowItems>[] = [
   {
     title: '协议',
     dataIndex: 'protocol',
+    width: 48
   },
   {
     title: '载荷',
@@ -26,6 +27,11 @@ const columns: ProColumns<Know.KnowItems>[] = [
   {
     title: '请求方法',
     dataIndex: 'requestMethod',
+    width: 90
+  },
+  {
+    title: '状态码',
+    dataIndex: "responseStatus"
   },
   {
     title: '创建时间',
@@ -42,7 +48,7 @@ const columns: ProColumns<Know.KnowItems>[] = [
 const know: React.FC = () => {
   return (
    <>
-     <ProTable<Know.KnowItems>
+     <ProTable<Know.ListItems>
       columns={columns}
       request={async (param) => {
         const res = await request<Know.KnowResponse>('/api/pocList', {
@@ -54,16 +60,16 @@ const know: React.FC = () => {
           }
         })
         return {
-          data: res.data,
+          data: res.data.list,
           success: true,
-          // total: res.data,
+          total: res.data.total,
         }
       }}
       rowKey="key"
       pagination={pagination}
       search={false}
       dateFormatter="string"
-      headerTitle="表格标题"
+      headerTitle="攻击概览"
     />
    </>
   );
