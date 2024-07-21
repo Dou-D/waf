@@ -84,6 +84,7 @@ export default () => {
       title: '响应时间',
       dataIndex: 'time',
       hideInSearch: true,
+      editable: false
     },
     {
       disable: true,
@@ -319,6 +320,7 @@ export default () => {
             <p>攻击类型: {detailData.attackType}</p>
             <p>协议: {detailData.protocol}</p>
             <p>载荷: {detailData.payload}</p>
+            <p>http: {detailData.httpPayload}</p>
             <p>响应时间：{detailData.time}</p>
           </div>
         )}

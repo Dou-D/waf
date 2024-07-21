@@ -25,6 +25,7 @@ declare namespace PageData {
     time: string;
     srcIp: string;
     srcMac: string;
+    httpPayload: string;
     srcPort: string;
     timestamp: string;
   }
