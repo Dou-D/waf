@@ -123,12 +123,12 @@ export default () => {
     {
       title: '日期范围',
       dataIndex: 'created_at',
-      valueType: 'dateRange',
+      valueType: "dateRange",
       hideInTable: true,
       search: {
         transform: (value) => {
-          const startTime = new Date(`${value[0]}`).getTime()
-          const endTime = new Date(`${value[1]}`).getTime()
+          const startTime = new Date(`${value[0]}`).getTime() / 1000;
+          const endTime = new Date(`${value[1]}`).getTime() / 1000;
           return {
             startTime: startTime ? startTime : void 0,
             endTime: endTime ? endTime : void 0,
