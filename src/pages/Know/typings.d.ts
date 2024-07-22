@@ -33,6 +33,5 @@ export interface ListItems {
     responseStatus: string;
     type: string;
     UpdatedAt: string;
-    [property: string]: any;
 }
 }

@@ -120,7 +120,7 @@ export const AttackPath: React.FC = () => {
                 ],
             };
 
-            myChart.setOption(option);
+            myChart.setOption(option as any);
 
             const handleResize = () => {
                 myChart.resize();

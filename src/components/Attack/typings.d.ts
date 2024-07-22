@@ -26,14 +26,14 @@ declare namespace AttackComponent {
     data: AssetsData;
     message: string;
     status: number;
-}
+  }
 
-export interface AssetsData {
+  export interface AssetsData {
     list: ListItems[];
     total: number;
-}
+  }
 
-export interface ListItems {
+  export interface ListItems {
     Address?: string;
     DNS?: string;
     id?: string;
@@ -41,5 +41,5 @@ export interface ListItems {
     Netbios?: string;
     SNMP?: string;
     Time?: string;
-}
+  }
 }
