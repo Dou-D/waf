@@ -1,42 +1,25 @@
-import React, { useEffect } from 'react';
-import * as echarts from 'echarts';
-
-interface ListItem {
-  id: string;
-  Mac: string;
-  DNS: string;
-  Address: string;
-  SNMP: string;
-  Time: string;
-}
-
-const dataItems: ListItem[] = [
-  { id: "1", Mac: "00:00:00:00:00:00", DNS: "www.baidu.com", Address: "192.168.1.1", SNMP: "SNMP", Time: "12ms" },
-  { id: "2", Mac: "00:00:00:00:00:00", DNS: "www.baidu.com", Address: "192.168.1.1", SNMP: "SNMP", Time: "24ms" },
-  { id: "3", Mac: "00:00:00:00:00:00", DNS: "www.baidu.com", Address: "192.168.1.1", SNMP: "SNMP", Time: "24ms" },
-  { id: "4", Mac: "00:00:00:00:00:00", DNS: "www.baidu.com", Address: "192.168.1.1", SNMP: "SNMP", Time: "24ms" },
-  { id: "5", Mac: "00:00:00:00:00:00", DNS: "www.baidu.com", Address: "192.168.1.1", SNMP: "SNMP", Time: "24ms" },
-  { id: "6", Mac: "00:00:00:00:00:00", DNS: "www.baidu.com", Address: "192.168.1.1", SNMP: "SNMP", Time: "24ms" },
-  { id: "7", Mac: "00:00:00:00:00:00", DNS: "www.baidu.com", Address: "192.168.1.1", SNMP: "SNMP", Time: "24ms" },
-  { id: "8", Mac: "00:00:00:00:00:00", DNS: "www.baidu.com", Address: "192.168.1.1", SNMP: "SNMP", Time: "24ms" },
-];
+import React from 'react';
+import ReactEcharts from 'echarts-for-react';
 
 export const Assets: React.FC = () => {
-  useEffect(() => {
-    // 初始化 ECharts 实例
-    const chartDom = document.getElementById('main')!;
-    const myChart = echarts.init(chartDom);
+  const data = [
+    { "id": "1", "Mac": "00:11:22:33:44:55", "DNS": "www.google.com", "Address": "192.168.1.10", "SNMP": "v2c", "Time": "30ms" },
+    { "id": "2", "Mac": "66:77:88:99:AA:BB", "DNS": "www.yahoo.com", "Address": "192.168.1.11", "SNMP": "v3", "Time": "25ms" },
+    { "id": "3", "Mac": "CC:DD:EE:FF:00:11", "DNS": "www.bing.com", "Address": "192.168.1.12", "SNMP": "v1", "Time": "30ms" },
+    { "id": "4", "Mac": "22:33:44:55:66:77", "DNS": "www.ask.com", "Address": "192.168.1.13", "SNMP": "v2c", "Time": "12ms" },
+    { "id": "5", "Mac": "88:99:AA:BB:CC:DD", "DNS": "www.duckduckgo.com", "Address": "192.168.1.14", "SNMP": "v3", "Time": "40ms" },
+    { "id": "6", "Mac": "EE:FF:00:11:22:33", "DNS": "www.aol.com", "Address": "192.168.1.15", "SNMP": "v1", "Time": "45ms" },
+    { "id": "7", "Mac": "44:55:66:77:88:99", "DNS": "www.baidu.com", "Address": "192.168.1.16", "SNMP": "v2c", "Time": "50ms" },
+    { "id": "8", "Mac": "AA:BB:CC:DD:EE:FF", "DNS": "www.yandex.com", "Address": "192.168.1.17", "SNMP": "v3", "Time": "36ms" }
+  ];
 
-    // 处理数据
-    const categories = dataItems.map(item => item.Mac);
-    const values = dataItems.map(item => parseInt(item.Time));
-
-    // 配置项
-    const option = {
+  const getOption = () => {
+    return {
       tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow'
+        trigger: 'item',
+        formatter: function (params) {
+          const info = params.data;
+          return `Mac: ${info.Mac}<br/>DNS: ${info.DNS}<br/>Address: ${info.Address}<br/>SNMP: ${info.SNMP}<br/>Time: ${info.Time}`;
         }
       },
       grid: {
@@ -45,36 +28,27 @@ export const Assets: React.FC = () => {
         bottom: '3%',
         containLabel: true
       },
-      xAxis: [
-        {
-          type: 'category',
-          data: categories,
-          axisTick: {
-            alignWithLabel: true
-          }
+      xAxis: {
+        type: 'category',
+        data: data.map(item => item.Address),
+        axisTick: {
+          alignWithLabel: true
         }
-      ],
-      yAxis: [
-        {
-          type: 'value'
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          formatter: '{value} ms'
         }
-      ],
-      series: [
-        {
-          name: 'Time',
-          type: 'bar',
-          barWidth: '60%',
-          data: values
-        }
-      ]
+      },
+      series: [{
+        name: 'Time',
+        type: 'bar',
+        data: data.map(item => ({ value: parseFloat(item.Time), ...item })),
+        barWidth: '60%',
+      }]
     };
+  };
 
-    // 使用配置项生成图表
-    myChart.setOption(option);
-  }, []);
-
-  return (
-    <div id="main" style={{ width: '100%', height: '400px' }}></div>
-  );
+  return <ReactEcharts option={getOption()} style={{ height: '400px', width: '100%' }} />;
 };
-
