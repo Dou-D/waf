@@ -9,8 +9,9 @@ const banColumns: ProColumns<Log.BanIpItems>[] = [
     valueType: "indexBorder"
   },
   {
-    title: "操作者ID",
+    title: "操作者",
     dataIndex: 'operationID',
+    renderText: () => "admin",
   },
   {
     title: "操作IP",

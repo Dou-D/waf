@@ -9,8 +9,9 @@ const manualColumns: ProColumns<Log.ManualItems>[] = [
         valueType: "indexBorder"
     },
     {
-        title: "操作者ID",
+        title: "操作者",
         dataIndex: "operationID",
+        renderText: () => "admin",
     },
     {
         title: "判断类型",
