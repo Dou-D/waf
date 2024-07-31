@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import * as echarts from 'echarts';
+
 const attackData = [
   {
     id: '1',
@@ -196,7 +197,8 @@ const edgesData = [
   { source: '4', target: '4', attackType: 'redis未授权', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.32 } },
   { source: '2', target: '5', attackType: 'DDoS', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.3 } },
 ];
-export const AttackPath: React.FC = () => {
+export const AttackPath: React.FC<{ props: boolean }> = ({ props }) => {
+  console.log("🚀 ~ props:", props)
   useEffect(() => {
     // ECharts 配置
     const option = {
@@ -284,12 +286,16 @@ export const AttackPath: React.FC = () => {
 
 
     // 初始化 ECharts 实例并将其绑定到 DOM 元素
-    const chartDom = document.getElementById('main')!;
-    const chart = echarts.init(chartDom);
-    chart.setOption(option);
-  }, [])
+    props && (function () {
+      const chartDom = document.getElementById('main');
+      const chart = echarts.init(chartDom);
+      chart.setOption(option);
+    })()
+  }, [props])
 
   return (
-    <div id="main" style={{ width: '100%', height: '800px' }}></div>
+    <>
+      <div id="main" style={{ width: '100%', height: '800px' }}></div>
+    </>
   );
 };

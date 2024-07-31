@@ -3,6 +3,7 @@ import { ProTable } from '@ant-design/pro-components';
 import { Button, Drawer, Select, Space, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import request from 'umi-request';
+import { history } from 'umi'
 import dayjs from 'dayjs';
 import { pagination } from '@/common';
 
@@ -149,7 +150,28 @@ export default () => {
       dataIndex: 'timestamp',
       hideInSearch: true,
       editable: false,
-      renderText: (text) => dayjs(text * 1000).format('YYYY-MM-DD HH:mm:ss')
+      hideInTable: activeKey === "攻击" ? true : false,
+      renderText: (text) => dayjs(text * 1000).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
+      title: "状态",
+      renderText: () => '已处置',
+      hideInTable: activeKey !== "攻击" ? true : false,
+    },
+    {
+      title: '处置类型',
+      dataIndex: 'disposeType',
+      hideInSearch: true,
+      editable: false,
+      hideInTable: activeKey !== "攻击" ? true : false,
+    },
+    {
+      title: '处置时间',
+      dataIndex: 'disposeTime',
+      valueType: 'dateTime',
+      hideInSearch: true,
+      editable: false,
+      hideInTable: activeKey !== "攻击" ? true : false,
     },
     {
       title: '操作',
@@ -177,7 +199,8 @@ export default () => {
             },
             method: 'POST',
             data: {
-              ip: record.srcIp
+              ip: record.srcIp,
+              type: "IP限速"
             }
           },).then(() => {
             actionRef.current?.reload();
@@ -322,6 +345,9 @@ export default () => {
             <p>载荷: {detailData.payload}</p>
             <p>http: {detailData.httpPayload}</p>
             <p>响应时间：{detailData.time}</p>
+            <p>处置类型: {detailData.disposeType}</p>
+            <p>处置时间: {dayjs.unix(Number(detailData.disposeTime)).format('YYYY-MM-DD HH:mm:ss')}</p>
+            { activeKey === "攻击" && <Button type="primary" onClick={() => history.push('/attack')}>查看攻击详情</Button>}
           </div>
         )}
       </Drawer>

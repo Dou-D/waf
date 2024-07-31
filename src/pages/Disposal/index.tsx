@@ -17,27 +17,73 @@ const onFinishBan: FormProps<{ ip: string }>['onFinish'] = (values) => {
         },
         method: 'POST',
         data: {
-            ip: values.ip
+            ip: values.ip,
+            type: '封禁IP'
         }
     }).then(() => {
-        openNotification('封禁IP${values.ip}');
+        openNotification('封禁IP:${values.ip}');
     });
 };
 
 const onFinishUnban: FormProps<{ ip: string }>['onFinish'] = (values) => {
-    openNotification(`解封IP${values.ip}`);
+    request('/api/manualBan', {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        method: 'POST',
+        data: {
+            ip: values.ip,
+            type: "封禁端口"
+        }
+    }).then(() => {
+        openNotification(`封禁端口:${values.ip}`);
+    });
+    
 };
 
 const onFinishAddWhitelist: FormProps<{ ip: string }>['onFinish'] = (values) => {
-    openNotification(`添加IP${values.ip}到白名单`);
+    request('/api/manualBan', {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        method: 'POST',
+        data: {
+            ip: values.ip,
+            type: "封禁内部服务"
+        }
+    }).then(() => {
+        openNotification(`封禁:${values.ip}的内部服务`);
+    });
 };
 
 const onFinishRemoveWhitelist: FormProps<{ ip: string }>['onFinish'] = (values) => {
-    openNotification(`从白名单中移除IP${values.ip}`);
+    request('/api/manualBan', {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        method: 'POST',
+        data: {
+            ip: values.ip,
+            type: "封禁内部主机"
+        }
+    }).then(() => {
+        openNotification(`隔离:${values.ip}的内部主机`);
+    });
 };
 
-const onFinishRateLimit: FormProps<{ ip: string, limit: string }>['onFinish'] = (values) => {
-    openNotification('设置IP限速');
+const onFinishRateLimit: FormProps<{ ip: string }>['onFinish'] = (values) => {
+    request('/api/manualBan', {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        method: 'POST',
+        data: {
+            ip: values.ip,
+            type: "IP限速"
+        }
+    }).then(() => {
+        openNotification(`IP:${values.ip}限速`);
+    });
 };
 
 const Disposal: React.FC = () => {
@@ -67,7 +113,7 @@ const Disposal: React.FC = () => {
                 </Form.Item>
             </Form>
 
-            <label>解封IP</label>
+            <label>封禁端口</label>
             <Form
                 name="unban"
                 labelCol={{ span: 8 }}
@@ -80,18 +126,18 @@ const Disposal: React.FC = () => {
                 <Form.Item<string>
                     label="IP"
                     name="ip"
-                    rules={[{ required: true, message: '请输入要解封的IP地址' }]}
+                    rules={[{ required: true, message: '请输入要封禁的端口' }]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" htmlType="submit">
-                        解封
+                        封禁
                     </Button>
                 </Form.Item>
             </Form>
 
-            <label>添加IP到白名单</label>
+            <label>封禁内部服务</label>
             <Form
                 name="addWhitelist"
                 labelCol={{ span: 8 }}
@@ -104,18 +150,18 @@ const Disposal: React.FC = () => {
                 <Form.Item<string>
                     label="IP"
                     name="ip"
-                    rules={[{ required: true, message: '请输入要添加到白名单的IP地址' }]}
+                    rules={[{ required: true, message: '请输入要封禁内部服务的地址' }]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" htmlType="submit">
-                        添加
+                        封禁
                     </Button>
                 </Form.Item>
             </Form>
 
-            <label>从白名单中移除IP</label>
+            <label>隔离内部主机</label>
             <Form
                 name="removeWhitelist"
                 labelCol={{ span: 8 }}
@@ -128,13 +174,13 @@ const Disposal: React.FC = () => {
                 <Form.Item<string>
                     label="IP"
                     name="ip"
-                    rules={[{ required: true, message: '请输入要从白名单中移除的IP地址' }]}
+                    rules={[{ required: true, message: '请输入要隔离内部主机的地址' }]}
                 >
                     <Input />
                 </Form.Item>
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" htmlType="submit">
-                        移除
+                        隔离
                     </Button>
                 </Form.Item>
             </Form>
