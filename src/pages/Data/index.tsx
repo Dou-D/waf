@@ -50,7 +50,7 @@ export default () => {
       dataIndex: "srcIP",
       hideInSearch: true,
       copyable: true,
-      width: 200,
+      width: 160,
       editable: false,
       render: (_, record) => {
         return (
@@ -66,7 +66,7 @@ export default () => {
       dataIndex: 'dstIP',
       hideInSearch: true,
       copyable: true,
-      width: 200,
+      width: 160,
       editable: false,
       render: (_, record) => {
         return (
@@ -84,8 +84,9 @@ export default () => {
     {
       title: '响应时间',
       dataIndex: 'time',
+      width: 100,
       hideInSearch: true,
-      editable: false
+      editable: false,
     },
     {
       disable: true,
@@ -141,7 +142,7 @@ export default () => {
     {
       title: '协议',
       dataIndex: 'protocol',
-      width: 160,
+      width: 100,
       editable: false,
     },
     {
@@ -156,6 +157,7 @@ export default () => {
     {
       title: "状态",
       renderText: () => '已处置',
+      width: 70,
       hideInTable: activeKey !== "攻击" ? true : false,
     },
     {
@@ -163,6 +165,7 @@ export default () => {
       dataIndex: 'disposeType',
       hideInSearch: true,
       editable: false,
+      width: 80,
       hideInTable: activeKey !== "攻击" ? true : false,
     },
     {
@@ -172,6 +175,7 @@ export default () => {
       hideInSearch: true,
       editable: false,
       hideInTable: activeKey !== "攻击" ? true : false,
+      renderText: (text) => dayjs(text * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '操作',
@@ -200,7 +204,7 @@ export default () => {
             method: 'POST',
             data: {
               ip: record.srcIp,
-              type: "IP限速"
+              type: "封禁IP"
             }
           },).then(() => {
             actionRef.current?.reload();

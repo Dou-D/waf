@@ -26,7 +26,7 @@ const Description: React.FC = () => {
         })
     }, [])
     return (
-        {details} && <Card title={"攻击信息ID:"+details?.ID}>
+        details && <Card title={"攻击信息ID:"+details?.ID}>
             {/* <Card.Grid style={gridStyle}>id: </Card.Grid>
             <Card.Grid style={gridStyle}>{details?.ID}</Card.Grid> */}
             <Card.Grid style={gridStyle}>名称： </Card.Grid>

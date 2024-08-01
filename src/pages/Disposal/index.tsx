@@ -113,7 +113,7 @@ const Disposal: React.FC = () => {
                 </Form.Item>
             </Form>
 
-            <label>封禁端口</label>
+            <label>封禁内部端口</label>
             <Form
                 name="unban"
                 labelCol={{ span: 8 }}
