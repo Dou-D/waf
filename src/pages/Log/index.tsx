@@ -27,7 +27,7 @@ export default () => {
       {toolbarMenu.map((menu) => (
         <Button
           key={menu.key}
-          onClick={() => setActiveKey(menu.key as MenuType)}
+          onClick={() => setActiveKey(menu.key as PageLog.MenuType)}
           style={{ marginRight: 16, cursor: 'pointer' }}
           type={activeKey === menu.key ? 'primary' : 'default'}
         >

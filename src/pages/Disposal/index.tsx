@@ -21,7 +21,7 @@ const onFinishBan: FormProps<{ ip: string }>['onFinish'] = (values) => {
             type: '封禁IP'
         }
     }).then(() => {
-        openNotification('封禁IP:${values.ip}');
+        openNotification(`封禁IP:${values.ip}`);
     });
 };
 

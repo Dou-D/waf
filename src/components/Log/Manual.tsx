@@ -2,6 +2,7 @@ import { ProTable } from '@ant-design/pro-components';
 import type { ProColumns } from '@ant-design/pro-components';
 import request from 'umi-request';
 import { pagination } from '@/common';
+import dayjs from 'dayjs';
 
 const manualColumns: ProColumns<Log.ManualItems>[] = [
     {
@@ -24,7 +25,8 @@ const manualColumns: ProColumns<Log.ManualItems>[] = [
     {
         title: "操作时间",
         dataIndex: 'timestamp',
-        valueType: "dateTime"
+        valueType: "dateTime",
+        renderText: (text) => dayjs(text * 1000).format('YYYY-MM-DD HH:mm:ss'),
     }
 ];
 
