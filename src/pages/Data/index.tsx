@@ -1,12 +1,14 @@
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, Drawer, Select, Space, Tag } from 'antd';
+import { Button, Drawer, notification, Select, Space, Tag, Upload, UploadProps } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import request from 'umi-request';
-import { history } from 'umi'
+import { history } from 'umi';
 import dayjs from 'dayjs';
 import { pagination } from '@/common';
-
+import { UploadOutlined } from '@ant-design/icons';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { change } from '@/store/modules';
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -26,6 +28,9 @@ const selectLabelColor = (label: string): PageData.LabelColor => {
 };
 
 export default () => {
+  const dispatch = useAppDispatch()
+  const selector = useAppSelector((state) => state.upload.value);
+  const [api, contextHolder] = notification.useNotification();
   const actionRef = useRef<ActionType>();
   const [activeKey, setActiveKey] = useState<PageData.ToolBarType>('正常');
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -47,7 +52,7 @@ export default () => {
     },
     {
       title: '来源IP',
-      dataIndex: "srcIP",
+      dataIndex: 'srcIP',
       hideInSearch: true,
       copyable: true,
       width: 160,
@@ -126,7 +131,7 @@ export default () => {
     {
       title: '日期范围',
       dataIndex: 'created_at',
-      valueType: "dateRange",
+      valueType: 'dateRange',
       hideInTable: true,
       search: {
         transform: (value) => {
@@ -151,14 +156,14 @@ export default () => {
       dataIndex: 'timestamp',
       hideInSearch: true,
       editable: false,
-      hideInTable: activeKey === "攻击" ? true : false,
+      hideInTable: activeKey === '攻击' ? true : false,
       renderText: (text) => dayjs(text * 1000).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
-      title: "状态",
+      title: '状态',
       renderText: () => '已处置',
       width: 70,
-      hideInTable: activeKey !== "攻击" ? true : false,
+      hideInTable: activeKey !== '攻击' ? true : false,
     },
     {
       title: '处置类型',
@@ -166,7 +171,7 @@ export default () => {
       hideInSearch: true,
       editable: false,
       width: 80,
-      hideInTable: activeKey !== "攻击" ? true : false,
+      hideInTable: activeKey !== '攻击' ? true : false,
     },
     {
       title: '处置时间',
@@ -174,8 +179,8 @@ export default () => {
       valueType: 'dateTime',
       hideInSearch: true,
       editable: false,
-      hideInTable: activeKey !== "攻击" ? true : false,
-      renderText: (text) => dayjs(text * 1000).format('YYYY-MM-DD HH:mm:ss')
+      hideInTable: activeKey !== '攻击' ? true : false,
+      renderText: (text) => dayjs(text * 1000).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: '操作',
@@ -197,18 +202,20 @@ export default () => {
           danger
           size="small"
           key="delete"
-          onClick={async () => request('/api/manualBan', {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-            method: 'POST',
-            data: {
-              ip: record.srcIp,
-              type: "封禁IP"
-            }
-          },).then(() => {
-            actionRef.current?.reload();
-          })}
+          onClick={async () =>
+            request('/api/manualBan', {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+              method: 'POST',
+              data: {
+                ip: record.srcIp,
+                type: '封禁IP',
+              },
+            }).then(() => {
+              actionRef.current?.reload();
+            })
+          }
         >
           禁用
         </Button>,
@@ -218,18 +225,40 @@ export default () => {
       ],
     },
   ];
+  const uploadPcap = () => {
+    dispatch(change(true))
 
+    api.info({
+      message: '上传成功',
+      description: '上传成功',
+      placement: 'topRight',
+    });
+  };
   useEffect(() => {
     actionRef.current?.reload();
   }, [activeKey]);
-
+  const props: UploadProps = {
+    name: 'file',
+    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    progress: {
+      strokeColor: {
+        '0%': '#108ee9',
+        '100%': '#87d068',
+      },
+      strokeWidth: 3,
+      format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
+    },
+  };
   return (
     <>
       <ProTable<PageData.FlowListItems>
         columns={columns}
         actionRef={actionRef}
         cardBordered
-        request={async (param,) => {
+        request={async (param) => {
           const response = await request<PageData.FlowListResponse>('/api/flowList', {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -243,7 +272,7 @@ export default () => {
             data: response.data.flows,
             success: true,
             total: response.data.total,
-          }
+          };
         }}
         editable={{
           type: 'multiple',
@@ -262,8 +291,8 @@ export default () => {
               data: {
                 flowID: record.id,
                 status: record.label,
-              }
-            })
+              },
+            });
             actionRef.current?.reload();
             // await waitTime(2000);
           },
@@ -326,7 +355,13 @@ export default () => {
             },
           },
         }}
-        toolBarRender={() => []}
+        toolBarRender={() => [
+          <Upload {...props}>
+            <Button icon={<UploadOutlined />} onClick={uploadPcap}>
+              上传数据
+            </Button>
+          </Upload>,
+        ]}
       />
       <Drawer
         title="详情"
@@ -350,8 +385,14 @@ export default () => {
             <p>http: {detailData.httpPayload}</p>
             <p>响应时间：{detailData.time}</p>
             <p>处置类型: {detailData.disposeType}</p>
-            <p>处置时间: {dayjs.unix(Number(detailData.disposeTime)).format('YYYY-MM-DD HH:mm:ss')}</p>
-            { activeKey === "攻击" && <Button type="primary" onClick={() => history.push('/attack')}>查看攻击详情</Button>}
+            <p>
+              处置时间: {dayjs.unix(Number(detailData.disposeTime)).format('YYYY-MM-DD HH:mm:ss')}
+            </p>
+            {activeKey === '攻击' && (
+              <Button type="primary" onClick={() => history.push('/attack')}>
+                查看攻击详情
+              </Button>
+            )}
           </div>
         )}
       </Drawer>

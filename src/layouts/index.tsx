@@ -6,6 +6,8 @@ import React, { memo, useState } from 'react';
 import { Link, Outlet } from 'umi';
 import { DownOutlined } from '@ant-design/icons';
 import { history } from 'umi';
+import { Provider } from 'react-redux';
+import store from '@/store/store';
 
 const { Header, Content, Sider } = Layout;
 
@@ -13,12 +15,12 @@ const MenuItems = [
   { key: '1', label: '首页', path: '/dashboard' },
   { key: '2', label: '攻击', path: '/attack' },
   { key: '3', label: '知识库', path: '/know' },
-]
+];
 const BreadcrumbItems: MenuProps['items'] = MenuItems.map((item) => {
   return {
     key: item.key,
     label: <Link to={item.path}>{item.label}</Link>,
-  }
+  };
 });
 
 const sliderItemsData = [
@@ -67,9 +69,7 @@ const Layouts: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  const [breadcrumbItems, setBreadcrumbItems] = useState<{ title: string }[]>([
-    { title: 'Home' },
-  ]);
+  const [breadcrumbItems, setBreadcrumbItems] = useState<{ title: string }[]>([{ title: 'Home' }]);
 
   function findMenuItemByKey(key: string, menuItems: MenuProps['items']): any {
     if (!menuItems) return null;
@@ -85,10 +85,7 @@ const Layouts: React.FC = () => {
     console.log(e);
 
     if (clickedItem) {
-      setBreadcrumbItems([
-        { title: 'Home' },
-        { title: clickedItem.label as string },
-      ]);
+      setBreadcrumbItems([{ title: 'Home' }, { title: clickedItem.label as string }]);
     }
   };
 
@@ -104,16 +101,22 @@ const Layouts: React.FC = () => {
   const items: MenuProps['items'] = [
     {
       label: (
-        <Button type="link" onClick={() => history.push("/login")}>登录</Button>
+        <Button type="link" onClick={() => history.push('/login')}>
+          登录
+        </Button>
       ),
       key: '0',
     },
     {
       label: (
-        <Button onClick={() => {
-          localStorage.removeItem('token')
-          window.location.reload()
-        }}>退出</Button>
+        <Button
+          onClick={() => {
+            localStorage.removeItem('token');
+            window.location.reload();
+          }}
+        >
+          退出
+        </Button>
       ),
       key: '1',
       disabled: localStorage.getItem('token') ? false : true,
@@ -134,7 +137,7 @@ const Layouts: React.FC = () => {
         <Dropdown menu={{ items }}>
           <a onClick={(e) => e.preventDefault()}>
             <Space>
-              <span className='text-purple-50'>我的</span>
+              <span className="text-purple-50">我的</span>
               <DownOutlined />
             </Space>
           </a>
@@ -166,7 +169,9 @@ const Layouts: React.FC = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            <Outlet />
+            <Provider store={store}>
+              <Outlet />
+            </Provider>
           </Content>
         </Layout>
       </Layout>

@@ -3,7 +3,7 @@ import { AttackPath, Assets } from '@/components/Attack';
 import { Col, notification, Radio, RadioChangeEvent, Row, Space, } from 'antd';
 import { useState } from 'react';
 import { FileUpload } from 'primereact/fileupload'
-import "primereact/resources/themes/lara-light-cyan/theme.css";
+
 
 const Attack: React.FC = () => {
     const [value, setValue] = useState(1);

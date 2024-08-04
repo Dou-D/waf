@@ -49,7 +49,7 @@ const onFinishAddWhitelist: FormProps<{ ip: string }>['onFinish'] = (values) => 
         method: 'POST',
         data: {
             ip: values.ip,
-            type: "封禁内部服务"
+            type: "扫描遏制"
         }
     }).then(() => {
         openNotification(`封禁:${values.ip}的内部服务`);
@@ -124,7 +124,7 @@ const Disposal: React.FC = () => {
                 autoComplete="off"
             >
                 <Form.Item<string>
-                    label="IP"
+                    label="Port"
                     name="ip"
                     rules={[{ required: true, message: '请输入要封禁的端口' }]}
                 >
@@ -137,7 +137,7 @@ const Disposal: React.FC = () => {
                 </Form.Item>
             </Form>
 
-            <label>封禁内部服务</label>
+            <label>扫描遏制</label>
             <Form
                 name="addWhitelist"
                 labelCol={{ span: 8 }}
@@ -150,7 +150,7 @@ const Disposal: React.FC = () => {
                 <Form.Item<string>
                     label="IP"
                     name="ip"
-                    rules={[{ required: true, message: '请输入要封禁内部服务的地址' }]}
+                    rules={[{ required: true, message: '请输入要扫描遏制的地址' }]}
                 >
                     <Input />
                 </Form.Item>

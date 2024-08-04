@@ -14,9 +14,15 @@ importers:
       '@ant-design/pro-components':
         specifier: ^2.7.10
         version: 2.7.10(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(rc-field-form@2.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@reduxjs/toolkit':
+        specifier: ^2.2.7
+        version: 2.2.7(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@types/lodash.clonedeep':
         specifier: ^4.5.9
         version: 4.5.9
+      '@types/react-redux':
+        specifier: ^7.1.33
+        version: 7.1.33
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
@@ -26,9 +32,15 @@ importers:
       primereact:
         specifier: ^10.8.0
         version: 10.8.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-redux:
+        specifier: ^9.1.2
+        version: 9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1)
+      redux:
+        specifier: ^5.0.1
+        version: 5.0.1
       table-render:
         specifier: ^2.1.4
-        version: 2.1.4(@types/react@18.3.3)(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 2.1.4(@types/react@18.3.3)(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@ant-design/plots':
         specifier: ^2.2.5
@@ -1753,6 +1765,17 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
 
+  '@reduxjs/toolkit@2.2.7':
+    resolution: {integrity: sha512-faI3cZbSdFb8yv9dhDTmGwclW0vk0z5o1cia+kf7gCbaCwHI5e+7tP57mJUv22pNcNbeA62GSrPpfrUfdXcQ6g==}
+    peerDependencies:
+      react: ^16.9.0 || ^17.0.0 || ^18
+      react-redux: ^7.2.1 || ^8.1.3 || ^9.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-redux:
+        optional: true
+
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
 
@@ -1960,6 +1983,9 @@ packages:
 
   '@types/react-dom@18.3.0':
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
+
+  '@types/react-redux@7.1.33':
+    resolution: {integrity: sha512-NF8m5AjWCkert+fosDsN3hAlHzpjSiXlVy9EgQEmLoBhaNXbmyeGs/aj5dQzKuF+/q+S7JQagorGDW8pJ28Hmg==}
 
   '@types/react-router-dom@4.3.5':
     resolution: {integrity: sha512-eFajSUASYbPHg2BDM1G8Btx+YqGgvROPIg6sBhl3O4kbDdYXdFdfrgQFf/pcBuQVObjfT9AL/dd15jilR5DIEA==}
@@ -4203,6 +4229,9 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
+  immer@10.1.1:
+    resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
+
   immer@8.0.4:
     resolution: {integrity: sha512-jMfL18P+/6P6epANRvRk6q8t+3gGhqsJ9EuJ25AXE+9bNTYtssvzeYbEd0mXRYWCmmXSIbnlpz6vd6iJlmGGGQ==}
 
@@ -6166,6 +6195,18 @@ packages:
       redux:
         optional: true
 
+  react-redux@9.1.2:
+    resolution: {integrity: sha512-0OA4dhM1W48l3uzmv6B7TXPCGmokUU4p1M44DGN2/D9a1FjVPukVjER1PcPX97jIg6aUeLq1XJo1IpfbgULn0w==}
+    peerDependencies:
+      '@types/react': ^18.2.25
+      react: ^18.0
+      redux: ^5.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      redux:
+        optional: true
+
   react-refresh@0.14.0:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}
     engines: {node: '>=0.10.0'}
@@ -6257,11 +6298,19 @@ packages:
   redux-saga@0.16.2:
     resolution: {integrity: sha512-iIjKnRThI5sKPEASpUvySemjzwqwI13e3qP7oLub+FycCRDysLSAOwt958niZW6LhxfmS6Qm1BzbU70w/Koc4w==}
 
+  redux-thunk@3.1.0:
+    resolution: {integrity: sha512-NW2r5T6ksUKXCabzhL9z+h206HQw/NJkcLm1GPImRQ8IzfXwRGqjVhKJGauHirT0DAuyy6hjdnMZaRoAcy0Klw==}
+    peerDependencies:
+      redux: ^5.0.0
+
   redux@3.7.2:
     resolution: {integrity: sha512-pNqnf9q1hI5HHZRBkj3bAngGZW/JMCmexDlOxw4XagXY2o1327nHH54LoTjiPJ0gizoqPDRqWyX/00g0hD6w+A==}
 
   redux@4.2.1:
     resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
+
+  redux@5.0.1:
+    resolution: {integrity: sha512-M9/ELqF6fy8FwmkpnF0S3YKOqMyoWJ4+CS5Efg2ct3oY9daQvd/Pc71FpGZsVsbl3Cpb+IIcjBDUnnyBdQbq4w==}
 
   reflect.getprototypeof@1.0.6:
     resolution: {integrity: sha512-fmfw4XgoDke3kdI6h4xcUz1dG8uaiv5q9gcEwLS4Pnth2kxT+GZ7YehS1JTMGBQmtV7Y4GFGbs2re2NqhdozUg==}
@@ -6330,6 +6379,9 @@ packages:
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
+
+  reselect@5.1.1:
+    resolution: {integrity: sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==}
 
   resize-observer-polyfill@1.5.1:
     resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==}
@@ -9580,6 +9632,16 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+  '@reduxjs/toolkit@2.2.7(react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1))(react@18.3.1)':
+    dependencies:
+      immer: 10.1.1
+      redux: 5.0.1
+      redux-thunk: 3.1.0(redux@5.0.1)
+      reselect: 5.1.1
+    optionalDependencies:
+      react: 18.3.1
+      react-redux: 9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1)
+
   '@sinclair/typebox@0.27.8': {}
 
   '@stylelint/postcss-css-in-js@0.38.0(postcss-syntax@0.36.2(postcss@8.4.39))(postcss@8.4.39)':
@@ -9799,6 +9861,13 @@ snapshots:
     dependencies:
       '@types/react': 18.3.3
 
+  '@types/react-redux@7.1.33':
+    dependencies:
+      '@types/hoist-non-react-statics': 3.3.5
+      '@types/react': 18.3.3
+      hoist-non-react-statics: 3.3.2
+      redux: 4.2.1
+
   '@types/react-router-dom@4.3.5':
     dependencies:
       '@types/history': 5.0.0
@@ -9810,7 +9879,7 @@ snapshots:
       '@types/history': 4.7.11
       '@types/react': 18.3.3
       '@types/react-router': 5.1.20
-      redux: 4.2.1
+      redux: 5.0.1
 
   '@types/react-router@5.1.20':
     dependencies:
@@ -10228,7 +10297,7 @@ snapshots:
       dayjs: 1.11.11
       dva-core: 2.0.4(redux@4.2.1)
       dva-immer: 1.0.2(dva@2.5.0-beta.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      dva-loading: 3.0.25(dva-core@2.0.4(redux@4.2.1))
+      dva-loading: 3.0.25(dva-core@2.0.4(redux@5.0.1))
       event-emitter: 0.3.5
       fast-deep-equal: 3.1.3
       intl: 1.2.5
@@ -11826,7 +11895,7 @@ snapshots:
       dva: 2.5.0-beta.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       immer: 8.0.4
 
-  dva-loading@3.0.25(dva-core@2.0.4(redux@4.2.1)):
+  dva-loading@3.0.25(dva-core@2.0.4(redux@5.0.1)):
     dependencies:
       '@babel/runtime': 7.24.7
       dva-core: 2.0.4(redux@4.2.1)
@@ -12513,7 +12582,7 @@ snapshots:
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  form-render@2.4.4(@types/react@18.3.3)(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  form-render@2.4.4(@types/react@18.3.3)(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ant-design/icons': 4.8.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ahooks: 3.8.0(react@18.3.1)
@@ -12527,7 +12596,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       virtualizedtableforantd4: 1.3.1(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      zustand: 4.5.4(@types/react@18.3.3)(react@18.3.1)
+      zustand: 4.5.4(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - immer
@@ -12863,6 +12932,8 @@ snapshots:
 
   image-size@0.5.5:
     optional: true
+
+  immer@10.1.1: {}
 
   immer@8.0.4: {}
 
@@ -14944,6 +15015,15 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       redux: 4.2.1
 
+  react-redux@9.1.2(@types/react@18.3.3)(react@18.3.1)(redux@5.0.1):
+    dependencies:
+      '@types/use-sync-external-store': 0.0.3
+      react: 18.3.1
+      use-sync-external-store: 1.2.2(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.3
+      redux: 5.0.1
+
   react-refresh@0.14.0: {}
 
   react-refresh@0.14.2: {}
@@ -15065,6 +15145,10 @@ snapshots:
 
   redux-saga@0.16.2: {}
 
+  redux-thunk@3.1.0(redux@5.0.1):
+    dependencies:
+      redux: 5.0.1
+
   redux@3.7.2:
     dependencies:
       lodash: 4.17.21
@@ -15075,6 +15159,8 @@ snapshots:
   redux@4.2.1:
     dependencies:
       '@babel/runtime': 7.24.7
+
+  redux@5.0.1: {}
 
   reflect.getprototypeof@1.0.6:
     dependencies:
@@ -15147,6 +15233,8 @@ snapshots:
   require-directory@2.1.1: {}
 
   require-from-string@2.0.2: {}
+
+  reselect@5.1.1: {}
 
   resize-observer-polyfill@1.5.1: {}
 
@@ -15759,7 +15847,7 @@ snapshots:
 
   systemjs@6.15.1: {}
 
-  table-render@2.1.4(@types/react@18.3.3)(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  table-render@2.1.4(@types/react@18.3.3)(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ant-design/icons': 5.3.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dnd-kit/core': 6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -15769,12 +15857,12 @@ snapshots:
       antd: 5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       classnames: 2.5.1
       dayjs: 1.11.11
-      form-render: 2.4.4(@types/react@18.3.3)(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      form-render: 2.4.4(@types/react@18.3.3)(antd@5.19.1(moment@2.30.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lodash.defaults: 4.2.0
       lodash.get: 4.4.2
       lodash.omit: 4.5.0
       react: 18.3.1
-      zustand: 4.5.4(@types/react@18.3.3)(react@18.3.1)
+      zustand: 4.5.4(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - immer
@@ -16375,9 +16463,10 @@ snapshots:
     dependencies:
       tslib: 2.3.0
 
-  zustand@4.5.4(@types/react@18.3.3)(react@18.3.1):
+  zustand@4.5.4(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1):
     dependencies:
       use-sync-external-store: 1.2.0(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.3
+      immer: 10.1.1
       react: 18.3.1

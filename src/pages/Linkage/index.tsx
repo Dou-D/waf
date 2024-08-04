@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import { ComposeOption } from 'echarts/core';
-import { GraphSeriesOption, TitleComponentOption, TooltipComponentOption } from 'echarts';
+import { GraphSeriesOption, TitleComponentOption, TooltipComponentOption, } from 'echarts';
 
-type ECOption = ComposeOption<
+export type ECOption = ComposeOption<
   | TitleComponentOption
   | TooltipComponentOption
   | GraphSeriesOption
 >;
 
 const getOption = (): ECOption => {
+  
   return {
     title: {
-      text: 'WAF 流量监控抓包项目',
+      text: '可视化编排',
       left: 'center',
     },
     tooltip: {
@@ -40,6 +41,7 @@ const getOption = (): ECOption => {
           formatter: '{c}',
           position: "middle",
         },
+        // echarts 没有将GraphNodeItemOption导出，不然可以给加上类型的
         data: [
           {
             name: 'Golang (gopacket 抓包)',
@@ -97,7 +99,7 @@ const getOption = (): ECOption => {
             itemStyle: { color: '#e377c2' },
             description: '处理流量和IP：对检测到的恶意流量和可疑IP进行处置，确保网络安全。'
           }
-        ],
+        ] as any,
         links: [
           { source: 'Golang (gopacket 抓包)', target: '消息队列', label: { show: true }, lineStyle: { color: 'source' }, value: '抓取流量推送' },
           { source: '消息队列', target: 'Python (流量分析)', label: { show: true }, lineStyle: { color: 'target' }, value: '传递流量数据' },
@@ -105,7 +107,7 @@ const getOption = (): ECOption => {
           { source: 'Elasticsearch', target: 'Golang (数据获取)', label: { show: true }, lineStyle: { color: 'target' }, value: '获取数据' },
           { source: 'Golang (数据获取)', target: '前端', label: { show: true }, lineStyle: { color: 'source' }, value: '展示数据' },
           { source: "Python (流量分析)", target: "处置", label: { show: true }, lineStyle: { color: 'source' }, value: '处理流量和IP' },
-        ],
+        ] as any,
       },
     ],
   };
