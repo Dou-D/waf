@@ -28,8 +28,7 @@ const selectLabelColor = (label: string): PageData.LabelColor => {
 };
 
 export default () => {
-  const dispatch = useAppDispatch()
-  const selector = useAppSelector((state) => state.upload.value);
+  const dispatch = useAppDispatch();
   const [api, contextHolder] = notification.useNotification();
   const actionRef = useRef<ActionType>();
   const [activeKey, setActiveKey] = useState<PageData.ToolBarType>('正常');
@@ -225,23 +224,14 @@ export default () => {
       ],
     },
   ];
-  const uploadPcap = () => {
-    dispatch(change(true))
-
-    api.info({
-      message: '上传成功',
-      description: '上传成功',
-      placement: 'topRight',
-    });
-  };
   useEffect(() => {
     actionRef.current?.reload();
   }, [activeKey]);
   const props: UploadProps = {
     name: 'file',
-    action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+    action: '/api/trigger',
     headers: {
-      authorization: 'authorization-text',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     progress: {
       strokeColor: {
@@ -268,6 +258,8 @@ export default () => {
               flowType: activeKey,
             },
           });
+          // 上传文件后才能看到数据
+          response.data.flows ? dispatch(change(true)) : dispatch(change(false));
           return {
             data: response.data.flows,
             success: true,
@@ -294,7 +286,6 @@ export default () => {
               },
             });
             actionRef.current?.reload();
-            // await waitTime(2000);
           },
         }}
         columnsState={{
@@ -357,7 +348,17 @@ export default () => {
         }}
         toolBarRender={() => [
           <Upload {...props}>
-            <Button icon={<UploadOutlined />} onClick={uploadPcap}>
+            <Button
+              icon={<UploadOutlined />}
+              onClick={() => {
+                api.info({
+                  message: '上传成功',
+                  description: '上传成功',
+                  placement: 'topRight',
+                });
+                actionRef.current?.reload();
+              }}
+            >
               上传数据
             </Button>
           </Upload>,

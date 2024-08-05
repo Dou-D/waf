@@ -1,8 +1,7 @@
 
 import { AttackPath, Assets } from '@/components/Attack';
-import { Col, notification, Radio, RadioChangeEvent, Row, Space, } from 'antd';
+import { Col, Radio, RadioChangeEvent, Row, Space, } from 'antd';
 import { useState } from 'react';
-import { FileUpload } from 'primereact/fileupload'
 
 
 const Attack: React.FC = () => {
@@ -10,16 +9,6 @@ const Attack: React.FC = () => {
     const [upload, setUpload] = useState(false);
     const onChange = (e: RadioChangeEvent) => {
         setValue(e.target.value);
-    };
-    const [api, contextHolder] = notification.useNotification();
-
-    const onUpload = () => {
-        setUpload(true)
-        api.info({
-            message: '上传成功',
-            description: '上传成功',
-            placement: 'topRight',
-        })
     };
     return (
         <>
@@ -38,8 +27,7 @@ const Attack: React.FC = () => {
 
             <Row>
                 <Col span={24}>{value === 1 ? <>
-                    <FileUpload mode="basic" name="demo[]" accept="pcap/*" maxFileSize={1000000} onUpload={onUpload} chooseLabel="上传文件" />
-                    <AttackPath props={upload} />
+                    <AttackPath />
                 </> : <Assets />}</Col>
             </Row>
         </>

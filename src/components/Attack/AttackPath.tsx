@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 import * as echarts from 'echarts';
-
+import { useAppDispatch, useAppSelector } from '@/store';
+import { ComposeOption, GraphSeriesOption, TitleComponentOption, TooltipComponentOption, } from 'echarts';
+export type ECOption = ComposeOption<
+  | TitleComponentOption
+  | TooltipComponentOption
+  | GraphSeriesOption
+>;
 const attackData = [
   {
     id: '1',
@@ -34,7 +40,7 @@ const attackData = [
     dstMac: '00:1B:44:11:3A:B8',
     httpPayload: 'GET /../../passwd',
     vulnerability: true,
-    fragile: 60
+    fragile: 60,
   },
   {
     id: '3',
@@ -52,7 +58,7 @@ const attackData = [
     dstMac: '00:1B:44:11:3A:B2',
     httpPayload: '',
     vulnerability: false,
-    fragile: 0
+    fragile: 0,
   },
   {
     id: '4',
@@ -70,7 +76,7 @@ const attackData = [
     dstMac: '00:1B:44:11:3A:B4',
     httpPayload: 'POST /api/load',
     vulnerability: true,
-    fragile: 90
+    fragile: 90,
   },
   {
     id: '5',
@@ -88,7 +94,7 @@ const attackData = [
     dstMac: '00:1B:44:11:3A:B6',
     httpPayload: 'GET /../win.ini',
     vulnerability: true,
-    fragile: 45
+    fragile: 45,
   },
   {
     id: '6',
@@ -106,7 +112,7 @@ const attackData = [
     dstMac: '00:1B:44:11:3A:C7',
     httpPayload: '',
     vulnerability: true,
-    fragile: 70
+    fragile: 70,
   },
   {
     id: '7',
@@ -124,7 +130,7 @@ const attackData = [
     dstMac: '00:1B:44:11:3A:D8',
     httpPayload: '<script>alert(1)</script>',
     vulnerability: false,
-    fragile: 0
+    fragile: 0,
   },
   {
     id: '8',
@@ -142,7 +148,7 @@ const attackData = [
     dstMac: '00:1B:44:11:3A:E2',
     httpPayload: '',
     vulnerability: true,
-    fragile: 50
+    fragile: 50,
   },
   {
     id: '9',
@@ -160,7 +166,7 @@ const attackData = [
     dstMac: '00:1B:44:11:3A:F4',
     httpPayload: '',
     vulnerability: false,
-    fragile: 0
+    fragile: 0,
   },
   {
     id: '10',
@@ -178,35 +184,107 @@ const attackData = [
     dstMac: '00:1B:44:11:3A:G6',
     httpPayload: '',
     vulnerability: true,
-    fragile: 80
-  }
+    fragile: 80,
+  },
 ];
 
 // 连接数据，包括源节点、目标节点和攻击类型
 const edgesData = [
-  { source: '1', target: '2', attackType: 'DDoS', label: { show: true, formatter: 'Relationship A' }, lineStyle: { curveness: 0.2 } },
-  { source: '2', target: '3', attackType: 'redis未授权', label: { show: true, formatter: 'Relationship A' }, lineStyle: { curveness: 0.4 } },
-  { source: '3', target: '4', attackType: '目录穿越', label: { show: true, formatter: 'Relationship A' }, lineStyle: { curveness: 0.2 } },
-  { source: '4', target: '2', attackType: 'dnslog', label: { show: true, formatter: 'Relationship A' }, lineStyle: { curveness: 0 } },
-  { source: '2', target: '5', attackType: 'redis未授权', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.35 } },
-  { source: '3', target: '2', attackType: 'dnslog', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.45 } },
-  { source: '4', target: '3', attackType: '目录穿越', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.4 } },
-  { source: '5', target: '4', attackType: 'redis未授权', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.45 } },
-  { source: '5', target: '2', attackType: 'DDoS', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.1 } },
-  { source: '5', target: '1', attackType: '目录穿越', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.3 } },
-  { source: '4', target: '4', attackType: 'redis未授权', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.32 } },
-  { source: '2', target: '5', attackType: 'DDoS', label: { show: true, formatter: 'Relationship B' }, lineStyle: { curveness: 0.3 } },
+  {
+    source: '1',
+    target: '2',
+    attackType: 'DDoS',
+    label: { show: true, formatter: 'Relationship A' },
+    lineStyle: { curveness: 0.2 },
+  },
+  {
+    source: '2',
+    target: '3',
+    attackType: 'redis未授权',
+    label: { show: true, formatter: 'Relationship A' },
+    lineStyle: { curveness: 0.4 },
+  },
+  {
+    source: '3',
+    target: '4',
+    attackType: '目录穿越',
+    label: { show: true, formatter: 'Relationship A' },
+    lineStyle: { curveness: 0.2 },
+  },
+  {
+    source: '4',
+    target: '2',
+    attackType: 'dnslog',
+    label: { show: true, formatter: 'Relationship A' },
+    lineStyle: { curveness: 0 },
+  },
+  {
+    source: '2',
+    target: '5',
+    attackType: 'redis未授权',
+    label: { show: true, formatter: 'Relationship B' },
+    lineStyle: { curveness: 0.35 },
+  },
+  {
+    source: '3',
+    target: '2',
+    attackType: 'dnslog',
+    label: { show: true, formatter: 'Relationship B' },
+    lineStyle: { curveness: 0.45 },
+  },
+  {
+    source: '4',
+    target: '3',
+    attackType: '目录穿越',
+    label: { show: true, formatter: 'Relationship B' },
+    lineStyle: { curveness: 0.4 },
+  },
+  {
+    source: '5',
+    target: '4',
+    attackType: 'redis未授权',
+    label: { show: true, formatter: 'Relationship B' },
+    lineStyle: { curveness: 0.45 },
+  },
+  {
+    source: '5',
+    target: '2',
+    attackType: 'DDoS',
+    label: { show: true, formatter: 'Relationship B' },
+    lineStyle: { curveness: 0.1 },
+  },
+  {
+    source: '5',
+    target: '1',
+    attackType: '目录穿越',
+    label: { show: true, formatter: 'Relationship B' },
+    lineStyle: { curveness: 0.3 },
+  },
+  {
+    source: '4',
+    target: '4',
+    attackType: 'redis未授权',
+    label: { show: true, formatter: 'Relationship B' },
+    lineStyle: { curveness: 0.32 },
+  },
+  {
+    source: '2',
+    target: '5',
+    attackType: 'DDoS',
+    label: { show: true, formatter: 'Relationship B' },
+    lineStyle: { curveness: 0.3 },
+  },
 ];
-export const AttackPath: React.FC<{ props: boolean }> = ({ props }) => {
-  console.log("🚀 ~ props:", props)
+export const AttackPath: React.FC = () => {
+  const uploadState = useAppSelector((state) => state.upload.value);
   useEffect(() => {
     // ECharts 配置
-    const option = {
+    const option: ECOption = {
       title: {
-        text: '网络攻击可视化'
+        text: '网络攻击可视化',
       },
       legend: {
-        data: ['普通节点', '脆弱节点', '可疑节点']
+        data: ['普通节点', '脆弱节点', '可疑节点'],
       },
       tooltip: {
         trigger: 'item',
@@ -230,7 +308,7 @@ export const AttackPath: React.FC<{ props: boolean }> = ({ props }) => {
             脆弱性: ${data?.vulnerability ? 'Yes' : 'No'}<br>
             脆弱值: ${data?.fragile || 'N/A'}
           `;
-        }
+        },
       },
       animationDurationUpdate: 1500,
       animationEasingUpdate: 'quinticInOut',
@@ -246,52 +324,62 @@ export const AttackPath: React.FC<{ props: boolean }> = ({ props }) => {
               return `${node.data.value.dstIp}${node.data.value.vulnerability ? ' 脆弱点' : ''}`;
             },
             position: 'right',
-            fontSize: 16
+            fontSize: 16,
           },
           edgeSymbol: ['circle', 'arrow'],
           edgeSymbolSize: [4, 10],
           edgeLabel: {
             show: true,
             formatter: function (edge: any) {
-              return edge.data.data.attackType;  // 显示连接上的攻击类型
+              return edge.data.data.attackType; // 显示连接上的攻击类型
             },
-            fontSize: 12
+            fontSize: 12,
           },
           categories: [
             { name: '普通节点', itemStyle: { color: 'blue' } },
             { name: '脆弱节点', itemStyle: { color: 'red' } },
-            { name: '可疑节点', itemStyle: { color: '#FAAD14' } }
+            { name: '可疑节点', itemStyle: { color: '#FAAD14' } },
           ],
-          data: attackData.map(item => ({
+          data: attackData.map((item) => ({
             name: item.id,
             x: Math.random() * 800,
             y: Math.random() * 600,
             value: item,
-            category: item.id === '6' || item.id === '10' ? '可疑节点' : item.vulnerability ? '脆弱节点' : '普通节点',
+            category:
+              item.id === '6' || item.id === '10'
+                ? '可疑节点'
+                : item.vulnerability
+                ? '脆弱节点'
+                : '普通节点',
             itemStyle: {
-              color: item.id === '6' || item.id === '10' ? '#FAAD14' : item.vulnerability ? 'red' : 'blue'
-            }
-          })),
-          edges: edgesData.map(edge => ({
+              color:
+                item.id === '6' || item.id === '10'
+                  ? '#FAAD14'
+                  : item.vulnerability
+                  ? 'red'
+                  : 'blue',
+            },
+          })) as any,
+          edges: edgesData.map((edge) => ({
             source: edge.source,
             target: edge.target,
             data: edge,
             lineStyle: {
-              curveness: edge.lineStyle.curveness  // 确保这里从 edge 对象的 lineStyle 属性中读取曲率
+              curveness: edge.lineStyle.curveness, // 确保这里从 edge 对象的 lineStyle 属性中读取曲率
             },
-          }))
-        }
-      ]
+          })),
+        },
+      ],
     };
 
-
     // 初始化 ECharts 实例并将其绑定到 DOM 元素
-    props && (function () {
-      const chartDom = document.getElementById('main');
-      const chart = echarts.init(chartDom);
-      chart.setOption(option);
-    })()
-  }, [props])
+    uploadState &&
+      (function () {
+        const chartDom = document.getElementById('main');
+        const chart = echarts.init(chartDom);
+        chart.setOption(option);
+      })();
+  }, [uploadState]);
 
   return (
     <>

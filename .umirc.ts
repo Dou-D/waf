@@ -43,6 +43,11 @@ export default defineConfig({
       wrappers: ['@/wrappers/auth'],
     },
     {
+      path: "/menace",
+      component: "@/pages/Menace",
+      wrappers: ['@/wrappers/auth']
+    },
+    {
       path: '/linkage',
       component: '@/pages/Linkage',
     },
