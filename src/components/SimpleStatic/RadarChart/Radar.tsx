@@ -17,12 +17,6 @@ export const Radar: React.FC = () => {
         textAlign: 'center',
       },
     ],
-    tooltip: {},
-    // legend: {
-    //   data: ['电脑类型', '浏览器'],
-    //   left: 'center',
-    //   top: 'bottom'
-    // },
     radar: [
       {
         indicator: [
@@ -83,8 +77,8 @@ export const Radar: React.FC = () => {
       },
       method: 'GET'
     }).then((res: RadarChart.RadarResponse) => {
-      option.series[0].data[0].value = res.data.series[0].value
-      option.series[1].data[0].value = res.data.series[1].value
+      option.series[0].data[0].value = res?.data?.series[0].value
+      option.series[1].data[0].value = res?.data?.series[1].value
       setResult(option)
       setLoading(false)
     })

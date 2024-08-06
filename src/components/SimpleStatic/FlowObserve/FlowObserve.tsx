@@ -18,7 +18,7 @@ export const FlowObserve: React.FC = () => {
       },
       method: 'GET',
     }).then((res: FlowObserve.FlowCardResponse) => {
-      setFlowCardData(res.data.flowCardData)
+      setFlowCardData(res?.data?.flowCardData)
 
     })
   }, []);

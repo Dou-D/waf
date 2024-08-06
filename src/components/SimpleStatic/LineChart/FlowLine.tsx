@@ -1,3 +1,5 @@
+import { FlagResponse } from '@/common/FlagResponse';
+import { useAppSelector } from '@/store';
 import { Line } from '@ant-design/plots';
 import { useState, useEffect } from 'react';
 import request from 'umi-request';
@@ -11,6 +13,7 @@ const testData = [
 
 const FlowLine: React.FC = () => {
   const [flowData, setFlowData] = useState<LineChart.FlowLineType[]>(testData);
+
   useEffect(() => {
     request('/api/flowLine', {
       method: 'GET',
@@ -18,7 +21,7 @@ const FlowLine: React.FC = () => {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     }).then((res: LineChart.Response) => {
-      setFlowData(res.data.flowLine);
+      setFlowData(res?.data?.flowLine);
     });
   }, []);
   const configCharts = {

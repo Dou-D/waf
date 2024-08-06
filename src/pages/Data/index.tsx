@@ -9,6 +9,7 @@ import { pagination } from '@/common';
 import { UploadOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { change } from '@/store/modules';
+import { FlagResponse } from '@/common/FlagResponse';
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -28,7 +29,6 @@ const selectLabelColor = (label: string): PageData.LabelColor => {
 };
 
 export default () => {
-  const dispatch = useAppDispatch();
   const [api, contextHolder] = notification.useNotification();
   const actionRef = useRef<ActionType>();
   const [activeKey, setActiveKey] = useState<PageData.ToolBarType>('正常');
@@ -38,6 +38,8 @@ export default () => {
     setDetailData(record);
     setDrawerVisible(true);
   };
+  const [uploadState, setUploadState] = useState<boolean>();
+
   const columns: ProColumns<PageData.FlowListItems>[] = [
     {
       dataIndex: 'id',
@@ -225,22 +227,39 @@ export default () => {
     },
   ];
   useEffect(() => {
+    request<FlagResponse>('/api/flag', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then((res) => {
+      setUploadState(res.data);
+    });
     actionRef.current?.reload();
   }, [activeKey]);
-  const props: UploadProps = {
-    name: 'file',
-    action: '/api/trigger',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    progress: {
-      strokeColor: {
-        '0%': '#108ee9',
-        '100%': '#87d068',
-      },
-      strokeWidth: 3,
-      format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
-    },
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      request('/api/trigger', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        params: {
+          flag: true,
+        },
+      })
+        .then((res) => {
+          location.reload()
+          api.info({
+            message: '上传成功',
+          });
+        })
+        .catch(() => {
+          api.error({
+            message: '上传失败',
+          });
+        });
+    }
   };
   return (
     <>
@@ -259,11 +278,10 @@ export default () => {
             },
           });
           // 上传文件后才能看到数据
-          response.data.flows ? dispatch(change(true)) : dispatch(change(false));
           return {
-            data: response.data.flows,
+            data: response.data?.flows,
             success: true,
-            total: response.data.total,
+            total: response.data?.total,
           };
         }}
         editable={{
@@ -347,21 +365,38 @@ export default () => {
           },
         }}
         toolBarRender={() => [
-          <Upload {...props}>
-            <Button
-              icon={<UploadOutlined />}
-              onClick={() => {
-                api.info({
-                  message: '上传成功',
-                  description: '上传成功',
-                  placement: 'topRight',
-                });
-                actionRef.current?.reload();
-              }}
-            >
-              上传数据
-            </Button>
-          </Upload>,
+          <input
+            id="fileInput"
+            type="file"
+            accept=".pcap"
+            style={{ display: 'none' }}
+            onChange={(e) => handleFileChange(e)}
+          />,
+          <Button
+            icon={<UploadOutlined />}
+            onClick={async () => {
+              document.getElementById('fileInput')?.click();
+            }}
+          >
+            上传数据
+          </Button>,
+          <Button
+            disabled={uploadState ? false : true}
+            onClick={() => {
+              request('/api/trigger', {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+                params: {
+                  flag: false,
+                },
+              }).then(res => {
+                location.reload()
+              })
+            }}
+          >
+            取消数据
+          </Button>,
         ]}
       />
       <Drawer

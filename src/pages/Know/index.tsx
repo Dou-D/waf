@@ -3,7 +3,6 @@ import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Modal } from 'antd';
 import { memo, useState, useEffect } from 'react';
-import ReactECharts from 'echarts-for-react';
 import request from 'umi-request';
 import { KnowEcharts } from '@/components/Know';
 

@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import * as echarts from 'echarts';
-import { useAppDispatch, useAppSelector } from '@/store';
-import { ComposeOption, GraphSeriesOption, TitleComponentOption, TooltipComponentOption, } from 'echarts';
+import {
+  ComposeOption,
+  GraphSeriesOption,
+  TitleComponentOption,
+  TooltipComponentOption,
+} from 'echarts';
 export type ECOption = ComposeOption<
-  | TitleComponentOption
-  | TooltipComponentOption
-  | GraphSeriesOption
+  TitleComponentOption | TooltipComponentOption | GraphSeriesOption
 >;
 const attackData = [
   {
@@ -276,7 +278,6 @@ const edgesData = [
   },
 ];
 export const AttackPath: React.FC = () => {
-  const uploadState = useAppSelector((state) => state.upload.value);
   useEffect(() => {
     // ECharts 配置
     const option: ECOption = {
@@ -373,14 +374,10 @@ export const AttackPath: React.FC = () => {
     };
 
     // 初始化 ECharts 实例并将其绑定到 DOM 元素
-    uploadState &&
-      (function () {
-        const chartDom = document.getElementById('main');
-        const chart = echarts.init(chartDom);
-        chart.setOption(option);
-      })();
-  }, [uploadState]);
-
+    const chartDom = document.getElementById('main');
+    const chart = echarts.init(chartDom);
+    chart.setOption(option);
+  });
   return (
     <>
       <div id="main" style={{ width: '100%', height: '800px' }}></div>

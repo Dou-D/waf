@@ -9,12 +9,15 @@ import { China } from '@/components/SimpleStatic/China';
 import { LiaoNing } from '@/components/SimpleStatic/LiaoNing';
 import { Locale } from '@/components/SimpleStatic/Locale';
 import request from 'umi-request';
+import { FlagResponse } from '@/common/FlagResponse';
 
 const Dashboard: React.FC = () => {
   const graphOption = ['中国', '辽宁'];
   const [graph, setGraph] = useState('中国');
   const [result, setResult] = useState<Dashboard.Res[]>();
+  const [uploadState, setUploadState] = useState<boolean>()
   const [siteInfo, setSiteInfo] = useState<Dashboard.SiteInfoItem[]>()
+
   const onGraphChange = ({ target: { value } }: RadioChangeEvent) => {
     setGraph(value);
   };
@@ -25,7 +28,7 @@ const Dashboard: React.FC = () => {
       },
       method: 'GET',
     }).then((res: Dashboard.SiteResponse) => {
-      setResult(res.data.res)
+      setResult(res?.data?.res)
     }),
     request('/api/siteInfo', {
       headers: {
@@ -33,10 +36,17 @@ const Dashboard: React.FC = () => {
       },
       method: 'GET',
     }).then((res: Dashboard.SiteInfoResponse) => {
-      setSiteInfo(res.data.accessData)
+      setSiteInfo(res?.data?.accessData)
     })
     ])
-
+    request<FlagResponse>('/api/flag', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      method: 'GET',
+    }).then(res => {
+      setUploadState(res.data)
+    })
   }, []);
 
   return (
@@ -59,7 +69,7 @@ const Dashboard: React.FC = () => {
         <Col span={16}>
           <Card>
             <Radio.Group options={graphOption} onChange={onGraphChange} value={graph} />
-            { graph === '中国' ? <China /> : <LiaoNing />}
+            { uploadState && graph === '中国' ? <China /> : <LiaoNing />}
           </Card>
         </Col>
         <Col span={8}>

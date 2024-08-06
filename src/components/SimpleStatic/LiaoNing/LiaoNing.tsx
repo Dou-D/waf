@@ -2,6 +2,8 @@ import { Card, Col, Row, Statistic } from 'antd';
 import React, { useEffect, useState } from 'react';
 import * as Echarts from 'echarts';
 import liaoningJson from '@/assets/liaoning.json';
+import request from 'umi-request';
+import { FlagResponse } from '@/common/FlagResponse';
 
 export const LiaoNing: React.FC = () => {
   const [value, setValue] = useState(95);
@@ -24,9 +26,18 @@ export const LiaoNing: React.FC = () => {
     { name: '朝阳', value: 1 },
     { name: '葫芦岛', value: 1 },
   ]);
+  const [uploadState, setUploadState] = useState<boolean>()
 
   useEffect(() => {
-    drawMap();
+    request<FlagResponse>('/api/flag', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then(res => {
+      setUploadState(res.data)
+    })
+    uploadState && drawMap();
   }, [cities]);
 
   const drawMap = () => {
@@ -125,7 +136,7 @@ export const LiaoNing: React.FC = () => {
         },
       ],
     };
-    myChart.setOption(option, true);
+    uploadState && myChart.setOption(option, true);
   };
 
   return (
@@ -166,4 +177,3 @@ export const LiaoNing: React.FC = () => {
     </>
   );
 };
-
