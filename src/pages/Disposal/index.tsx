@@ -124,7 +124,7 @@ const Disposal: React.FC = () => {
                 autoComplete="off"
             >
                 <Form.Item<string>
-                    label="Port"
+                    label="IP:Port"
                     name="ip"
                     rules={[{ required: true, message: '请输入要封禁的端口' }]}
                 >

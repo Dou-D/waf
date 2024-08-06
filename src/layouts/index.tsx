@@ -15,7 +15,7 @@ const MenuItems = [
   { key: '1', label: '首页', path: '/dashboard' },
   { key: '2', label: '攻击', path: '/attack' },
   { key: '3', label: '知识库', path: '/know' },
-  { key: '4', label: "威胁情报", path: "/menace"}
+  { key: '4', label: '威胁情报', path: '/menace' },
 ];
 const BreadcrumbItems: MenuProps['items'] = MenuItems.map((item) => {
   return {
@@ -102,7 +102,11 @@ const Layouts: React.FC = () => {
   const items: MenuProps['items'] = [
     {
       label: (
-        <Button type="link" onClick={() => history.push('/login')}>
+        <Button
+          disabled={localStorage.getItem('token') ? true : false}
+          type="link"
+          onClick={() => history.push('/login')}
+        >
           登录
         </Button>
       ),

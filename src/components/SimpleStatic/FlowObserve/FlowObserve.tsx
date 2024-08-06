@@ -3,14 +3,15 @@ import RcResizeObserver from 'rc-resize-observer';
 import { useState, useEffect } from 'react';
 import FlowLine from '../LineChart/FlowLine';
 import request from 'umi-request';
+import { FlagResponse } from '@/common/FlagResponse';
 
 const { Statistic } = StatisticCard;
-
-
 
 export const FlowObserve: React.FC = () => {
   const [responsive, setResponsive] = useState(false);
   const [flowCardData, setFlowCardData] = useState<FlowObserve.FlowCardData[]>();
+  const [uploadState, setUploadState] = useState<boolean>();
+
   useEffect(() => {
     request('/api/flowCard', {
       headers: {
@@ -18,9 +19,16 @@ export const FlowObserve: React.FC = () => {
       },
       method: 'GET',
     }).then((res: FlowObserve.FlowCardResponse) => {
-      setFlowCardData(res?.data?.flowCardData)
-
-    })
+      setFlowCardData(res?.data?.flowCardData);
+    });
+    request<FlagResponse>('/api/flag', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then((res) => {
+      setUploadState(res.data);
+    });
   }, []);
   return (
     <RcResizeObserver
@@ -59,12 +67,9 @@ export const FlowObserve: React.FC = () => {
               })}
             </ProCard>
           </ProCard>
-          <StatisticCard title="流量走势">
-            <FlowLine />
-          </StatisticCard>
+          <StatisticCard title="流量走势">{uploadState && <FlowLine />}</StatisticCard>
         </ProCard>
       </ProCard>
     </RcResizeObserver>
   );
 };
-
