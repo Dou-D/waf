@@ -138,7 +138,7 @@ const Disposal: React.FC = () => {
         autoComplete="off"
       >
         <Form.Item<string>
-          label="IP"
+          label="User-Agent"
           name="ip"
           rules={[{ required: true, message: '请输入要扫描遏制的地址' }]}
         >
