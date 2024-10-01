@@ -3,7 +3,6 @@ import type { ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Drawer } from 'antd';
 import { useState } from 'react';
-import { history } from 'umi';
 import request from 'umi-request';
 
 export default () => {
@@ -83,7 +82,7 @@ export default () => {
         search={false}
         pagination={pagination}
       />
-      <Drawer title="Basic Drawer" onClose={onClose} open={open} placement="bottom">
+      <Drawer title="威胁情报详情" onClose={onClose} open={open} placement="bottom">
         <p>id:{detailData?.id}</p>
         <p>{detailData?.title}</p>
         <p>{detailData?.src}</p>

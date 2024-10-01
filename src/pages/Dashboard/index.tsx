@@ -46,6 +46,8 @@ const Dashboard: React.FC = () => {
       method: 'GET',
     }).then(res => {
       setUploadState(res.data)
+      console.log(res.data, "res.data");
+      
     })
   }, []);
 
@@ -67,10 +69,11 @@ const Dashboard: React.FC = () => {
       <Row gutter={16}>
         {/* 中间大图 */}
         <Col span={16}>
-          <Card>
+        {uploadState &&<Card>
             <Radio.Group options={graphOption} onChange={onGraphChange} value={graph} />
-            { uploadState && graph === '中国' ? <China /> : <LiaoNing />}
+            { graph === '中国' ? <China /> : <LiaoNing />}
           </Card>
+          }
         </Col>
         <Col span={8}>
           <Card>

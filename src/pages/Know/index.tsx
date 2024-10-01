@@ -105,7 +105,7 @@ const Know: React.FC = () => {
         pagination={pagination}
         search={false}
         dateFormatter="string"
-        headerTitle="攻击概览"
+        headerTitle="安全漏洞"
       />
       <Modal
       title="知识库详情图"

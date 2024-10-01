@@ -1,6 +1,6 @@
 declare namespace PageData {
-  export type ToolBarType = '正常' | '可疑' | '攻击';
-  type LabelColor = 'error' | 'success' | 'warning';
+  export type ToolBarType = '正常' | '可疑' | '攻击' | '处置';
+  type LabelColor = 'error' | 'success' | 'warning' | 'disposal';
 
   export interface FlowListResponse {
     data: Data;

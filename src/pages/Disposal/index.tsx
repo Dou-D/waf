@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { Button, Col, Form, Input, notification, Row, Switch } from 'antd';
-import type { FormProps } from 'antd';
 import request from 'umi-request';
 
 const openNotification = (message: string) => {
@@ -10,7 +9,7 @@ const openNotification = (message: string) => {
   });
 };
 
-const onFinishBan: FormProps<{ ip: string }>['onFinish'] = (values) => {
+const handleAction = (values, actionType) => {
   request('/api/manualBan', {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -18,57 +17,23 @@ const onFinishBan: FormProps<{ ip: string }>['onFinish'] = (values) => {
     method: 'POST',
     data: {
       ip: values.ip,
-      type: '封禁IP',
+      type: actionType,
     },
   }).then(() => {
-    openNotification(`封禁IP:${values.ip}`);
+    const notifications = {
+      '封禁IP': `封禁IP:${values.ip}`,
+      '封禁端口': `封禁端口:${values.ip}`,
+      '扫描遏制': `封禁:${values.ip}的内部服务`,
+      '封禁内部主机': `隔离:${values.ip}的内部主机`,
+    };
+    openNotification(notifications[actionType]);
   });
 };
 
-const onFinishUnban: FormProps<{ ip: string }>['onFinish'] = (values) => {
-  request('/api/manualBan', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    method: 'POST',
-    data: {
-      ip: values.ip,
-      type: '封禁端口',
-    },
-  }).then(() => {
-    openNotification(`封禁端口:${values.ip}`);
-  });
-};
-
-const onFinishAddWhitelist: FormProps<{ ip: string }>['onFinish'] = (values) => {
-  request('/api/manualBan', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    method: 'POST',
-    data: {
-      ip: values.ip,
-      type: '扫描遏制',
-    },
-  }).then(() => {
-    openNotification(`封禁:${values.ip}的内部服务`);
-  });
-};
-
-const onFinishRemoveWhitelist: FormProps<{ ip: string }>['onFinish'] = (values) => {
-  request('/api/manualBan', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    method: 'POST',
-    data: {
-      ip: values.ip,
-      type: '封禁内部主机',
-    },
-  }).then(() => {
-    openNotification(`隔离:${values.ip}的内部主机`);
-  });
-};
+const onFinishBan = (values) => handleAction(values, '封禁IP');
+const onFinishUnban = (values) => handleAction(values, '封禁端口');
+const onFinishAddWhitelist = (values) => handleAction(values, '扫描遏制');
+const onFinishRemoveWhitelist = (values) => handleAction(values, '封禁内部主机');
 
 const onFinishRateLimit = () => {
   notification.success({

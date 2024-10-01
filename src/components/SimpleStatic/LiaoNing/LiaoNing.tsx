@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import * as Echarts from 'echarts';
 import liaoningJson from '@/assets/liaoning.json';
 import request from 'umi-request';
-import { FlagResponse } from '@/common/FlagResponse';
 
 export const LiaoNing: React.FC = () => {
   const [value, setValue] = useState(95);
@@ -26,18 +25,10 @@ export const LiaoNing: React.FC = () => {
     { name: '朝阳', value: 1 },
     { name: '葫芦岛', value: 1 },
   ]);
-  const [uploadState, setUploadState] = useState<boolean>();
 
   useEffect(() => {
-    request<FlagResponse>('/api/flag', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then((res) => {
-      setUploadState(res.data);
-    });
-    uploadState && drawMap();
+
+   drawMap();
   }, [cities]);
 
   const drawMap = () => {
@@ -136,52 +127,42 @@ export const LiaoNing: React.FC = () => {
         },
       ],
     };
-    uploadState && myChart.setOption(option, true);
+   myChart.setOption(option, true);
   };
 
   return (
     <>
       <Row gutter={[16, 24]}>
         <Col span={6}>
-          {uploadState && (
-            <Card bordered={false}>
+        <Card bordered={false}>
               <Statistic
-                title="匹配率"
+                title="准确率"
                 value={value}
                 precision={2}
                 valueStyle={value > 70 ? { color: '#3f8600' } : { color: '#cf1322' }}
                 suffix="%"
               />
             </Card>
-          )}
         </Col>
         <Col span={6}>
-          {uploadState && (
-            <Card bordered={false}>
+        <Card bordered={false}>
               <Statistic title="累计用户数" value={total} valueStyle={{ color: '#3f8600' }} />
             </Card>
-          )}
         </Col>
         <Col span={6}>
-          {uploadState && (
-            <Card bordered={false}>
+        <Card bordered={false}>
               <Statistic title="新用户数" value={newVisit} valueStyle={{ color: '#3f8600' }} />
             </Card>
-          )}
         </Col>
         <Col span={6}>
-          {uploadState && (
-            <Card bordered={false}>
+        <Card bordered={false}>
               <Statistic title="昨日浏览量" value={pv} valueStyle={{ color: '#3f8600' }} />
             </Card>
-          )}
         </Col>
         <Col span={12}>
-          {uploadState && (
-            <Card bordered={false}>
+        <Card bordered={false}>
               <div id="liaoning-map" style={{ height: '350px', width: '100%' }}></div>
             </Card>
-          )}
         </Col>
       </Row>
     </>

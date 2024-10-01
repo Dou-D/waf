@@ -47,18 +47,9 @@ export const China: React.FC = () => {
     { name: '香港', value: 480 },
     { name: '澳门', value: 470 },
   ]);
-  const [uploadState, setUploadState] = useState<boolean>()
 
 
   useEffect(() => {
-    request<FlagResponse>('/api/flag', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then((res) => {
-      setUploadState(res.data);
-    });
     getData();
   }, []);
 
@@ -172,7 +163,7 @@ export const China: React.FC = () => {
         },
       ],
     };
-    uploadState && myChart.setOption(option, true);
+   myChart.setOption(option, true);
   };
 
   return (

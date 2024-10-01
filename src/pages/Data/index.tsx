@@ -7,9 +7,8 @@ import { history } from 'umi';
 import dayjs from 'dayjs';
 import { pagination } from '@/common';
 import { UploadOutlined } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '@/store';
-import { change } from '@/store/modules';
 import { FlagResponse } from '@/common/FlagResponse';
+import { getDisposalCol } from './getDisposalCol';
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -25,6 +24,7 @@ export const waitTime = async (time: number = 100) => {
 const selectLabelColor = (label: string): PageData.LabelColor => {
   if (label === '正常流量') return 'success';
   else if (label === '可疑流量') return 'warning';
+  else if (label === '处置流量') return 'disposal';
   return 'error';
 };
 
@@ -58,6 +58,7 @@ export default () => {
       copyable: true,
       width: 160,
       editable: false,
+      hidden: activeKey === '处置',
       render: (_, record) => {
         return (
           <>
@@ -74,6 +75,7 @@ export default () => {
       copyable: true,
       width: 160,
       editable: false,
+      hidden: activeKey === '处置',
       render: (_, record) => {
         return (
           <>
@@ -86,6 +88,7 @@ export default () => {
       title: '端口',
       dataIndex: 'port',
       hideInTable: true,
+      hidden: activeKey === '处置',
     },
     {
       title: '响应时间',
@@ -93,12 +96,14 @@ export default () => {
       width: 100,
       hideInSearch: true,
       editable: false,
+      hidden: activeKey === '处置',
     },
     {
       disable: true,
       title: '流量类型',
       dataIndex: 'label',
       valueType: 'select',
+      hidden: activeKey === '处置',
       width: 150,
       valueEnum: {
         正常流量: { text: '正常流量', status: 'Success' },
@@ -133,6 +138,7 @@ export default () => {
       title: '日期范围',
       dataIndex: 'created_at',
       valueType: 'dateRange',
+      hidden: activeKey === '处置',
       hideInTable: true,
       search: {
         transform: (value) => {
@@ -150,12 +156,15 @@ export default () => {
       dataIndex: 'protocol',
       width: 100,
       editable: false,
+      hidden: activeKey === '处置',
+      hideInSearch: true,
     },
     {
       title: '创建时间',
       key: 'timestamp',
       dataIndex: 'timestamp',
       hideInSearch: true,
+      hidden: activeKey === '处置',
       editable: false,
       hideInTable: activeKey === '攻击' ? true : false,
       renderText: (text) => dayjs(text * 1000).format('YYYY-MM-DD HH:mm:ss'),
@@ -163,7 +172,8 @@ export default () => {
     {
       title: '状态',
       renderText: () => '已处置',
-      width: 70,
+      width: 100,
+      hidden: activeKey === '处置',
       hideInTable: activeKey !== '攻击' ? true : false,
     },
     {
@@ -186,6 +196,7 @@ export default () => {
     {
       title: '操作',
       valueType: 'option',
+      hidden: activeKey === '处置',
       key: 'option',
       render: (_, record, index, action) => [
         <Button
@@ -225,6 +236,36 @@ export default () => {
         </Button>,
       ],
     },
+    // 处置流量
+    {
+      title: '处置ip',
+      dataIndex: 'disposalIP',
+      hideInSearch: true,
+      editable: false,
+      hideInTable: activeKey !== '处置' ? true : false,
+    },
+    {
+      title: '处置类型',
+      dataIndex: 'disposalType',
+      hideInSearch: true,
+      editable: false,
+      hideInTable: activeKey !== '处置' ? true : false,
+    },
+    {
+      title: '协议',
+      dataIndex: 'disposalProtocol',
+      hideInSearch: true,
+      editable: false,
+      hideInTable: activeKey !== '处置' ? true : false,
+    },
+    {
+      title: '处置时间',
+      dataIndex: 'disposalTime',
+      hideInSearch: true,
+      editable: false,
+      valueType: 'dateTime',
+      hideInTable: activeKey !== '处置' ? true : false,
+    },
   ];
   useEffect(() => {
     request<FlagResponse>('/api/flag', {
@@ -249,7 +290,7 @@ export default () => {
         },
       })
         .then((res) => {
-          location.reload()
+          location.reload();
           api.info({
             message: '上传成功',
           });
@@ -268,6 +309,13 @@ export default () => {
         actionRef={actionRef}
         cardBordered
         request={async (param) => {
+          if (activeKey === '处置') {
+            return {
+              data: getDisposalCol(),
+              success: true,
+              total: 100,
+            };
+          }
           const response = await request<PageData.FlowListResponse>('/api/flowList', {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -356,6 +404,10 @@ export default () => {
                 key: '可疑',
                 label: <span>可疑流量</span>,
               },
+              {
+                key: '处置',
+                label: <span>处置流量</span>,
+              },
             ],
             onChange: (key) => {
               setActiveKey(key as PageData.ToolBarType);
@@ -390,9 +442,9 @@ export default () => {
                 params: {
                   flag: false,
                 },
-              }).then(res => {
-                location.reload()
-              })
+              }).then((res) => {
+                location.reload();
+              });
             }}
           >
             取消数据
