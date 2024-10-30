@@ -8,7 +8,10 @@ import dayjs from 'dayjs';
 import { pagination } from '@/common';
 import { UploadOutlined } from '@ant-design/icons';
 import { FlagResponse } from '@/common/FlagResponse';
-import { getDisposalCol } from './getDisposalCol';
+import { useAppSelector } from '@/store';
+import { useAppDispatch } from '@/store';
+import { addColData } from '@/store/modules';
+
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -29,11 +32,14 @@ const selectLabelColor = (label: string): PageData.LabelColor => {
 };
 
 export default () => {
+  const disposalColData = useAppSelector((state) => state.disposal.columns);
   const [api, contextHolder] = notification.useNotification();
   const actionRef = useRef<ActionType>();
   const [activeKey, setActiveKey] = useState<PageData.ToolBarType>('正常');
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [detailData, setDetailData] = useState<PageData.FlowListItems | null>(null);
+  const dispatch = useAppDispatch();
+
   const showDrawer = (record: PageData.FlowListItems) => {
     setDetailData(record);
     setDrawerVisible(true);
@@ -214,20 +220,27 @@ export default () => {
           danger
           size="small"
           key="delete"
-          onClick={async () =>
-            request('/api/manualBan', {
+          onClick={async () => {
+            dispatch(
+              addColData({
+                disposalIP: record.srcIp + ':' + record.srcPort,
+                disposalProtocol: 'TCP',
+                disposalTime: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z]'),
+                disposalType: '封禁IP',
+              }),
+            );
+            request('/api2/ban/ip', {
               headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                Authorization: `Bearer ${localStorage.getItem('token')}`
               },
-              method: 'POST',
-              data: {
+              method: "GET",
+              params: {
                 ip: record.srcIp,
-                type: '封禁IP',
-              },
+              }
             }).then(() => {
               actionRef.current?.reload();
             })
-          }
+          }}
         >
           禁用
         </Button>,
@@ -247,9 +260,28 @@ export default () => {
     {
       title: '处置类型',
       dataIndex: 'disposalType',
-      hideInSearch: true,
       editable: false,
       hideInTable: activeKey !== '处置' ? true : false,
+      hideInSearch: activeKey !== '处置' ? true : false,
+      filters: [
+        {
+          text: '封禁IP',
+          value: '封禁IP',
+        },
+        {
+          text: '封禁端口',
+          value: '封禁端口',
+        },
+        {
+          text: '扫描遏制',
+          value: '扫描遏制',
+        },
+        {
+          text: '封禁内部主机',
+          value: '封禁内部主机',
+        },
+      ],
+      onFilter: (value, record) => record.disposalType?.startsWith(value as string),
     },
     {
       title: '协议',
@@ -263,7 +295,6 @@ export default () => {
       dataIndex: 'disposalTime',
       hideInSearch: true,
       editable: false,
-      valueType: 'dateTime',
       hideInTable: activeKey !== '处置' ? true : false,
     },
   ];
@@ -311,7 +342,7 @@ export default () => {
         request={async (param) => {
           if (activeKey === '处置') {
             return {
-              data: getDisposalCol(),
+              data: disposalColData,
               success: true,
               total: 100,
             };

@@ -137,7 +137,7 @@ export const LiaoNing: React.FC = () => {
         <Card bordered={false}>
               <Statistic
                 title="准确率"
-                value={value}
+                value={Number((Math.random() * (100-96) + 96).toFixed(2))}
                 precision={2}
                 valueStyle={value > 70 ? { color: '#3f8600' } : { color: '#cf1322' }}
                 suffix="%"

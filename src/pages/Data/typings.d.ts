@@ -28,7 +28,11 @@ declare namespace PageData {
     httpPayload: string;
     srcPort: string;
     timestamp: string;
-    disposeTime: string
+    disposeTime: string;
     disposeType: string;
+    disposalIP: string;
+    disposalType: string;
+    disposalProtocol: string;
+    disposalTime: string;
   }
 }

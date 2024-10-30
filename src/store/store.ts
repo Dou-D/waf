@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import uploadReducer from './modules/uploadSlice'
+import disposalReducer from './modules/disposalSlice'
 const store = configureStore({
     reducer: {
-        upload: uploadReducer
+        upload: uploadReducer,
+        disposal: disposalReducer
     }
 })
 

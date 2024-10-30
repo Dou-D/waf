@@ -75,6 +75,11 @@ export default defineConfig({
   },
 
   proxy: {
+    '/api2': {
+      target: 'http://10.4.5.17:8000',
+      changeOrigin: true,
+      pathRewrite: {'^/api2': ''},
+    },
     '/api': {
       target: 'http://10.4.5.17:8080',
       changeOrigin: true,

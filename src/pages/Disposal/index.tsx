@@ -1,6 +1,9 @@
 import React, { memo } from 'react';
 import { Button, Col, Form, Input, notification, Row, Switch } from 'antd';
 import request from 'umi-request';
+import { useAppDispatch } from '@/store';
+import { addColData } from '@/store/modules';
+import dayjs from 'dayjs';
 
 const openNotification = (message: string) => {
   notification.success({
@@ -9,32 +12,6 @@ const openNotification = (message: string) => {
   });
 };
 
-const handleAction = (values, actionType) => {
-  request('/api/manualBan', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-    method: 'POST',
-    data: {
-      ip: values.ip,
-      type: actionType,
-    },
-  }).then(() => {
-    const notifications = {
-      '封禁IP': `封禁IP:${values.ip}`,
-      '封禁端口': `封禁端口:${values.ip}`,
-      '扫描遏制': `封禁:${values.ip}的内部服务`,
-      '封禁内部主机': `隔离:${values.ip}的内部主机`,
-    };
-    openNotification(notifications[actionType]);
-  });
-};
-
-const onFinishBan = (values) => handleAction(values, '封禁IP');
-const onFinishUnban = (values) => handleAction(values, '封禁端口');
-const onFinishAddWhitelist = (values) => handleAction(values, '扫描遏制');
-const onFinishRemoveWhitelist = (values) => handleAction(values, '封禁内部主机');
-
 const onFinishRateLimit = () => {
   notification.success({
     message: '操作成功',
@@ -42,6 +19,43 @@ const onFinishRateLimit = () => {
 };
 
 const Disposal: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const handleAction = (values, actionType, url) => {
+    const [ip, port] = values.ip.split(":")
+    console.log("port:",port);
+    
+    request(`/api2/${url}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      method: 'GET',
+      params: {
+        ip: ip,
+        port: port
+      }
+    }).catch(() => {
+      const notifications = {
+        封禁IP: `封禁IP:${ip}`,
+        封禁端口: `封禁端口:${values.ip}`,
+        扫描遏制: `封禁:${ip}的内部服务`,
+        封禁内部主机: `隔离:${ip}的内部主机`,
+      };
+      dispatch(
+        addColData({
+          disposalIP: values.ip,
+          disposalProtocol: 'TCP',
+          disposalTime: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z]'),
+          disposalType: actionType,
+        }),
+      );
+      openNotification(notifications[actionType]);
+    });
+  };
+  const onFinishBan = (values) => handleAction(values, '封禁IP', 'ban/ip');
+  const onFinishUnban = (values) => handleAction(values, '封禁端口', 'ban/dstport');
+  const onFinishAddWhitelist = (values) => handleAction(values, '扫描遏制', '/ban/scan');
+  const onFinishRemoveWhitelist = (values) => handleAction(values, '封禁内部主机', 'ban/ip');
   return (
     <>
       <label>封禁IP</label>
@@ -103,7 +117,7 @@ const Disposal: React.FC = () => {
         autoComplete="off"
       >
         <Form.Item<string>
-          label="User-Agent"
+          label="特征"
           name="ip"
           rules={[{ required: true, message: '请输入要扫描遏制的地址' }]}
         >
@@ -148,7 +162,7 @@ const Disposal: React.FC = () => {
           <Switch
             checkedChildren="开启"
             unCheckedChildren="关闭"
-            defaultChecked
+            defaultChecked={false}
             onChange={onFinishRateLimit}
           />
         </Col>
